@@ -1,0 +1,46 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "AGENTS.md",
+    ".agents/skills-local/*.md"
+  ],
+  "model": "opencode-go/kimi-k2.7-code",
+  "agent": {
+    "builder": {
+      "description": "Materializa el cambio dentro del alcance, ejecuta herramientas y tests, diagnostica fallos y produce evidencia técnica.",
+      "mode": "subagent",
+      "model": "opencode-go/kimi-k2.7-code",
+      "prompt": "{file:./.opencode/roles/builder.md}",
+      "reasoningEffort": "high",
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      }
+    },
+    "planner": {
+      "description": "Convierte objetivo, contexto, ASSESS y profundidad SDD en una estrategia ejecutable proporcional al riesgo. Read-only.",
+      "mode": "subagent",
+      "model": "opencode-go/kimi-k2.7-code",
+      "prompt": "{file:./.opencode/roles/planner.md}",
+      "reasoningEffort": "high",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny",
+        "webfetch": "deny"
+      }
+    },
+    "reviewer": {
+      "description": "Verifica independientemente intención, resultado, diff, tests, evidencia y criterios; emite APPROVED, CHANGES_REQUESTED o BLOCKED. Invocado solo via 'ai-native review run' (P45), nunca en el contexto del Builder.",
+      "mode": "subagent",
+      "model": "opencode-go/kimi-k2.7-code",
+      "prompt": "{file:./.opencode/roles/reviewer.md}",
+      "reasoningEffort": "high",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny",
+        "webfetch": "deny"
+      }
+    }
+  },
+  "mcp": {}
+}
