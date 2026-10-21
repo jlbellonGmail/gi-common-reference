@@ -1,0 +1,55 @@
+[project]
+name = "gi-common-reference"
+version = "0.1.0"
+description = "Catálogos globales de referencia del ecosistema GI"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "psycopg[binary]>=3.2",
+    "alembic",
+    "jsonschema",
+    "sqlalchemy",
+    "pydantic",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "httpx",
+    "testcontainers[postgres]",
+    "pytest-socket",
+    "ruff",
+    "mypy",
+    "types-jsonschema",
+    "setuptools>=68",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"gi_common_reference.locales.infrastructure" = ["locale-snapshot.v1.schema.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests/unit", "tests/integration", "tests/contract"]
+pythonpath = ["src"]
+addopts = "--disable-socket --allow-hosts=127.0.0.1,localhost --allow-unix-socket"
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src", "tests"]
+mypy_path = "src"
+explicit_package_bases = true

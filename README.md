@@ -71,3 +71,5 @@ El desarrollo normal se realiza sobre `develop`.
 Las nuevas funcionalidades y cambios relevantes se desarrollan mediante specs siguiendo el workflow definido por AI-NATIVE.
 
 Las reglas permanentes para agentes y colaboradores están definidas en [`AGENTS.md`](AGENTS.md).
+
+Requisitos del entorno (Docker, Node, release de AI-NATIVE), instalación reproducible y verificación: [`docs/desarrollo.md`](docs/desarrollo.md). Despliegue y operación (roles, migraciones, API, incorporación de snapshots): [`docs/operacion.md`](docs/operacion.md).

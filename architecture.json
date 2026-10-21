@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "layers": {
+    "domain": {
+      "paths": ["src/gi_common_reference/locales/domain"],
+      "mayDependOn": [],
+      "forbiddenImports": ["psycopg", "fastapi", "starlette", "uvicorn", "alembic", "sqlalchemy", "httpx", "jsonschema", "pydantic"]
+    },
+    "application": {
+      "paths": ["src/gi_common_reference/locales/application"],
+      "mayDependOn": ["domain"],
+      "forbiddenImports": ["psycopg", "fastapi", "starlette", "uvicorn", "alembic", "sqlalchemy", "httpx", "jsonschema", "pydantic"]
+    },
+    "infrastructure": {
+      "paths": ["src/gi_common_reference/locales/infrastructure"],
+      "mayDependOn": ["application", "domain"]
+    },
+    "interfaces": {
+      "paths": ["src/gi_common_reference/locales/interfaces"],
+      "mayDependOn": ["application", "domain"]
+    }
+  },
+  "modules": {
+    "locales": {
+      "path": "src/gi_common_reference/locales",
+      "public": ["src/gi_common_reference/locales/interfaces/http"]
+    }
+  }
+}
