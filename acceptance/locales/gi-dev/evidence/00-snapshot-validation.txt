@@ -1,0 +1,16 @@
+schema publicado: OK
+lector de la CLI (schema empaquetado): OK
+admisión: OK (clasificación D)
+plan del catálogo: OK
+{
+  "snapshot_version": 2,
+  "iana_file_date": "2026-09-17",
+  "locales": 8159,
+  "active": 8039,
+  "inactive": 120,
+  "deprecated": 120,
+  "aliases": 112,
+  "alias_iw": "he",
+  "alias_in": "id",
+  "alias_ji": "yi"
+}
