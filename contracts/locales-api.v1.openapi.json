@@ -1,0 +1,295 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "gi-common-reference: locales",
+    "description": "Catálogo global de locales (idiomas), versionado y de solo lectura.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/locales/by-code/{code}": {
+      "get": {
+        "tags": [
+          "locales"
+        ],
+        "summary": "Obtener un locale por su código",
+        "description": "Tolera mayúsculas. Si el código no se publicó pero el registro IANA declara su\nPreferred-Value, devuelve el locale de ese valor. No recorta espacios ni acepta\nseparadores: lo que no es un subtag de idioma bien formado es 422.",
+        "operationId": "getLocaleByCode",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocaleEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado, sin fallback a otro locale.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/locales/{locale_id}": {
+      "get": {
+        "tags": [
+          "locales"
+        ],
+        "summary": "Obtener un locale por su locale_id",
+        "operationId": "getLocaleById",
+        "parameters": [
+          {
+            "name": "locale_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Locale Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocaleEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado, sin fallback a otro locale.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/locales": {
+      "get": {
+        "tags": [
+          "locales"
+        ],
+        "summary": "Listar los locales publicados, ordenados por código",
+        "operationId": "listLocales",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "active",
+                "inactive"
+              ]
+            },
+            "description": "Restringe el resultado a un `status`."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocaleListEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorBody": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorBody"
+      },
+      "ErrorEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version",
+            "description": "Snapshot vigente, o `null` si no hay."
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorBody"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "error"
+        ],
+        "title": "ErrorEnvelope"
+      },
+      "Locale": {
+        "properties": {
+          "locale_id": {
+            "type": "string",
+            "title": "Locale Id",
+            "description": "Identidad estable del locale (UUID asignado por PREP)."
+          },
+          "code": {
+            "type": "string",
+            "title": "Code",
+            "description": "Código publicado: subtag de idioma BCP 47 en minúsculas."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive"
+            ],
+            "title": "Status",
+            "description": "`active`: apto para nuevas referencias; `inactive`: sigue resoluble."
+          },
+          "iana_deprecated": {
+            "type": "boolean",
+            "title": "Iana Deprecated",
+            "description": "El registro IANA de referencia declara el código como deprecado."
+          },
+          "replacement_locale_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Replacement Locale Id",
+            "description": "Locale del Preferred-Value del registro IANA; solo si está deprecado."
+          }
+        },
+        "type": "object",
+        "required": [
+          "locale_id",
+          "code",
+          "status",
+          "iana_deprecated",
+          "replacement_locale_id"
+        ],
+        "title": "Locale",
+        "description": "Un idioma publicado. No contiene textos traducibles (RF-6)."
+      },
+      "LocaleEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "type": "integer",
+            "title": "Snapshot Version",
+            "description": "Snapshot vigente del catálogo de locales."
+          },
+          "data": {
+            "$ref": "#/components/schemas/Locale"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "LocaleEnvelope"
+      },
+      "LocaleListEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version",
+            "description": "Snapshot vigente; `null` si todavía no se incorporó ninguno."
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/Locale"
+            },
+            "type": "array",
+            "title": "Data"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "LocaleListEnvelope"
+      }
+    }
+  }
+}

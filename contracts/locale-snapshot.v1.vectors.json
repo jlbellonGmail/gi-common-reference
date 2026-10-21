@@ -1,0 +1,140 @@
+{
+  "rules": [
+    "content_digest = 'sha256:' + hex(SHA-256(canonical JSON UTF-8 bytes del documento sin su campo `content_digest` de nivel superior)).",
+    "iana.digest = 'sha256:' + hex(SHA-256(bytes UTF-8 exactos de `iana.registry_text`)); no se normalizan saltos de línea ni espacios.",
+    "El JSON canónico no tiene espacios fuera de los strings; separadores ',' y ':'.",
+    "Las claves de cada objeto se ordenan por punto de código Unicode (equivale al orden de sus bytes UTF-8).",
+    "Los strings se escriben en UTF-8 sin escapar los no ASCII; solo se escapan la comilla doble, la barra invertida y los caracteres menores que U+0020 (formas cortas para backspace, tab, salto de línea, form feed y retorno; el resto como secuencia de escape unicode de 4 dígitos hexadecimales en minúsculas).",
+    "Solo se admiten enteros, strings, booleanos, null, arreglos y objetos: un número no entero (o NaN/Infinity) invalida el documento.",
+    "Solo se excluye `content_digest` del nivel superior; `iana.digest` y cualquier campo anidado del mismo nombre sí se cubren.",
+    "Un documento con claves duplicadas en algún objeto es inválido."
+  ],
+  "content_digest": [
+    {
+      "name": "key-order-and-nesting",
+      "document": {
+        "b": 1,
+        "a": {
+          "z": null,
+          "y": [
+            true,
+            false
+          ]
+        }
+      },
+      "canonical": "{\"a\":{\"y\":[true,false],\"z\":null},\"b\":1}",
+      "digest": "sha256:41d61ba14952572ee647ff0dae12bf8ca3aea7783a0f575c798cf5db764bc777"
+    },
+    {
+      "name": "declared-content-digest-is-excluded",
+      "document": {
+        "content_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "b": 1,
+        "a": {
+          "z": null,
+          "y": [
+            true,
+            false
+          ]
+        }
+      },
+      "canonical": "{\"a\":{\"y\":[true,false],\"z\":null},\"b\":1}",
+      "digest": "sha256:41d61ba14952572ee647ff0dae12bf8ca3aea7783a0f575c798cf5db764bc777"
+    },
+    {
+      "name": "only-the-top-level-field-is-excluded",
+      "document": {
+        "a": {
+          "content_digest": "x"
+        },
+        "b": 1
+      },
+      "canonical": "{\"a\":{\"content_digest\":\"x\"},\"b\":1}",
+      "digest": "sha256:5b5630261d5ae4e8bde10968d6ee5430d94bf1fa2c85f0b0c3eda5783af94310"
+    },
+    {
+      "name": "non-ascii-is-raw-utf8",
+      "document": {
+        "k": "ñandú ✓ 😀"
+      },
+      "canonical": "{\"k\":\"ñandú ✓ 😀\"}",
+      "digest": "sha256:9765933aef82e3d0a312aec00daa49261422422e3f9dd93a5dece195baacaae2"
+    },
+    {
+      "name": "string-escapes",
+      "document": {
+        "s": "quote\" backslash newline\n tab\t ctrl\u0001 slash/ del"
+      },
+      "canonical": "{\"s\":\"quote\\\" backslash newline\\n tab\\t ctrl\\u0001 slash/ del\"}",
+      "digest": "sha256:ecb5166d6fe01678bc14101cbfba229a98ec611138f5294cde34e9e3f40b16d3"
+    },
+    {
+      "name": "keys-ordered-by-code-point",
+      "document": {
+        "😀": 1,
+        "￿": 2,
+        "a": 3
+      },
+      "canonical": "{\"a\":3,\"￿\":2,\"😀\":1}",
+      "digest": "sha256:48f8c136ce1b1fb6cc384c2a496fcab8d870f137c9ef71a97d7c4475f6d0eb5d"
+    },
+    {
+      "name": "empty-containers",
+      "document": {
+        "a": [],
+        "b": {}
+      },
+      "canonical": "{\"a\":[],\"b\":{}}",
+      "digest": "sha256:9959f7ea5ff37e0cf81634a894845a335eb6e26fbad0877944e9bc009b4f0644"
+    },
+    {
+      "name": "integers",
+      "document": {
+        "n": 0,
+        "m": -7,
+        "big": 9007199254740991
+      },
+      "canonical": "{\"big\":9007199254740991,\"m\":-7,\"n\":0}",
+      "digest": "sha256:22d9d18537c67f01d3f39055122410354f72a644bbe3b1f465f062054a2f59f3"
+    }
+  ],
+  "iana_digest": [
+    {
+      "name": "ascii",
+      "registry_text": "File-Date: 2026-09-01\n%%\nType: language\nSubtag: es\n",
+      "digest": "sha256:8dd84309b5b9868449321ea8aadc938143e48e5ba6ac9d793d0ecea0076fef6d"
+    },
+    {
+      "name": "non-ascii",
+      "registry_text": "File-Date: 2026-09-01\n%%\nType: language\nSubtag: es\nDescription: Español\n",
+      "digest": "sha256:87118a4190fe3179240e694a3d83272f049c83cda0cab4cfbfb107e58df09ed8"
+    },
+    {
+      "name": "lf",
+      "registry_text": "a\nb",
+      "digest": "sha256:7e18f737311b2dc3b2f269dd78396b0351f14fb66efa879f768cb23181883c78"
+    },
+    {
+      "name": "crlf-is-not-normalized",
+      "registry_text": "a\r\nb",
+      "digest": "sha256:18745f36a05e29072709042d6062ce54f1b08ff36c27ba80c39f81fb010c8ce2"
+    },
+    {
+      "name": "empty",
+      "registry_text": "",
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "errors": [
+    {
+      "name": "float",
+      "document": {
+        "a": 1.5
+      }
+    },
+    {
+      "name": "float-with-integer-value-in-json-is-still-a-float",
+      "jsonText": "{\"a\":1.0}"
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+File-Date: 2026-09-01
+%%
+Type: language
+Subtag: ar
+Description: Arabic
+Added: 2005-10-16
+Suppress-Script: Arab
+Scope: macrolanguage
+%%
+Type: language
+Subtag: arb
+Description: Standard Arabic
+Added: 2009-07-29
+Macrolanguage: ar
+%%
+Type: language
+Subtag: afa
+Description: Afro-Asiatic languages
+Added: 2005-10-16
+Scope: collection
+%%
+Type: language
+Subtag: bih
+Description: Bihari languages
+Description: Bihari (Sanskrit-derived
+  languages of northern India)
+Added: 2005-10-16
+Scope: collection
+%%
+Type: language
+Subtag: bh
+Description: Bihari languages
+Added: 2005-10-16
+Deprecated: 2026-06-14
+Preferred-Value: bih
+%%
+Type: language
+Subtag: dz
+Description: Dzongkha
+Added: 2005-10-16
+%%
+Type: language
+Subtag: adp
+Description: Adap
+Added: 2005-10-16
+Deprecated: 2015-02-12
+Preferred-Value: dz
+%%
+Type: language
+Subtag: en
+Description: English
+Added: 2005-10-16
+Suppress-Script: Latn
+%%
+Type: language
+Subtag: es
+Description: Spanish
+Description: Castilian
+Added: 2005-10-16
+Suppress-Script: Latn
+%%
+Type: language
+Subtag: fil
+Description: Filipino
+Description: Pilipino
+Added: 2005-10-16
+%%
+Type: language
+Subtag: he
+Description: Hebrew
+Added: 2005-10-16
+Suppress-Script: Hebr
+%%
+Type: language
+Subtag: iw
+Description: Hebrew
+Added: 2005-10-16
+Deprecated: 1989-01-01
+Preferred-Value: he
+Suppress-Script: Hebr
+%%
+Type: language
+Subtag: id
+Description: Indonesian
+Added: 2005-10-16
+Suppress-Script: Latn
+%%
+Type: language
+Subtag: in
+Description: Indonesian
+Added: 2005-10-16
+Deprecated: 1989-01-01
+Preferred-Value: id
+Suppress-Script: Latn
+%%
+Type: language
+Subtag: sh
+Description: Serbo-Croatian
+Added: 2005-10-16
+Deprecated: 2000-02-18
+Comments: sr, hr, bs are preferred for most uses, Cyrillic script, Latin script
+  and so on
+%%
+Type: language
+Subtag: und
+Description: Undetermined
+Added: 2005-10-16
+Scope: special
+%%
+Type: language
+Subtag: mul
+Description: Multiple languages
+Added: 2005-10-16
+Scope: special
+%%
+Type: language
+Subtag: mis
+Description: Uncoded languages
+Added: 2005-10-16
+Scope: special
+%%
+Type: language
+Subtag: zxx
+Description: No linguistic content
+Description: Not applicable
+Added: 2006-03-08
+Scope: special
+%%
+Type: language
+Subtag: qaa..qtz
+Description: Private use
+Added: 2005-10-16
+Scope: private-use
+%%
+Type: extlang
+Subtag: aao
+Description: Algerian Saharan Arabic
+Added: 2009-07-29
+Preferred-Value: aao
+Prefix: ar
+Macrolanguage: ar
+%%
+Type: script
+Subtag: Latn
+Description: Latin
+Added: 2005-10-16
+%%
+Type: region
+Subtag: AR
+Description: Argentina
+Added: 2005-10-16
+%%
+Type: region
+Subtag: ES
+Description: Spain
+Added: 2005-10-16
+%%
+Type: grandfathered
+Tag: i-klingon
+Description: Klingon
+Added: 1999-05-26
+Deprecated: 2004-02-24
+Preferred-Value: tlh
+%%
+Type: redundant
+Tag: zh-Hant
+Description: Traditional Chinese
+Added: 2005-04-11
