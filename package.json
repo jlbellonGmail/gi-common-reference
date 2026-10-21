@@ -1,0 +1,8 @@
+{
+  "name": "gi-common-reference-tooling",
+  "private": true,
+  "description": "Herramientas de desarrollo (no runtime): Supabase CLI para aceptación contra gi-dev.",
+  "devDependencies": {
+    "supabase": "^2.121.0"
+  }
+}

@@ -1,0 +1,13 @@
+Comprobación (docs/operacion.md, "Supabase"): `reference` no figura en los schemas expuestos por PostgREST.
+
+Comando (solo lectura remota; escribe un config.toml descartable fuera del repositorio):
+  npx supabase config pull --project-ref gletzbwuvmwjkmoufmyj --workdir <scratch> --yes --force
+
+Resultado (Supabase CLI 2.121.0, 2026-10-21):
+  scope.present = ["api","auth","database","pooler","realtime","storage"]
+  Ningún cambio en el ámbito `api` respecto del valor por defecto de la CLI:
+    api.schemas = ["public", "graphql_public"]
+  Las 10 diferencias encontradas pertenecen a auth, db.pooler y storage; ninguna a api.schemas.
+
+Conclusión: `reference` NO está expuesto por PostgREST. Además, anon/authenticated/authenticator/
+service_role no tienen USAGE sobre el schema ni privilegios de tabla (07-security.txt).

@@ -1,0 +1,45 @@
+## schema
+   ('reference', 'reference_owner')
+## tablas
+   ('alembic_version', 'reference_owner', False)
+   ('locale', 'reference_owner', False)
+   ('locale_alias', 'reference_owner', False)
+   ('locale_snapshot', 'reference_owner', False)
+## alembic_version
+   ('0001',)
+## constraints
+   ('reference.alembic_version', 'alembic_version_pkc', 'p', False, False)
+   ('reference.locale', 'locale_code_format', 'c', False, False)
+   ('reference.locale', 'locale_code_key', 'u', False, False)
+   ('reference.locale', 'locale_deprecated_is_inactive', 'c', False, False)
+   ('reference.locale', 'locale_first_snapshot_fk', 'f', False, False)
+   ('reference.locale', 'locale_pkey', 'p', False, False)
+   ('reference.locale', 'locale_replacement_fk', 'f', True, True)
+   ('reference.locale', 'locale_replacement_not_self', 'c', False, False)
+   ('reference.locale', 'locale_replacement_requires_deprecation', 'c', False, False)
+   ('reference.locale', 'locale_status_valid', 'c', False, False)
+   ('reference.locale_alias', 'locale_alias_pkey', 'p', False, False)
+   ('reference.locale_snapshot', 'locale_snapshot_pkey', 'p', False, False)
+   ('reference.locale_snapshot', 'locale_snapshot_version_positive', 'c', False, False)
+## fks
+   ('locale_first_snapshot_fk', 'FOREIGN KEY (first_snapshot_version) REFERENCES reference.locale_snapshot(snapshot_version)')
+   ('locale_replacement_fk', 'FOREIGN KEY (replacement_locale_id) REFERENCES reference.locale(locale_id) DEFERRABLE INITIALLY DEFERRED')
+## triggers
+   ('reference.locale', 'locale_identity_immutable', 'reference.reject_locale_identity_change')
+   ('reference.locale', 'locale_no_delete', 'reference.reject_locale_delete')
+   ('reference.locale', 'locale_no_truncate', 'reference.reject_locale_delete')
+   ('reference.locale_snapshot', 'locale_snapshot_immutable', 'reference.reject_locale_snapshot_change')
+   ('reference.locale_snapshot', 'locale_snapshot_no_truncate', 'reference.reject_locale_snapshot_change')
+## privilegios_tabla
+   ('reference_loader', 'locale', 'INSERT,SELECT')
+   ('reference_loader', 'locale_alias', 'DELETE,INSERT,SELECT')
+   ('reference_loader', 'locale_snapshot', 'INSERT,SELECT')
+   ('reference_reader', 'locale', 'SELECT')
+   ('reference_reader', 'locale_alias', 'SELECT')
+   ('reference_reader', 'locale_snapshot', 'SELECT')
+## privilegios_columna
+   ('reference_loader', 'locale', 'UPDATE', 'iana_deprecated,replacement_locale_id,status')
+## acl_schema
+   ('{reference_owner=UC/reference_owner,reference_reader=U/reference_owner,reference_loader=U/reference_owner}',)
+## runbook_verify (esperado t,f,t,f,f)
+   (True, False, True, False, False)

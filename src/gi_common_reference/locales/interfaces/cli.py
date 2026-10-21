@@ -8,9 +8,14 @@ Código de salida: 0 incorporado o no-op; 1 snapshot inválido o rechazado; 2 er
 
 La salida nunca reproduce la cadena de conexión ni el texto de los errores del driver: puede
 contener fragmentos de credenciales. Los errores de base de datos se informan con tipo y SQLSTATE.
+
+Los caracteres que la codificación de la salida no admite (p. ej. la flecha de los ciclos RF-22
+con la salida redirigida en Windows, cp1252) se escriben como escapes `\\uXXXX` en lugar de
+abortar con `UnicodeEncodeError`.
 """
 
 import argparse
+import io
 import os
 import sys
 from collections.abc import Callable, Mapping, Sequence
@@ -33,6 +38,13 @@ DATABASE_URL = "REFERENCE_DATABASE_URL"
 RepositoryFactory = Callable[[str], LocaleRepository]
 
 
+def _tolerate_unencodable_output() -> None:
+    """Conserva la codificación de stdout/stderr, pero escapa lo que esta no pueda representar."""
+    for stream in (sys.stdout, sys.stderr):
+        if isinstance(stream, io.TextIOWrapper):
+            stream.reconfigure(errors="backslashreplace")
+
+
 def main(
     argv: Sequence[str] | None = None,
     *,
@@ -40,6 +52,7 @@ def main(
     repository_factory: RepositoryFactory,
     snapshot_reader: SnapshotReader,
 ) -> int:
+    _tolerate_unencodable_output()
     parser = argparse.ArgumentParser(prog="locales", description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
     incorporate = commands.add_parser("incorporate", help="incorporar un snapshot")
