@@ -25,6 +25,7 @@ import hashlib
 import json
 import os
 import socket
+import ssl
 import subprocess
 import sys
 import tempfile
@@ -52,6 +53,25 @@ FINGERPRINT_SQL = {
     "preferred_value, ',' ORDER BY subtag), '')) FROM reference.locale_alias",
 }
 VERIFYING_SSLMODES = ("verify-ca", "verify-full")
+
+
+def ca_fingerprints(path: Path) -> list[str]:
+    """Huella SHA-256 del DER de cada CA del archivo PEM, como `openssl x509 -fingerprint -sha256`.
+
+    OpenSSL decodifica el PEM, así que la huella no depende de los fines de línea ni del texto
+    alrededor de los bloques: es la del certificado, no la del archivo.
+    """
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    try:
+        context.load_verify_locations(cafile=path)
+    except ssl.SSLError as exc:
+        raise ValueError(
+            f"{path.name} no contiene un certificado X.509 PEM válido ({exc})"
+        ) from exc
+    ders = context.get_ca_certs(binary_form=True)
+    if not ders:
+        raise ValueError(f"{path.name} no contiene ningún certificado de CA")
+    return [hashlib.sha256(der).digest().hex(":").upper() for der in ders]
 
 
 class Env:
@@ -84,8 +104,10 @@ class Env:
         if self._sslmode not in VERIFYING_SSLMODES:
             return f"sslmode={self._sslmode} (certificado del servidor NO verificado)"
         assert self._sslrootcert is not None
-        digest = hashlib.sha256(self._sslrootcert.read_bytes()).hexdigest()
-        return f"sslmode={self._sslmode} sslrootcert={self._sslrootcert.name} (sha256 {digest})"
+        digest = ", ".join(ca_fingerprints(self._sslrootcert))
+        return (
+            f"sslmode={self._sslmode} sslrootcert={self._sslrootcert.name} (SHA-256 DER {digest})"
+        )
 
     def destination(self) -> str:
         return f"{self._host}:{self._port}/postgres"
@@ -719,6 +741,11 @@ def main() -> None:
         )
     if args.sslrootcert is not None and not args.sslrootcert.is_file():
         parser.error(f"--sslrootcert: no existe {args.sslrootcert}")
+    if args.sslrootcert is not None:
+        try:
+            ca_fingerprints(args.sslrootcert)
+        except ValueError as exc:
+            parser.error(f"--sslrootcert: {exc}")
     env = Env(
         args.credentials,
         args.pooler_host,

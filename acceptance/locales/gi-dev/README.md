@@ -50,7 +50,7 @@ python tools/acceptance/gi_dev.py --environment gi-dev --credentials <json fuera
 
 Comandos: `probe`, `migrate`, `inspect`, `incorporate <archivo>`, `stats`, `negatives <archivo>`, `security`, `api --total N --active N --inactive N`. Solo `migrate` e `incorporate` escriben, y únicamente por las vías oficiales (`alembic upgrade head` y la CLI). `negatives` y `security` comprueban que la base queda idéntica.
 
-Cada comando empieza con un encabezado que identifica la base: `entorno`, `project_ref`, `destino` (host:puerto/base), modo TLS con la huella del archivo de CA, comando y fecha UTC. No incluye credenciales ni URLs de conexión.
+Cada comando empieza con un encabezado que identifica la base: `entorno`, `project_ref`, `destino` (host:puerto/base), modo TLS con la huella SHA-256 (DER) del certificado de CA (la misma que figura arriba, no la del archivo PEM), comando y fecha UTC. No incluye credenciales ni URLs de conexión.
 
 ## Evidencia (`evidence/`)
 
