@@ -7,3 +7,16 @@ __pycache__/
 *.egg-info/
 node_modules/
 supabase/.temp/
+supabase/.branches/
+
+# Secretos y credenciales: nunca se versionan (ver docs/operacion.md).
+.env
+.env.*
+!.env.example
+*credentials*.json
+*.pem
+*.key
+*.p12
+*.pfx
+.pgpass
+pgpass.conf

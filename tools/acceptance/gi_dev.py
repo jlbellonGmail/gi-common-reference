@@ -7,7 +7,16 @@ dueño del schema o con el rol bajo prueba. Ninguna URL ni contraseña se imprim
 Credenciales: JSON `{rol: contraseña}` fuera del repositorio (`--credentials`). Conexión por el
 pooler de Supavisor en modo sesión: usuario `<rol>.<project_ref>`.
 
-Uso: python tools/acceptance/gi_dev.py --credentials <json> --pooler-host <host> <comando> [...]
+TLS: por defecto `sslmode=verify-full`, que exige `--sslrootcert`. El pooler presenta una cadena
+privada (`Supabase Root 2021 CA`), que no está entre las CA del sistema: el certificado se descarga
+del dashboard del proyecto (Database → SSL Configuration). Con `--sslmode require` la conexión va
+cifrada pero sin verificar el servidor, y el encabezado de la evidencia lo declara.
+
+Cada comando empieza con un encabezado (entorno, project-ref, destino, TLS, comando y fecha UTC)
+para que la evidencia diga contra qué base se generó. No incluye usuarios con contraseña ni URLs.
+
+Uso: python tools/acceptance/gi_dev.py --environment gi-dev --credentials <json> \
+    --pooler-host <host> --sslrootcert <ca.crt> <comando> [...]
 """
 
 import argparse
@@ -21,6 +30,7 @@ import sys
 import tempfile
 import time
 from collections.abc import Callable
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 from urllib.parse import quote
@@ -41,24 +51,55 @@ FINGERPRINT_SQL = {
     "locale_alias": "SELECT count(*), md5(coalesce(string_agg(subtag || '>' || "
     "preferred_value, ',' ORDER BY subtag), '')) FROM reference.locale_alias",
 }
+VERIFYING_SSLMODES = ("verify-ca", "verify-full")
 
 
 class Env:
-    def __init__(self, credentials: Path, host: str, ref: str, port: int, sslmode: str) -> None:
+    def __init__(
+        self,
+        credentials: Path,
+        host: str,
+        ref: str,
+        port: int,
+        sslmode: str,
+        sslrootcert: Path | None,
+    ) -> None:
         self._passwords: dict[str, str] = json.loads(credentials.read_text(encoding="utf-8"))
         self._host, self._ref, self._port, self._sslmode = host, ref, port, sslmode
+        self._sslrootcert = sslrootcert
 
     def url(self, role: str) -> str:
         """Con `--project-ref ''` el usuario es el rol a secas (Postgres local de ensayo)."""
         user = f"{role}.{self._ref}" if self._ref else role
         password = quote(self._passwords[role], safe="")
+        rootcert = (
+            f"&sslrootcert={quote(str(self._sslrootcert), safe='')}" if self._sslrootcert else ""
+        )
         return (
             f"postgresql://{user}:{password}@{self._host}:{self._port}/postgres"
-            f"?sslmode={self._sslmode}&application_name=gi-common-reference-acceptance"
+            f"?sslmode={self._sslmode}{rootcert}&application_name=gi-common-reference-acceptance"
         )
+
+    def describe_tls(self) -> str:
+        if self._sslmode not in VERIFYING_SSLMODES:
+            return f"sslmode={self._sslmode} (certificado del servidor NO verificado)"
+        assert self._sslrootcert is not None
+        digest = hashlib.sha256(self._sslrootcert.read_bytes()).hexdigest()
+        return f"sslmode={self._sslmode} sslrootcert={self._sslrootcert.name} (sha256 {digest})"
+
+    def destination(self) -> str:
+        return f"{self._host}:{self._port}/postgres"
 
     def connect(self, role: str) -> "psycopg.Connection[Any]":
         return psycopg.connect(self.url(role), autocommit=True)
+
+
+def header(env: Env, environment: str, ref: str, command: list[str]) -> None:
+    """Identifica la base de la evidencia sin credenciales: nada de URLs ni contraseñas."""
+    print(f"# entorno={environment} project_ref={ref or '-'} destino={env.destination()}")
+    print(f"# tls: {env.describe_tls()}")
+    print(f"# comando={' '.join(command)}")
+    print(f"# generado={datetime.now(UTC).strftime('%Y-%m-%dT%H:%M:%SZ')}")
 
 
 def run(args: list[str], env_extra: dict[str, str]) -> subprocess.CompletedProcess[str]:
@@ -653,11 +694,15 @@ def api(env: Env, args: argparse.Namespace) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "--environment", required=True, help="entorno que se declara en la evidencia (gi-dev, …)"
+    )
     parser.add_argument("--credentials", type=Path, required=True)
     parser.add_argument("--pooler-host", required=True)
     parser.add_argument("--project-ref", default="gletzbwuvmwjkmoufmyj")
     parser.add_argument("--port", type=int, default=5432)
-    parser.add_argument("--sslmode", default="require")
+    parser.add_argument("--sslmode", default="verify-full")
+    parser.add_argument("--sslrootcert", type=Path, help="CA del servidor (PEM)")
     commands = parser.add_subparsers(dest="command", required=True)
     for name in ("probe", "migrate", "inspect", "stats", "security"):
         commands.add_parser(name)
@@ -667,7 +712,31 @@ def main() -> None:
     for name in ("total", "active", "inactive"):
         api_parser.add_argument(f"--{name}", type=int, required=True)
     args = parser.parse_args()
-    env = Env(args.credentials, args.pooler_host, args.project_ref, args.port, args.sslmode)
+    if args.sslmode in VERIFYING_SSLMODES and args.sslrootcert is None:
+        parser.error(
+            f"--sslmode {args.sslmode} exige --sslrootcert: la CA de Supabase no es del sistema "
+            "(dashboard: Database > SSL Configuration). Sin verificar: --sslmode require"
+        )
+    if args.sslrootcert is not None and not args.sslrootcert.is_file():
+        parser.error(f"--sslrootcert: no existe {args.sslrootcert}")
+    env = Env(
+        args.credentials,
+        args.pooler_host,
+        args.project_ref,
+        args.port,
+        args.sslmode,
+        args.sslrootcert,
+    )
+    command = [args.command]
+    if args.command in ("incorporate", "negatives"):
+        command.append(Path(args.file).name)
+    if args.command == "api":
+        command += [
+            f"--total {args.total}",
+            f"--active {args.active}",
+            f"--inactive {args.inactive}",
+        ]
+    header(env, args.environment, args.project_ref, command)
     handlers: dict[str, Callable[[Env, argparse.Namespace], None]] = {
         "probe": probe,
         "migrate": migrate,

@@ -31,17 +31,30 @@ Roles creados según `docs/operacion.md` (paso 1), con contraseñas guardadas fu
 
 Conexión: el host directo `db.<ref>.supabase.co` solo publica IPv6, así que todo se ejecutó por el pooler Supavisor en modo sesión (`aws-0-sa-east-1.pooler.supabase.com:5432`, usuario `<rol>.gletzbwuvmwjkmoufmyj`).
 
+### TLS
+
+El pooler presenta la cadena `*.pooler.supabase.com` → `Supabase Intermediate 2021 CA` → `Supabase Root 2021 CA`. Es una CA privada de Supabase y no está entre las CA del sistema, así que `sslrootcert=system` no sirve. Para `sslmode=verify-full` hay que usar el certificado raíz que se descarga del dashboard del proyecto (Database → SSL Configuration, `prod-ca-2021.crt`). Se guarda fuera del repositorio.
+
+- Huella SHA-256 (DER) de la raíz: `80:70:25:AD:50:D4:ED:21:9D:2C:9C:7D:29:9C:00:4F:82:4E:B0:0C:F7:F6:5A:FE:F6:07:D0:7B:72:E6:CA:FA`, válida hasta 2031-04-26.
+- Comprobado el 2026-10-21 solo con un handshake TLS (`openssl s_client -starttls postgres -verify_hostname`), sin autenticarse. La cadena y el nombre del host validan contra esa raíz, y un nombre de host ajeno se rechaza.
+
+`gi_dev.py` usa `verify-full` por defecto y exige `--sslrootcert`. `--sslmode require` sigue disponible, pero solo cifra: no verifica el servidor, y el encabezado de la evidencia lo declara. La autenticación SCRAM del pooler no cambia en ningún caso.
+
 ## Reproducir las verificaciones
 
 ```text
 python tools/acceptance/validate_locale_snapshot.py acceptance/locales/gi-dev/locale-snapshot.v1.2.json
-python tools/acceptance/gi_dev.py --credentials <json fuera del repo> \
-    --pooler-host aws-0-sa-east-1.pooler.supabase.com <comando>
+python tools/acceptance/gi_dev.py --environment gi-dev --credentials <json fuera del repo> \
+    --pooler-host aws-0-sa-east-1.pooler.supabase.com --sslrootcert <prod-ca-2021.crt> <comando>
 ```
 
 Comandos: `probe`, `migrate`, `inspect`, `incorporate <archivo>`, `stats`, `negatives <archivo>`, `security`, `api --total N --active N --inactive N`. Solo `migrate` e `incorporate` escriben, y únicamente por las vías oficiales (`alembic upgrade head` y la CLI). `negatives` y `security` comprueban que la base queda idéntica.
 
+Cada comando empieza con un encabezado que identifica la base: `entorno`, `project_ref`, `destino` (host:puerto/base), modo TLS con la huella del archivo de CA, comando y fecha UTC. No incluye credenciales ni URLs de conexión.
+
 ## Evidencia (`evidence/`)
+
+Los archivos `01`–`09` se generaron el 2026-10-21 con una versión anterior de `gi_dev.py`. Esa versión no imprimía el encabezado y conectaba con `sslmode=require`: tráfico cifrado y SCRAM, pero **sin verificar el certificado del servidor**. Su destino es el que figura arriba: `gletzbwuvmwjkmoufmyj`, por `aws-0-sa-east-1.pooler.supabase.com:5432`. No se regeneraron, para no repetir la aceptación contra gi-dev.
 
 | Archivo | Contenido |
 |---|---|

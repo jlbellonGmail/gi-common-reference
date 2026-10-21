@@ -88,8 +88,9 @@ def test_a_violation_exits_non_zero_and_lists_every_violation(
 def test_a_violation_with_non_encodable_text_is_reported_on_a_non_utf8_output(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    # Salida redirigida en Windows: codificación cp1252 estricta, que no admite la flecha (→)
-    # con la que se describen los ciclos de replacement (RF-22).
+    # Endurecimiento defensivo: streams cp1252 con manejo de errores estricto, que no admiten la
+    # flecha (→) de los ciclos de replacement (RF-22). El stderr estándar de CPython ya escapa
+    # (`backslashreplace`); el test fija que la CLI no dependa de eso.
     v1 = build_snapshot(
         1,
         registry=iana_text("2026-09-01", language_entry("xa"), language_entry("xb")),
