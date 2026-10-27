@@ -1,0 +1,713 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "gi-common-reference: regions",
+    "description": "Catálogo global de regiones y subregiones UN M49, versionado y de solo lectura, con nombres por locale_id.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/regions/by-code/{code}": {
+      "get": {
+        "tags": [
+          "regions"
+        ],
+        "summary": "Obtener una Region por su código UN M49 vigente",
+        "description": "La `active` que tiene el código; si ninguna, la `inactive` que lo obtuvo en el snapshot\nmás reciente. Un código que no tiene 3 dígitos es 422; un código histórico, 404.",
+        "operationId": "getRegionByCode",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code"
+            }
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegionEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/regions/{region_id}": {
+      "get": {
+        "tags": [
+          "regions"
+        ],
+        "summary": "Obtener una Region por su region_id, cualquiera sea su status",
+        "operationId": "getRegionById",
+        "parameters": [
+          {
+            "name": "region_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Region Id"
+            }
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegionEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/regions": {
+      "get": {
+        "tags": [
+          "regions"
+        ],
+        "summary": "Listar las regiones publicadas, ordenadas por código",
+        "operationId": "listRegions",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "active",
+                "inactive"
+              ]
+            },
+            "description": "Restringe el resultado a un `status`."
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegionListEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/subregions/by-code/{code}": {
+      "get": {
+        "tags": [
+          "subregions"
+        ],
+        "summary": "Obtener una Subregion por su código UN M49 vigente",
+        "description": "Mismas reglas que para Region; `419` pedido como Region es 404 (RF-4).",
+        "operationId": "getSubregionByCode",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code"
+            }
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubregionEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/subregions/{subregion_id}": {
+      "get": {
+        "tags": [
+          "subregions"
+        ],
+        "summary": "Obtener una Subregion por su subregion_id, cualquiera sea su status",
+        "operationId": "getSubregionById",
+        "parameters": [
+          {
+            "name": "subregion_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Subregion Id"
+            }
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubregionEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/subregions": {
+      "get": {
+        "tags": [
+          "subregions"
+        ],
+        "summary": "Listar las subregiones publicadas, ordenadas por código",
+        "operationId": "listSubregions",
+        "parameters": [
+          {
+            "name": "region_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Restringe el resultado a una Region.",
+              "title": "Region Id"
+            },
+            "description": "Restringe el resultado a una Region."
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "active",
+                "inactive"
+              ]
+            },
+            "description": "Restringe el resultado a un `status`."
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubregionListEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorBody": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorBody"
+      },
+      "ErrorEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version",
+            "description": "Snapshot vigente, o `null` si no hay."
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorBody"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "error"
+        ],
+        "title": "ErrorEnvelope"
+      },
+      "Region": {
+        "properties": {
+          "region_id": {
+            "type": "string",
+            "title": "Region Id",
+            "description": "Identidad estable de la Region (UUID asignado por PREP)."
+          },
+          "code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code",
+            "description": "Código UN M49 vigente de 3 dígitos, o `null`."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive"
+            ],
+            "title": "Status",
+            "description": "`active`: apta para nuevas referencias; `inactive`: sigue resoluble."
+          },
+          "replacement_region_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Replacement Region Id",
+            "description": "Region sucesora según la fuente de autoridad; solo si es `inactive`."
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "Nombre en el `locale_id` pedido, o `null`."
+          }
+        },
+        "type": "object",
+        "required": [
+          "region_id",
+          "code",
+          "status",
+          "replacement_region_id",
+          "name"
+        ],
+        "title": "Region",
+        "description": "Región UN M49 (nivel superior, p. ej. 019 Americas). Sin textos propios (RF-8)."
+      },
+      "RegionEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "type": "integer",
+            "title": "Snapshot Version",
+            "description": "Snapshot vigente del catálogo Region/Subregion."
+          },
+          "data": {
+            "$ref": "#/components/schemas/Region"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "RegionEnvelope"
+      },
+      "RegionListEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version",
+            "description": "Snapshot vigente; `null` si todavía no se incorporó ninguno."
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/Region"
+            },
+            "type": "array",
+            "title": "Data"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "RegionListEnvelope"
+      },
+      "Subregion": {
+        "properties": {
+          "subregion_id": {
+            "type": "string",
+            "title": "Subregion Id",
+            "description": "Identidad estable de la Subregion (UUID de PREP)."
+          },
+          "region_id": {
+            "type": "string",
+            "title": "Region Id",
+            "description": "Region que la contiene."
+          },
+          "code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code",
+            "description": "Código UN M49 vigente de 3 dígitos, o `null`."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive"
+            ],
+            "title": "Status",
+            "description": "`active`: apta para nuevas referencias; `inactive`: sigue resoluble."
+          },
+          "replacement_subregion_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Replacement Subregion Id",
+            "description": "Subregion sucesora según la fuente de autoridad; solo si es `inactive`."
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "Nombre en el `locale_id` pedido, o `null`."
+          }
+        },
+        "type": "object",
+        "required": [
+          "subregion_id",
+          "region_id",
+          "code",
+          "status",
+          "replacement_subregion_id",
+          "name"
+        ],
+        "title": "Subregion",
+        "description": "Subregión UN M49, contenida en exactamente una Region (p. ej. 419 en 019)."
+      },
+      "SubregionEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "type": "integer",
+            "title": "Snapshot Version",
+            "description": "Snapshot vigente del catálogo Region/Subregion."
+          },
+          "data": {
+            "$ref": "#/components/schemas/Subregion"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "SubregionEnvelope"
+      },
+      "SubregionListEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version",
+            "description": "Snapshot vigente; `null` si todavía no se incorporó ninguno."
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/Subregion"
+            },
+            "type": "array",
+            "title": "Data"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "SubregionListEnvelope"
+      }
+    }
+  }
+}

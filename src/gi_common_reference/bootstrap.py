@@ -19,8 +19,9 @@ from gi_common_reference.locales.infrastructure.postgres_repository import (
 )
 from gi_common_reference.locales.infrastructure.snapshot_reader import read_snapshot_document
 from gi_common_reference.regions.domain.policy import RequiredLocales
-from gi_common_reference.regions.domain.ports import RegionRepository
+from gi_common_reference.regions.domain.ports import RegionReader, RegionRepository
 from gi_common_reference.regions.infrastructure.policy_reader import load_required_locales
+from gi_common_reference.regions.infrastructure.postgres_reader import PostgresRegionReader
 from gi_common_reference.regions.infrastructure.postgres_repository import (
     PostgresRegionRepository,
 )
@@ -51,3 +52,7 @@ def read_region_snapshot(path: Path) -> dict[str, Any]:
 
 def required_locales() -> RequiredLocales:
     return load_required_locales()
+
+
+def postgres_region_reader(conninfo: str) -> RegionReader:
+    return PostgresRegionReader(conninfo)

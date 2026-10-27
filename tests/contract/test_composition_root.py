@@ -37,6 +37,7 @@ COMPOSITION_ROOT_MAY_IMPORT = {
     f"{REGIONS}.domain.policy",
     f"{REGIONS}.domain.ports",
     f"{REGIONS}.infrastructure.policy_reader",
+    f"{REGIONS}.infrastructure.postgres_reader",
     f"{REGIONS}.infrastructure.postgres_repository",
     f"{REGIONS}.infrastructure.snapshot_reader",
 }
@@ -193,3 +194,9 @@ def test_modules_inside_a_catalog_may_import_their_own_internals(tmp_path: Path)
         },
     )
     assert violations(root) == []
+
+
+def test_regions_http_reexports_what_the_app_needs() -> None:
+    from gi_common_reference.regions.interfaces import http
+
+    assert {"OPENAPI_URL", "RegionReader", "RegionSession", "create_api"} <= set(http.__all__)
