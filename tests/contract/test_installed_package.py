@@ -142,3 +142,48 @@ def test_an_unreadable_snapshot_is_not_blamed_on_the_installation(
     done = run_python(site, *CLI, str(elsewhere / "no-existe.json"), cwd=elsewhere, environ=environ)
     assert done.returncode == 2, done.stderr
     assert "no se pudo leer" in done.stderr and "instalación incompleta" not in done.stderr
+
+
+# --- Regions (spec 002): schema y política viajan en el wheel ----------------------------------
+
+REGIONS_RESOURCES = (
+    "gi_common_reference/regions/infrastructure/region-snapshot.v1.schema.json",
+    "gi_common_reference/regions/infrastructure/required-locales.v1.json",
+)
+REGIONS_CLI = ["-m", "gi_common_reference.regions.interfaces.cli", "incorporate"]
+
+
+def test_the_wheel_contains_the_regions_schema_and_policy(wheel: Path) -> None:
+    with zipfile.ZipFile(wheel) as archive:
+        names = archive.namelist()
+    for resource in REGIONS_RESOURCES:
+        assert resource in names, resource
+
+
+def test_the_regions_cli_reaches_the_database_from_the_installed_copy(
+    site: Path, elsewhere: Path
+) -> None:
+    example = json.loads(
+        (ROOT / "contracts" / "region-snapshot.v1.example.json").read_text("utf-8")
+    )
+    snapshot = write_snapshot(elsewhere, example)
+    environ = {"REFERENCE_DATABASE_URL": UNREACHABLE}
+    done = run_python(site, *REGIONS_CLI, str(snapshot), cwd=elsewhere, environ=environ)
+    assert done.returncode == 2, done.stderr
+    assert "falló la base de datos" in done.stderr
+    assert "instalación incompleta" not in done.stderr
+    assert SECRET not in done.stdout + done.stderr
+
+
+@pytest.mark.parametrize("resource", REGIONS_RESOURCES)
+def test_a_missing_regions_resource_is_reported_as_an_incomplete_installation(
+    site: Path, elsewhere: Path, tmp_path: Path, resource: str
+) -> None:
+    broken = tmp_path / "broken-site"
+    shutil.copytree(site, broken)
+    (broken / resource).unlink()
+    snapshot = write_snapshot(elsewhere, {"snapshot_version": 1})
+    environ = {"REFERENCE_DATABASE_URL": UNREACHABLE}
+    done = run_python(broken, *REGIONS_CLI, str(snapshot), cwd=elsewhere, environ=environ)
+    assert done.returncode == 2, done.stderr
+    assert "instalación incompleta" in done.stderr and Path(resource).name in done.stderr
