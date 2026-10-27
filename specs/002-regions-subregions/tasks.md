@@ -1,6 +1,6 @@
 # Tasks 002 — Regions / Subregions
 
-- [ ] **T1. Esqueleto del módulo `regions` y fronteras de arquitectura.** RNF-4, RNF-6
+- [x] **T1. Esqueleto del módulo `regions` y fronteras de arquitectura.** RNF-4, RNF-6
   - Done when: existe `src/gi_common_reference/regions/{domain,application,infrastructure,interfaces}`; `architecture.json` agrega las rutas de `regions` a cada capa y declara el módulo `regions` con `public` = `regions/interfaces/http`; las pruebas de frontera (`test_layer_imports`, `test_composition_root`, `test_architecture_contract`, `test_module_contract`) se generalizan a ambos módulos y detectan, con casos propios, que `regions` importe `locales` (o viceversa) o Country/Currency; el check `architecture` de AI-NATIVE da PASS; `ruff` y `mypy` limpios.
 
 - [ ] **T2. Migración 0002: tablas, constraints, triggers y privilegios de Regions.** RF-1, RF-2, RF-3, RF-4, RF-5, RF-7, RF-8, RF-9, RF-10, RF-11, RF-12, RF-29, RF-30, RF-36, RF-42, RNF-3, RNF-5
