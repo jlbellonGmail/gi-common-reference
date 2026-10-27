@@ -8,6 +8,10 @@ Los datos de este módulo son globales: no dependen de un tenant ni incorporan l
 
 ## Catálogos
 
+### Regions y Subregions
+
+`regions` es el catálogo global de regiones y subregiones geográficas UN M49 (p. ej. `019` Americas → `419` Latin America and the Caribbean), con identidades estables (`region_id`, `subregion_id`) independientes de su código M49 y nombres por `locale_id` del catálogo de Locale. Se consulta en `GET /v1/regions` y `GET /v1/subregions` (contrato en `contracts/regions-api.v1.openapi.json`). Spec: [`specs/002-regions-subregions`](specs/002-regions-subregions/spec.md).
+
 ### Countries
 
 `countries` es el catálogo global de países de GI.

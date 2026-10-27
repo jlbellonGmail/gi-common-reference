@@ -34,14 +34,15 @@ python -m venv .venv
 pip install -c constraints.txt -e ".[dev]"
 ```
 
-`pyproject.toml` declara qué se necesita; `constraints.txt` declara con qué versiones se validó. Para actualizar dependencias, instalar sin `-c` en un entorno limpio, correr la verificación completa y regenerar el archivo con el comando de su cabecera. El OpenAPI publicado (`contracts/locales-api.v1.openapi.json`) se compara como JSON (igualdad semántica del documento parseado: el orden de las claves y el formato no importan) con el generado, así que una actualización de `fastapi` o `pydantic` puede exigir regenerarlo.
+`pyproject.toml` declara qué se necesita; `constraints.txt` declara con qué versiones se validó. Para actualizar dependencias, instalar sin `-c` en un entorno limpio, correr la verificación completa y regenerar el archivo con el comando de su cabecera. Los OpenAPI publicados (`contracts/locales-api.v1.openapi.json` y `contracts/regions-api.v1.openapi.json`, generados con `python -m gi_common_reference.app` y `python -m gi_common_reference.app regions`, con `PYTHONUTF8=1` en Windows) se comparan como JSON (igualdad semántica del documento parseado: el orden de las claves y el formato no importan) con los generados, así que una actualización de `fastapi` o `pydantic` puede exigir regenerarlos.
 
-## Schema del snapshot: dos copias
+## Schemas de los snapshots: dos copias
 
-El schema del snapshot existe en dos lugares, y deben ser equivalentes (`tests/contract/test_packaged_schema.py` lo verifica como JSON):
+Cada schema de snapshot existe en dos lugares, y deben ser equivalentes (`tests/contract/test_packaged_schema.py` y `tests/contract/test_region_snapshot_contract.py` lo verifican como JSON):
 
 - `src/gi_common_reference/locales/infrastructure/locale-snapshot.v1.schema.json`: la copia que viaja dentro del paquete instalado; la CLI la carga con `importlib.resources`.
 - `contracts/locale-snapshot.v1.schema.json`: la copia publicada para PREP.
+- `src/gi_common_reference/regions/infrastructure/region-snapshot.v1.schema.json` y `contracts/region-snapshot.v1.schema.json`: lo mismo para regiones y subregiones (spec 002). La política de locales obligatorios (`required-locales.v1.json`) viaja solo en el paquete.
 
 Al cambiar el schema, editar una y copiarla sobre la otra.
 
@@ -52,6 +53,7 @@ pytest -q
 ruff format --check . && ruff check .
 mypy
 node .ai-native/ai-native.mjs sdd validate 001-locales
+node .ai-native/ai-native.mjs sdd validate 002-regions-subregions
 node .ai-native/ai-native.mjs hitl --base develop
 ```
 
