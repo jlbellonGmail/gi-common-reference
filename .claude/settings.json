@@ -1,0 +1,23 @@
+{
+  "hooks": {
+    "SubagentStop": [
+      {
+        "matcher": "reviewer",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.ai-native/ai-native.mjs",
+              "sdd",
+              "review",
+              "receipt",
+              "claude"
+            ],
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,5 +1,5 @@
 ---
-description: "Implement every pending task in order without human intervention between tasks, with bounded convergence per task, full suite, independent review and validation at the end."
+description: "Implement every pending task in order without human intervention between tasks, with bounded convergence per task, then technical validation and a bounded review loop up to the final human gate. The review is independent only when the runtime can isolate the Reviewer; otherwise the result is REVIEW_PENDING."
 agent: build
 ---
 
@@ -7,9 +7,19 @@ agent: build
 
 Target: specs/$ARGUMENTS
 
-You are the Coordinator. Load the `sdd` skill (methodology: implementation, review). Do not implement yourself: delegate each task to the Implementer (subagent `builder`) and the review to the Reviewer (subagent `reviewer`). If your tool has no subagent facility, say so in the report and do the work yourself in that order; never claim an independent review that did not happen. Call every subagent in the foreground and wait for its result: never run one in the background and never end your turn while one is still working, because the run stops when you stop.
+You are the Coordinator. Load the `sdd` skill (methodology: implementation, review). You drive the whole cycle up to the final human gate; the human is not a router between commands. Stop earlier only for a real domain decision, an ambiguity you cannot resolve safely, or a real block.
 
-First derive the human gate (never self-declared): `node .ai-native/ai-native.mjs hitl --base <base-ref>`, where `<base-ref>` is the branch this work will be merged into (normally `main`; never `HEAD`), evaluates the real change (commits, working tree and new files), the repository policy (the lock on the base ref) and any `human_gate:` line in the spec. Run it again after the last task, on the actual change: the second result governs. If it fails, stop and report why; `required` means stop for human approval of the plan; the Coordinator runs the same rule in code.
+This session is the author of the change, whether it implements each task itself or delegates it to the Implementer (subagent `builder`, optional: it saves context, it adds no independence). The author is never the independent Reviewer of its own change: that needs the `reviewer` in an isolated context. A `reviewer` agent file existing does not mean this runtime can run it isolated.
+
+Runtime capability (OpenCode). The platform has no verified way for this runtime to run the Reviewer in a context isolated from this session and attest that run. Independent review is UNAVAILABLE: use the fallback and record the self-review with `--kind self`; a review recorded as independent is refused without runtime evidence.
+
+Wait for every delegated result before acting on it; never end the run while one is pending and never predict a result.
+
+Preflight, once, before any task:
+
+1. Human gate (never self-declared): `node .ai-native/ai-native.mjs hitl --base <base-ref>`, where `<base-ref>` is the branch this work will be merged into (never `HEAD`), evaluates the real change (commits, working tree and new files), the repository policy (the lock on the base ref) and any `human_gate:` line in the spec. If it fails, stop and report why; `required` means stop for human approval of the plan; the Coordinator runs the same rule in code.
+2. Review capability: decide with the runtime check above whether an independent review is AVAILABLE or UNAVAILABLE in this session, and say it in one line. Do not ask the human. UNAVAILABLE does not stop the work: implementation, validation and a self-review continue, and the result is `REVIEW_PENDING`.
+3. Budget: `node .ai-native/ai-native.mjs sdd budget --level <level>` bounds both the attempts per task and the review rounds.
 
 For every pending task, one at a time and in order, with no human intervention between tasks:
 
@@ -18,11 +28,17 @@ For every pending task, one at a time and in order, with no human intervention b
 3. GREEN: implement the minimum, run the tests again until they pass, then run the regression suite.
 4. Check the "Done when", then mark only this task: `node .ai-native/ai-native.mjs sdd mark <NNN-slug> <Tn> done`. Never mark several tasks in one step and never before its check passed.
 
-Convergence on failure, bounded by the level budget (`node .ai-native/ai-native.mjs sdd budget --level <level>`): detect -> diagnose -> fix -> retest. If a task does not converge, mark it `blocked`, leave later tasks pending and report the full evidence. Never fake success.
+Convergence on failure, bounded by the budget: detect -> diagnose -> fix -> retest. If a task does not converge, mark it `blocked`, leave later tasks pending and report the full evidence. Never fake success.
 
 After the last task:
 
-1. Full regression suite.
-2. Independent review: call the `reviewer` subagent (read-only, fresh context) with the spec, plan, tasks and diff. Its first line is `VERDICT: APPROVED` or `VERDICT: CHANGES_REQUESTED`. Fix every CRITICAL and HIGH finding through the Implementer and review again (at most 3 rounds).
-3. `node .ai-native/ai-native.mjs sdd validate <NNN-slug>` must print PASS.
-4. Report the reviewer verdict, the RED evidence per task and the pending human final gate. Never merge.
+1. Technical validation, run by the platform so that it is evidence and not a claim: `node .ai-native/ai-native.mjs sdd review validate <NNN-slug> --base <base-ref> --command "<test-command>"` once per check (the full regression suite, then the project's lint, typecheck and architecture checks), and `node .ai-native/ai-native.mjs sdd validate <NNN-slug>`. Each run is recorded with its exit code on this revision; a PASS is evidence, not approval.
+2. Review round:
+   a. `node .ai-native/ai-native.mjs sdd review begin <NNN-slug> --base <base-ref>` prints `REVIEW_NONCE`, `REVISION`, `PACKET` (diff, changed paths, artifacts and the validation runs of this revision, from git and the platform only) and `DELEGATION_PROMPT`.
+   b. AVAILABLE: call the `reviewer` in an isolated context with the DELEGATION_PROMPT as its whole prompt, copied verbatim: nothing added, nothing removed. Any other prompt is not an independent review: never pass your reasoning, implementation notes or opinion of the result, never write a verdict for it and never ask it to confirm the work. Ask once: its first answer is the review, and a Reviewer sent anything after its delegation cannot approve (a new question is a new `begin`). Its answer starts with `VERDICT: APPROVED|CHANGES_REQUESTED|BLOCKED`, then `REVIEW_NONCE: <nonce>` and `REVISION: <revision>`; without them it is not a review of this revision. Then record it: `node .ai-native/ai-native.mjs sdd review record <NNN-slug> --base <base-ref> --nonce <nonce> --kind independent --findings <n>`; the verdict, agent, execution and revision come from the runtime evidence, never from you, and without that evidence the record is refused.
+      UNAVAILABLE: self-review from the same artifacts and PACKET, not from your memory of the implementation. It finds defects; it never approves. Record it: `node .ai-native/ai-native.mjs sdd review record <NNN-slug> --base <base-ref> --nonce <nonce> --kind self --verdict <verdict> --findings <n>`.
+   c. A record is refused once the change moved after `begin` (begin again). Flags that claim what only evidence shows (`--agent`, `--execution`, `--validation`) are refused.
+   d. Findings: fix every CRITICAL and HIGH finding that has a safe technical fix, through the Implementer; run the technical validation again; then a NEW review round on the new revision, which judges the whole current change (regressions, incomplete fixes, side effects), not only whether the requested fix was applied. A finding that needs a domain decision, or that cannot be fixed safely, is never guessed: stop with the finding, its evidence and the exact question for the human. The same findings twice in a row, or the budget spent, is non-convergence: stop and report it for a human decision.
+   Any edit after a review makes it stale: the last review must be of the final revision.
+3. Run `hitl --base <base-ref>` again on the actual change (the second result governs), then `node .ai-native/ai-native.mjs sdd review status <NNN-slug> --base <base-ref>`.
+4. Report: first the status lines exactly as printed (`IMPLEMENTATION`, `VALIDATION`, `SELF_REVIEW`, `INDEPENDENT_REVIEW`, `FINAL_REVIEW_STATUS`, `HUMAN_GATE`), then the RED evidence per task, the findings and the pending human final gate. `FINAL_REVIEW_STATUS: APPROVED` exists only with an independent review PASS of the final revision; never write `VERDICT: APPROVED` for a self-review, a green suite or a PASS validation. Never merge, never push, never simulate a human approval.
