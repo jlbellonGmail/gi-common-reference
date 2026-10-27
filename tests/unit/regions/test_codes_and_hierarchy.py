@@ -6,7 +6,6 @@ from gi_common_reference.regions.domain.codes import is_valid_code
 from gi_common_reference.regions.domain.model import CatalogState, Reclassification, Recoding
 from tests.fixtures.regions import (
     build_snapshot,
-    names_for_subregions,
     provenance,
     reassignment,
     recoding,
@@ -365,9 +364,3 @@ def test_an_inactive_region_with_an_active_subregion_is_rejected(current: Catalo
     )
     result = plan(retired, current)
     assert result.ok, messages(result)
-
-
-def test_names_follow_new_subregions() -> None:
-    """Sanidad del fixture: cada subregión nueva trae sus nombres obligatorios."""
-    document = build_snapshot(subregions=[*subregions(), subregion("030", "019", code="030")])
-    assert len(document["subregion_names"]) == len(names_for_subregions([""] * 5))

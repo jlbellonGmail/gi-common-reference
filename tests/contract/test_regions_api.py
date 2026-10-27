@@ -9,6 +9,7 @@ from typing import Any
 
 import psycopg
 import pytest
+from alembic import command
 from fastapi.testclient import TestClient
 from psycopg.conninfo import make_conninfo
 
@@ -30,7 +31,7 @@ from gi_common_reference.locales.application.incorporate import (
     incorporate_snapshot as incorporate_locales,
 )
 from gi_common_reference.regions.application.incorporate import Outcome, incorporate_snapshot
-from tests.conftest import NetworkGuard
+from tests.conftest import NetworkGuard, alembic_config, with_database
 from tests.fixtures.fakes import FakeReader
 from tests.fixtures.region_fakes import FakeRegionReader
 from tests.fixtures.regions import (
@@ -80,10 +81,6 @@ def reader_url(postgres_with_roles: str) -> Iterator[str]:
     name = f"api_{uuid.uuid4().hex[:12]}"
     with psycopg.connect(postgres_with_roles, autocommit=True) as admin:
         admin.execute(f'CREATE DATABASE "{name}"')
-    from alembic import command
-
-    from tests.conftest import alembic_config, with_database
-
     url = with_database(postgres_with_roles, name)
     command.upgrade(alembic_config(url), "head")
     incorporate_locales(locale_snapshot(1), postgres_repository(url))
