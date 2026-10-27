@@ -1,6 +1,6 @@
 # Spec 002 — Regions / Subregions
 
-- **Estado:** draft (clarify 1 y 2 del 2026-10-19 aplicados; pendiente de aprobación humana)
+- **Estado:** draft (clarify 1 y 2 del 2026-10-19 aplicados; pendiente de aprobación humana formal. El 2026-10-27 el responsable pidió continuar con plan e implementación sin cambiar sus decisiones; la aprobación se confirma en el gate humano final)
 - **Tipo:** Feature (catálogo global de Reference)
 - **Depende de:** `001-locales` (identidad `locale_id`, convención común de `status`, regla de localización RF-23–RF-25 de 001)
 - **Habilita:** `003-countries` (referencias `region_id` / `subregion_id`)
@@ -204,6 +204,8 @@ El plan de 002 no puede aprobarse hasta que `001-locales` esté integrado en `de
 - convención de snapshot y versionado común a los catálogos globales, si 001 la establece.
 
 Estado de esta verificación al 2026-10-19: **NOT_RUN**. `develop` (`ec2156c`) aún no contiene `specs/001-locales`; esta spec se alineó con el draft de 001 en su worktree, sin commitear.
+
+Estado al 2026-10-27: **PASS**. `develop` (`fb5dc2d`) contiene `specs/001-locales` aprobada e implementada (`d739c99`), sin cambios incompatibles: `locale_id` UUID estable; `status` = `active` | `inactive` (S-10, S-11 de 001); RF-23–RF-25 de 001 como contrato para entidades localizadas; un locale `inactive` sigue resoluble y no se recomienda para nuevas referencias; snapshots con `snapshot_version` entera, digest de contenido canónico e incorporación atómica e idempotente (D5, D7, RF-20, RF-21 de 001). El detalle está en `plan.md`.
 
 ## Preguntas abiertas
 
