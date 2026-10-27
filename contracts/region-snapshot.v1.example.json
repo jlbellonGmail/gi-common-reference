@@ -1,0 +1,152 @@
+{
+  "snapshot_version": 1,
+  "content_digest": "sha256:9fb2e31236a950680c17dba2fab2aaf09fc141f14b5b64dad6aad853fd36f5a4",
+  "provenance": {
+    "source": "UN Statistics Division, M49",
+    "reference": "https://unstats.un.org/unsd/methodology/m49/",
+    "note": "ejemplo del contrato; los UUID los asigna PREP"
+  },
+  "regions": [
+    {
+      "region_id": "89686073-4ea5-5dc7-a82c-5e473f17d9df",
+      "code": "002",
+      "status": "active",
+      "replacement_region_id": null
+    },
+    {
+      "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+      "code": "019",
+      "status": "active",
+      "replacement_region_id": null
+    },
+    {
+      "region_id": "992e7ac5-8e86-5404-a080-509478e41fd1",
+      "code": "142",
+      "status": "active",
+      "replacement_region_id": null
+    }
+  ],
+  "subregions": [
+    {
+      "subregion_id": "aec5f92e-de77-59ee-baea-561cc958d3b4",
+      "region_id": "89686073-4ea5-5dc7-a82c-5e473f17d9df",
+      "code": "015",
+      "status": "active",
+      "replacement_subregion_id": null
+    },
+    {
+      "subregion_id": "2bc04643-0870-5ced-acc0-aff0ddd9c241",
+      "region_id": "89686073-4ea5-5dc7-a82c-5e473f17d9df",
+      "code": "202",
+      "status": "active",
+      "replacement_subregion_id": null
+    },
+    {
+      "subregion_id": "1cc20843-3e0c-5637-b7a4-d220f48c2291",
+      "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+      "code": "419",
+      "status": "active",
+      "replacement_subregion_id": null
+    },
+    {
+      "subregion_id": "0528e5b4-52aa-548b-b9bd-9f47a500876a",
+      "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+      "code": "021",
+      "status": "active",
+      "replacement_subregion_id": null
+    },
+    {
+      "subregion_id": "5b74fd56-f933-5e53-8cad-e2ce5d42af2e",
+      "region_id": "992e7ac5-8e86-5404-a080-509478e41fd1",
+      "code": "030",
+      "status": "active",
+      "replacement_subregion_id": null
+    }
+  ],
+  "region_names": [
+    {
+      "region_id": "89686073-4ea5-5dc7-a82c-5e473f17d9df",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Africa"
+    },
+    {
+      "region_id": "89686073-4ea5-5dc7-a82c-5e473f17d9df",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "África"
+    },
+    {
+      "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Americas"
+    },
+    {
+      "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Américas"
+    },
+    {
+      "region_id": "992e7ac5-8e86-5404-a080-509478e41fd1",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Asia"
+    },
+    {
+      "region_id": "992e7ac5-8e86-5404-a080-509478e41fd1",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Asia"
+    }
+  ],
+  "subregion_names": [
+    {
+      "subregion_id": "aec5f92e-de77-59ee-baea-561cc958d3b4",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Northern Africa"
+    },
+    {
+      "subregion_id": "aec5f92e-de77-59ee-baea-561cc958d3b4",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "África septentrional"
+    },
+    {
+      "subregion_id": "2bc04643-0870-5ced-acc0-aff0ddd9c241",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Sub-Saharan Africa"
+    },
+    {
+      "subregion_id": "2bc04643-0870-5ced-acc0-aff0ddd9c241",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "África subsahariana"
+    },
+    {
+      "subregion_id": "1cc20843-3e0c-5637-b7a4-d220f48c2291",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Latin America and the Caribbean"
+    },
+    {
+      "subregion_id": "1cc20843-3e0c-5637-b7a4-d220f48c2291",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "América Latina y el Caribe"
+    },
+    {
+      "subregion_id": "0528e5b4-52aa-548b-b9bd-9f47a500876a",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Northern America"
+    },
+    {
+      "subregion_id": "0528e5b4-52aa-548b-b9bd-9f47a500876a",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "América septentrional"
+    },
+    {
+      "subregion_id": "5b74fd56-f933-5e53-8cad-e2ce5d42af2e",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Eastern Asia"
+    },
+    {
+      "subregion_id": "5b74fd56-f933-5e53-8cad-e2ce5d42af2e",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Asia oriental"
+    }
+  ],
+  "recodings": [],
+  "code_reassignments": []
+}
