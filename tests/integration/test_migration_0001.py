@@ -31,6 +31,10 @@ LOCALE_COLUMNS = [
 ]
 ALIAS_COLUMNS = ["subtag", "preferred_value"]
 TABLES = ("locale", "locale_alias", "locale_snapshot")
+# Desde la migración 0002, `region_locale` y `subregion_locale` referencian `locale`: sin CASCADE,
+# Postgres rechaza el TRUNCATE por esas FK (0A000) antes de llegar al trigger. Con CASCADE lo
+# rechaza el trigger. En ambos casos la tabla queda intacta.
+TRUNCATE_LOCALE_REJECTIONS = (errors.RestrictViolation, errors.FeatureNotSupported)
 
 
 def snapshot_row(**overrides: Any) -> dict[str, Any]:
@@ -340,13 +344,13 @@ def test_locale_snapshot_cannot_be_truncated(seeded: psycopg.Connection) -> None
 
 def test_locale_cannot_be_truncated(seeded: psycopg.Connection) -> None:
     insert(seeded, "locale", locale_row(code="es"))
-    with rejected(errors.RestrictViolation):
+    with pytest.raises(TRUNCATE_LOCALE_REJECTIONS):
         seeded.execute("TRUNCATE reference.locale")
     assert seeded.execute("SELECT count(*) FROM reference.locale").fetchone() == (1,)
 
 
 def test_the_truncate_protection_also_applies_to_an_empty_table(conn: psycopg.Connection) -> None:
-    with rejected(errors.RestrictViolation):
+    with pytest.raises(TRUNCATE_LOCALE_REJECTIONS):
         conn.execute("TRUNCATE reference.locale")
     with rejected(errors.RestrictViolation):
         conn.execute("TRUNCATE reference.locale_snapshot CASCADE")

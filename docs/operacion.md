@@ -56,6 +56,19 @@ GRANT INSERT ON reference.locale TO reference_loader;
 GRANT UPDATE (status, iana_deprecated, replacement_locale_id) ON reference.locale
     TO reference_loader;
 GRANT INSERT, DELETE ON reference.locale_alias TO reference_loader;
+
+-- Regiones y subregiones (migración 0002).
+GRANT SELECT ON reference.region_snapshot, reference.region, reference.subregion,
+    reference.region_locale, reference.subregion_locale, reference.subregion_reclassification,
+    reference.region_recoding, reference.subregion_recoding TO reference_reader;
+GRANT SELECT, INSERT ON reference.region_snapshot, reference.region, reference.subregion,
+    reference.region_locale, reference.subregion_locale, reference.subregion_reclassification,
+    reference.region_recoding, reference.subregion_recoding TO reference_loader;
+GRANT UPDATE (code, code_snapshot_version, status, replacement_region_id) ON reference.region
+    TO reference_loader;
+GRANT UPDATE (region_id, code, code_snapshot_version, status, replacement_subregion_id)
+    ON reference.subregion TO reference_loader;
+GRANT UPDATE (name) ON reference.region_locale, reference.subregion_locale TO reference_loader;
 ```
 
 ### Verificar los permisos
