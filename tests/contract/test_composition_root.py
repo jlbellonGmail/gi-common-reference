@@ -34,6 +34,11 @@ COMPOSITION_ROOT_MAY_IMPORT = {
     f"{LOCALES}.infrastructure.postgres_reader",
     f"{LOCALES}.infrastructure.postgres_repository",
     f"{LOCALES}.infrastructure.snapshot_reader",
+    f"{REGIONS}.domain.policy",
+    f"{REGIONS}.domain.ports",
+    f"{REGIONS}.infrastructure.policy_reader",
+    f"{REGIONS}.infrastructure.postgres_repository",
+    f"{REGIONS}.infrastructure.snapshot_reader",
 }
 SOURCE = ROOT / "src" / PACKAGE
 
