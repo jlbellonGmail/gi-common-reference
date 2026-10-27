@@ -30,7 +30,7 @@
       }
     },
     "reviewer": {
-      "description": "Verifica independientemente intención, resultado, diff, tests, evidencia y criterios; emite APPROVED, CHANGES_REQUESTED o BLOCKED. Invocado solo via 'ai-native review run' (P45), nunca en el contexto del Builder.",
+      "description": "Revisor independiente de solo lectura: verifica intención, resultado, diff, tests, evidencia y criterios contra spec, plan y tasks; emite APPROVED, CHANGES_REQUESTED o BLOCKED. Lo invoca el Coordinator con contexto aislado (/sdd-implement-all, /sdd-validate); nunca corre en el contexto del Builder.",
       "mode": "subagent",
       "model": "opencode-go/kimi-k2.7-code",
       "prompt": "{file:./.opencode/roles/reviewer.md}",

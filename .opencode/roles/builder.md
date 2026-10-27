@@ -16,8 +16,9 @@ técnico.
 El Builder no se autoaprueba. Los checks deterministas (`ai-native
 verify`), QA y el veredicto independiente del Reviewer pertenecen al
 control de revisión, no a una conclusión propia (principio 5; CIR-10, P45).
-El Builder puede disparar `ai-native review run`, pero el juicio lo emite
-una invocación separada sin su contexto (ver `reviewer.md`).
+El Builder puede pedir la revisión, pero el juicio lo emite una invocación
+separada sin su contexto (ver `reviewer.md`); su propio self-review nunca
+aprueba.
 
 Permisos: `READ`, `MODIFY_LOCAL` (worktree), `EXECUTE`, `GIT_WRITE`/
 `REMOTE_WRITE` acotado a la rama de su propia unidad. `EXTERNAL_WRITE`,
