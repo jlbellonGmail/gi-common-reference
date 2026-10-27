@@ -30,3 +30,7 @@ client-side sandbox for GIT_WRITE / REMOTE_WRITE / MERGE enforcement --
 the real guarantee is server-side (`trust-gate`, P44, M4.3). This is a
 documented, accepted residual risk for the Codex client on Windows, not
 an unknown gap.
+
+## Independent review
+
+Runtime capability (Codex). The platform has no verified way for this runtime to run the Reviewer in a context isolated from this session and attest that run. Independent review is UNAVAILABLE: use the fallback and record the self-review with `--kind self`; a review recorded as independent is refused without runtime evidence.

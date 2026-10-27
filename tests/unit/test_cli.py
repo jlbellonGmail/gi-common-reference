@@ -1,6 +1,8 @@
 """T7: CLI de incorporación (interfaz). Se prueba con un repositorio en memoria inyectado."""
 
+import io
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -17,7 +19,14 @@ from gi_common_reference.locales.infrastructure import snapshot_reader
 from gi_common_reference.locales.infrastructure.snapshot_reader import read_snapshot_document
 from gi_common_reference.locales.interfaces.cli import main
 from tests.fixtures.fakes import FakeRepository
-from tests.fixtures.snapshots import build_snapshot, iw_scenario, locale
+from tests.fixtures.snapshots import (
+    build_snapshot,
+    iana_text,
+    iw_scenario,
+    language_entry,
+    locale,
+    locale_id,
+)
 
 ENV = {"REFERENCE_DATABASE_URL": "postgresql://unused"}
 
@@ -74,6 +83,49 @@ def test_a_violation_exits_non_zero_and_lists_every_violation(
     err = capsys.readouterr().err
     assert "RECHAZADO" in err and err.count("RF-28") == 2
     assert repo.state.locales == {}
+
+
+def test_a_violation_with_non_encodable_text_is_reported_on_a_non_utf8_output(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # Endurecimiento defensivo: streams cp1252 con manejo de errores estricto, que no admiten la
+    # flecha (→) de los ciclos de replacement (RF-22). El stderr estándar de CPython ya escapa
+    # (`backslashreplace`); el test fija que la CLI no dependa de eso.
+    v1 = build_snapshot(
+        1,
+        registry=iana_text("2026-09-01", language_entry("xa"), language_entry("xb")),
+        locales=[locale("xa"), locale("xb")],
+    )
+    deprecated = {"status": "inactive", "iana_deprecated": True}
+    cycle = build_snapshot(
+        2,
+        registry=iana_text(
+            "2026-10-01",
+            language_entry("xa", "2020-01-01", "xb"),
+            language_entry("xb", "2021-01-01", "xa"),
+        ),
+        file_date="2026-10-01",
+        locales=[
+            locale("xa", **deprecated, replacement_locale_id=locale_id("xb")),
+            locale("xb", **deprecated, replacement_locale_id=locale_id("xa")),
+        ],
+    )
+    repo = FakeRepository()
+    assert run(["incorporate", str(write(tmp_path, v1, "v1.json"))], repo) == 0
+    published = dict(repo.state.locales)
+
+    stderr_bytes = io.BytesIO()
+    stderr = io.TextIOWrapper(stderr_bytes, encoding="cp1252")
+    monkeypatch.setattr(sys, "stdout", io.TextIOWrapper(io.BytesIO(), encoding="cp1252"))
+    monkeypatch.setattr(sys, "stderr", stderr)
+
+    assert run(["incorporate", str(write(tmp_path, cycle, "v2.json"))], repo) == 1
+
+    stderr.flush()
+    err = stderr_bytes.getvalue().decode("cp1252")
+    assert "RECHAZADO snapshot_version=2" in err
+    assert "RF-22: ciclo de replacement: xa \\u2192 xb \\u2192 xa" in err
+    assert repo.state.locales == published
 
 
 def test_an_invalid_snapshot_file_exits_non_zero(
