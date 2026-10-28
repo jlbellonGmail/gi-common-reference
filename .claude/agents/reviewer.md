@@ -1,6 +1,6 @@
 ---
 name: reviewer
-description: Revisor independiente de solo lectura: verifica intención, resultado, diff, tests, evidencia y criterios contra spec, plan y tasks; emite APPROVED, CHANGES_REQUESTED o BLOCKED. Lo invoca el Coordinator con contexto aislado (/sdd-implement-all, /sdd-validate); nunca corre en el contexto del Builder.
+description: "Revisor independiente de solo lectura: verifica intención, resultado, diff, tests, evidencia y criterios contra spec, plan y tasks; emite APPROVED, CHANGES_REQUESTED o BLOCKED. Lo invoca el Coordinator con contexto aislado (/sdd-implement-all, /sdd-validate); nunca corre en el contexto del Builder."
 tools: Read, Grep, Glob
 model: sonnet
 effort: high
