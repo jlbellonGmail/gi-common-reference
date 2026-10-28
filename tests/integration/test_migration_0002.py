@@ -68,8 +68,6 @@ NULLABLE = {
     "code_snapshot_version",
     "replacement_region_id",
     "replacement_subregion_id",
-    "previous_code",
-    "new_code",
 }
 HISTORY = ("region_snapshot", "subregion_reclassification", "region_recoding", "subregion_recoding")
 CATALOG = ("region", "subregion", "region_locale", "subregion_locale")

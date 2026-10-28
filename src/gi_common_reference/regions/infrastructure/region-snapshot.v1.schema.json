@@ -88,7 +88,7 @@
       }
     },
     "recodings": {
-      "description": "Recodificaciones que introduce este snapshot respecto del catálogo vigente (RF-39): mismo id, otro código. previous_code debe ser el código vigente del id y new_code el que trae este snapshot.",
+      "description": "Recodificaciones que introduce este snapshot respecto del catálogo vigente (RF-39): mismo id, otro código. previous_code debe ser el código vigente del id y new_code el que trae este snapshot; ambos son obligatorios: asignar un primer código o retirar uno no es una recodificación.",
       "type": "array",
       "items": {
         "type": "object",
@@ -97,8 +97,8 @@
         "properties": {
           "entity_type": { "enum": ["region", "subregion"] },
           "entity_id": { "type": "string" },
-          "previous_code": { "type": ["string", "null"] },
-          "new_code": { "type": ["string", "null"] },
+          "previous_code": { "type": "string" },
+          "new_code": { "type": "string" },
           "provenance": { "$ref": "#/$defs/provenance" }
         }
       }

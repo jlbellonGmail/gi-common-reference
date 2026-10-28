@@ -107,9 +107,7 @@ def provenance(reference: str = "UN M49") -> dict[str, Any]:
     return {"source": "UN Statistics Division, M49", "reference": reference}
 
 
-def recoding(
-    kind: str, key: str, previous: str | None, new: str | None, **overrides: Any
-) -> dict[str, Any]:
+def recoding(kind: str, key: str, previous: str, new: str, **overrides: Any) -> dict[str, Any]:
     base: dict[str, Any] = {
         "entity_type": kind,
         "entity_id": entity_id(kind, key),

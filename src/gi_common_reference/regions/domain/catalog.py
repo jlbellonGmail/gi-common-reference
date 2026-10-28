@@ -117,8 +117,8 @@ def incoming_from(document: Mapping[str, Any]) -> IncomingCatalog:
             Recoding(
                 _text(item.get("entity_type")),
                 _text(item.get("entity_id")),
-                _optional(item.get("previous_code")),
-                _optional(item.get("new_code")),
+                _text(item.get("previous_code")),
+                _text(item.get("new_code")),
                 item.get("provenance"),
             )
             for item in document.get("recodings", ())
@@ -332,10 +332,22 @@ def _check_recodings(context: _Context) -> list[Violation]:
         incoming = final.get(key)
         if incoming is None or incoming.code == published.code or key in declared:
             continue
-        message = (
-            f"{LABELS[key[0]]} {key[1]}: cambia su código vigente de {published.code!r} a "
-            f"{incoming.code!r} sin declarar una recodificación"
-        )
+        label = f"{LABELS[key[0]]} {key[1]}"
+        if published.code is None:
+            message = (
+                f"{label}: asigna un primer código {incoming.code!r} a un id publicado sin "
+                f"código; no es una recodificación y no se admite"
+            )
+        elif incoming.code is None:
+            message = (
+                f"{label}: retira su código vigente {published.code!r}; retirar un código no es "
+                f"una recodificación y no se admite"
+            )
+        else:
+            message = (
+                f"{label}: cambia su código vigente de {published.code!r} a {incoming.code!r} "
+                f"sin declarar una recodificación"
+            )
         violations.append(Violation("RF-22", message))
     return violations
 

@@ -104,9 +104,8 @@ class PostgresRegionTransaction:
         ).fetchall()
         history = execute(
             "SELECT 'region', region_id::text, previous_code FROM reference.region_recoding "
-            "WHERE previous_code IS NOT NULL UNION ALL "
-            "SELECT 'subregion', subregion_id::text, previous_code "
-            "FROM reference.subregion_recoding WHERE previous_code IS NOT NULL ORDER BY 1, 2, 3"
+            "UNION ALL SELECT 'subregion', subregion_id::text, previous_code "
+            "FROM reference.subregion_recoding ORDER BY 1, 2, 3"
         ).fetchall()
         historical: list[tuple[EntityType, str, str]] = [
             ("region" if kind == "region" else "subregion", entity_id, code)

@@ -62,6 +62,21 @@ def test_an_undeclared_code_change_is_rejected(current: CatalogState) -> None:
     assert rules(result) == {"RF-22"} and "419" in messages(result)
 
 
+def test_assigning_a_first_code_to_a_published_id_is_not_a_recoding_and_is_rejected() -> None:
+    current = published(build_snapshot(1, subregions=subregions(s419={"code": None})))
+    document = build_snapshot(2)
+    result = plan(document, current)
+    assert rules(result) == {"RF-22"} and "primer código '419'" in messages(result)
+
+
+def test_removing_the_code_of_a_published_id_is_not_a_recoding_and_is_rejected(
+    current: CatalogState,
+) -> None:
+    document = build_snapshot(2, subregions=subregions(s419={"code": None}))
+    result = plan(document, current)
+    assert rules(result) == {"RF-22"} and "retira su código vigente '419'" in messages(result)
+
+
 def test_a_declared_recoding_keeps_id_status_names_and_parent(current: CatalogState) -> None:
     document = build_snapshot(
         2,
@@ -119,7 +134,7 @@ def test_a_recoding_without_provenance_or_with_a_wrong_previous_code_is_rejected
     "declaration",
     [
         recoding("subregion", "419", "419", "457"),  # no coincide con el código del snapshot
-        recoding("subregion", "030", None, "456"),  # id no publicado
+        recoding("subregion", "030", "030", "456"),  # id no publicado
         recoding("region", "419", "419", "456"),  # id de otro tipo
     ],
 )

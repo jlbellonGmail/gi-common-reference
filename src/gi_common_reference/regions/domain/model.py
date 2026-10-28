@@ -52,12 +52,15 @@ class NameRecord:
 
 @dataclass(frozen=True)
 class Recoding:
-    """Recodificación declarada en un snapshot: mismo id, otro código vigente (RF-39)."""
+    """Recodificación declarada en un snapshot: mismo id, otro código vigente (RF-39).
+
+    Ambos códigos existen: asignar un primer código o retirar uno no es una recodificación.
+    """
 
     entity_type: str
     entity_id: str
-    previous_code: str | None
-    new_code: str | None
+    previous_code: str
+    new_code: str
     provenance: Any
 
 

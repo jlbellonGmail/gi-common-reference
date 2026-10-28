@@ -1,7 +1,7 @@
 # Plan 002 — Regions / Subregions
 
-- **Estado:** draft (pendiente de aprobación humana en el gate final)
-- **Spec:** [spec.md](spec.md) (draft; continuación pedida por el responsable el 2026-10-27)
+- **Estado:** approved (decisión HITL del responsable, 2026-10-28)
+- **Spec:** [spec.md](spec.md) (approved, 2026-10-28)
 - **Perfil:** `python-service`; sigue la estructura que fijó [001-locales](../001-locales/plan.md)
 
 ## Precondición (verificada 2026-10-27, PASS)
@@ -76,7 +76,7 @@ Todas las columnas son `NOT NULL` salvo `code`, `code_snapshot_version` y los re
 - **`subregion`:** igual que `region` con `subregion_id`, `replacement_subregion_id` y `region_id uuid REFERENCES region` (RF-5), más `UNIQUE (region_id, subregion_id)` (D8).
 - **Constraint triggers diferidos** (releen la fila al commit): ningún código `active` compartido entre Region y Subregion (RF-4); ninguna Subregion `active` en una Region `inactive` (RF-36).
 - **`region_locale` / `subregion_locale`:** PK (`region_id`|`subregion_id`, `locale_id`), FK a la entidad y a `reference.locale`, `name text CHECK (name <> '' AND name !~ '^\s' AND name !~ '\s$')` (RF-9–RF-12).
-- **Trazas:** `subregion_reclassification` (PK `subregion_id, snapshot_version`; `previous_region_id`, `new_region_id`) (RF-34); `region_recoding` y `subregion_recoding` (PK `id, snapshot_version`; `previous_code`, `new_code`, `provenance jsonb`) (RF-39). Inmutables.
+- **Trazas:** `subregion_reclassification` (PK `subregion_id, snapshot_version`; `previous_region_id`, `new_region_id`) (RF-34); `region_recoding` y `subregion_recoding` (PK `id, snapshot_version`; `previous_code` y `new_code` `NOT NULL`, de 3 dígitos y distintos; `provenance jsonb`) (RF-39, S-12). Inmutables.
 - **Triggers:** sin `DELETE` ni `TRUNCATE` en `region`, `subregion` y nombres (RF-22, RF-30); ids, `first_snapshot_version` y los pares (entidad, locale) inmutables. Son mutables solo `code`, `code_snapshot_version`, `status`, reemplazo, `region_id` de Subregion y `name`.
 - **Privilegios** (D10 de 001): `reference_reader` solo `SELECT`; `reference_loader` `SELECT`, `INSERT` y `UPDATE` de las columnas mutables. Nada para `PUBLIC`, `anon`, `authenticated`. Condicionales a que los roles existan, como 0001.
 - La versión vigente es `max(region_snapshot.snapshot_version)`, independiente de Locale y de Countries (RF-37).
@@ -103,7 +103,7 @@ Una transacción con los locks de D11. Ante el primer paso que falla se informan
 2. Clasificación contra el historial: A no-op (RF-26), B/C rechazo, D continúa; sin historial, D.
 3. Contexto de Locale: hay una versión vigente de Locale; cada `locale_id` obligatorio existe, es `active` y su código coincide con la política (RF-31, RF-33).
 4. Identidad y completitud: ids UUID, sin repetir, disjuntos entre tipos (D2); toda Region, Subregion y nombre publicado sigue presente (RF-22); ids nuevos nunca usados (RF-23).
-5. Códigos: formato (RF-3); un cambio de código vigente sin recodificación declarada se rechaza (RF-22); cada recodificación es de un id publicado, con `previous_code` = código vigente y `new_code` = código del snapshot (RF-39, RF-40); un código vigente o histórico de **otro** id exige una reasignación declarada y una reasignación que no corresponde se rechaza (RF-41); RF-3 y RF-4 sobre el estado final (RF-42).
+5. Códigos: formato (RF-3); un cambio de código vigente sin recodificación declarada se rechaza (RF-22); cada recodificación es de un id publicado, con `previous_code` = código vigente y `new_code` = código del snapshot, ambos presentes; asignar un primer código o retirar uno a un id publicado no es una recodificación y se rechaza (RF-22, RF-39, RF-40, S-12); un código vigente o histórico de **otro** id exige una reasignación declarada y una reasignación que no corresponde se rechaza (RF-41); RF-3 y RF-4 sobre el estado final (RF-42).
 6. Jerarquía y ciclo de vida: `region_id` de cada Subregion existe en el snapshot (RF-5); `status` válido (RF-7); reemplazo solo en `inactive`, del mismo tipo, existente, no a sí mismo y sin ciclos (RF-27); ninguna Subregion `active` en Region `inactive` (RF-36).
 7. Localizaciones: entidad y `locale_id` existentes (RF-10, RF-28); a lo sumo una por par (RF-9); `name` sin vacío ni espacios en los bordes (RF-11); una localización **nueva** con locale `inactive` se rechaza, las publicadas se conservan (RF-33); cada entidad tiene nombre en cada locale obligatorio (RF-13, RF-32).
 8. Escritura, en este orden: `region_snapshot` (con la versión vigente de Locale y de la política) → regiones nuevas → regiones actualizadas → subregiones nuevas → subregiones actualizadas → reclasificaciones (RF-6, RF-34) → recodificaciones (RF-39) → nombres nuevos → nombres actualizados → `SET CONSTRAINTS ALL IMMEDIATE` (D13) → commit. Una recodificación solo toca `code`/`code_snapshot_version` (RF-24).

@@ -136,11 +136,11 @@ CREATE TABLE reference.subregion_reclassification (
 CREATE TABLE reference.region_recoding (
     region_id uuid NOT NULL,
     snapshot_version bigint NOT NULL,
-    previous_code text,
-    new_code text,
+    previous_code text NOT NULL,
+    new_code text NOT NULL,
     provenance jsonb NOT NULL,
     CONSTRAINT region_recoding_pkey PRIMARY KEY (region_id, snapshot_version),
-    CONSTRAINT region_recoding_changes_code CHECK (previous_code IS DISTINCT FROM new_code),
+    CONSTRAINT region_recoding_changes_code CHECK (previous_code <> new_code),
     CONSTRAINT region_recoding_code_format
         CHECK (previous_code ~ '^[0-9]{3}$' AND new_code ~ '^[0-9]{3}$'),
     CONSTRAINT region_recoding_region_fk FOREIGN KEY (region_id)
@@ -152,11 +152,11 @@ CREATE TABLE reference.region_recoding (
 CREATE TABLE reference.subregion_recoding (
     subregion_id uuid NOT NULL,
     snapshot_version bigint NOT NULL,
-    previous_code text,
-    new_code text,
+    previous_code text NOT NULL,
+    new_code text NOT NULL,
     provenance jsonb NOT NULL,
     CONSTRAINT subregion_recoding_pkey PRIMARY KEY (subregion_id, snapshot_version),
-    CONSTRAINT subregion_recoding_changes_code CHECK (previous_code IS DISTINCT FROM new_code),
+    CONSTRAINT subregion_recoding_changes_code CHECK (previous_code <> new_code),
     CONSTRAINT subregion_recoding_code_format
         CHECK (previous_code ~ '^[0-9]{3}$' AND new_code ~ '^[0-9]{3}$'),
     CONSTRAINT subregion_recoding_subregion_fk FOREIGN KEY (subregion_id)

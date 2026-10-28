@@ -1,6 +1,6 @@
 # Spec 002 — Regions / Subregions
 
-- **Estado:** draft (clarify 1 y 2 del 2026-10-19 aplicados; pendiente de aprobación humana formal. El 2026-10-27 el responsable pidió continuar con plan e implementación sin cambiar sus decisiones; la aprobación se confirma en el gate humano final)
+- **Estado:** approved (decisión HITL del responsable, 2026-10-28; clarify 1 y 2 del 2026-10-19 aplicados, S-12 agregada en la misma decisión)
 - **Tipo:** Feature (catálogo global de Reference)
 - **Depende de:** `001-locales` (identidad `locale_id`, convención común de `status`, regla de localización RF-23–RF-25 de 001)
 - **Habilita:** `003-countries` (referencias `region_id` / `subregion_id`)
@@ -136,6 +136,7 @@ Lo que 003 deberá cumplir de su lado (se formaliza en 003 vía `/sdd-change`, n
 - M49 fusiona dos Subregiones en una nueva → un ID nuevo; ambas originales `inactive` con reemplazo hacia la nueva.
 - M49 recodifica la misma Subregion (`123` → `456`) → mismo `subregion_id`, código vigente `456`, `status` y nombres sin cambios, recodificación registrada; los Countries que la referencian no se tocan (RF-39, RF-24).
 - Snapshot que cambia el código de un ID sin declararlo como recodificación, o lo declara sin provenance → rechazado (RF-22, RF-40).
+- Snapshot que asigna un primer código a un ID publicado sin código, o retira el código vigente de un ID publicado → rechazado: no es una recodificación ni puede declararse como tal (RF-22, S-12).
 - Dos Subregiones intercambian códigos en el mismo snapshot, ambas declaradas → aceptado si el estado final cumple RF-3/RF-4 (RF-42).
 - Snapshot asigna a una entidad nueva el código histórico de otra sin declarar la reasignación → rechazado (RF-41).
 - Consulta por un código histórico (`123` tras recodificar a `456`) → "no encontrado"; el código histórico solo se consulta en la traza (RF-17, S-8).
@@ -151,7 +152,7 @@ Lo que 003 deberá cumplir de su lado (se formaliza en 003 vía `/sdd-change`, n
 
 - Países, monedas, zonas horarias, tenants y preferencias por tenant.
 - Provincias, estados, departamentos, municipios y cualquier división administrativa interna de un país (ISO 3166-2).
-- Región intermedia M49 (p. ej. `005` South America, `029` Caribbean) y cualquier jerarquía genérica o recursiva: evolución futura aditiva (RNF-7).
+- Región intermedia M49 (IntermediateRegion; p. ej. `005` South America, `029` Caribbean) y cualquier jerarquía genérica o recursiva: evolución futura aditiva (RNF-7). Confirmado fuera de alcance de esta versión por decisión HITL del 2026-10-28.
 - Agrupaciones no geográficas de M49 (LDC, LLDC, SIDS, Developed/Developing) y el nivel World (`001`).
 - Fallback entre locales: corresponde a cada consumidor.
 - CRUD público y lógica específica de consumidores.
@@ -187,6 +188,7 @@ Lo que 003 deberá cumplir de su lado (se formaliza en 003 vía `/sdd-change`, n
 - S-8. Recodificación (decisión del responsable, clarify 2 2026-10-19; reemplaza la S-8 anterior, que trataba todo código nuevo como cambio de identidad): la identidad sigue la continuidad de la entidad según la fuente de autoridad; un cambio de código, por sí solo, conserva el ID. Coincide con el criterio de D-12 de 003 para países. La búsqueda por código usa solo el código vigente; resolver códigos históricos sería un cambio aditivo.
 - S-11. El sistema no consulta M49 en runtime (RNF-2): "validado contra la fuente de autoridad" significa que el snapshot declara cada recodificación y reasignación con una referencia de provenance, que PREP la verificó y que el mantenedor la aprobó. El sistema exige y comprueba esa declaración; no puede verificar por sí mismo la decisión de la ONU.
 - S-9. No se aceptan localizaciones nuevas con locales `inactive` porque 001 los define como no aptos para nuevas referencias.
+- S-12. Recodificación con ambos códigos (decisión HITL del responsable, 2026-10-28): en la traza de recodificación (RF-39) el código anterior y el código nuevo son obligatorios (`NOT NULL`). Asignar un primer código o retirar un código no constituye una recodificación. En consecuencia, un snapshot que asigna un primer código a un ID publicado sin código, o que retira el código vigente de un ID publicado, cambia ese código sin una recodificación declarable y se rechaza (RF-22). El código sigue siendo opcional al crear una entidad (RF-3), y una entidad retirada pasa a `inactive` y conserva su código. Admitir más adelante la asignación de un primer código sería un cambio aditivo.
 - S-10. Versionado independiente (decisión del responsable, clarify 2026-10-19): Region/Subregion tiene versión y ciclo de snapshot propios; PREP puede coordinar publicaciones conjuntas sin que compartan versión. El diseño del pipeline queda para su iniciativa.
 
 ## Conflictos detectados con otras specs

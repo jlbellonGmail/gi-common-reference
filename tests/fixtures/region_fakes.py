@@ -53,9 +53,8 @@ class FakeRegionTransaction:
     def current_state(self) -> CatalogState:
         historical: list[tuple[EntityType, str, str]] = []
         for recoding_, _ in self.state.recodings:
-            if recoding_.previous_code is not None:
-                kind: EntityType = "region" if recoding_.entity_type == "region" else "subregion"
-                historical.append((kind, recoding_.entity_id, recoding_.previous_code))
+            kind: EntityType = "region" if recoding_.entity_type == "region" else "subregion"
+            historical.append((kind, recoding_.entity_id, recoding_.previous_code))
         return CatalogState(
             regions=tuple(self.state.regions.values()),
             subregions=tuple(self.state.subregions.values()),
