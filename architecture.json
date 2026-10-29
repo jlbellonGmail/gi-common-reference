@@ -1,1 +1,77 @@
-{"schemaVersion":1,"layers":{"domain":{"paths":["src/gi_common_reference/locales/domain","src/gi_common_reference/regions/domain"],"mayDependOn":[],"forbiddenImports":["psycopg","fastapi","starlette","uvicorn","alembic","sqlalchemy","httpx","jsonschema","pydantic"]},"application":{"paths":["src/gi_common_reference/locales/application","src/gi_common_reference/regions/application"],"mayDependOn":["domain"],"forbiddenImports":["psycopg","fastapi","starlette","uvicorn","alembic","sqlalchemy","httpx","jsonschema","pydantic"]},"infrastructure":{"paths":["src/gi_common_reference/locales/infrastructure","src/gi_common_reference/regions/infrastructure"],"mayDependOn":["application","domain"]},"interfaces":{"paths":["src/gi_common_reference/locales/interfaces","src/gi_common_reference/regions/interfaces"],"mayDependOn":["application","domain"]}},"modules":{"locales":{"path":"src/gi_common_reference/locales","public":["src/gi_common_reference/locales/interfaces/http"]},"regions":{"path":"src/gi_common_reference/regions","public":["src/gi_common_reference/regions/interfaces/http"]}}}
+{
+  "schemaVersion": 1,
+  "layers": {
+    "domain": {
+      "paths": [
+        "src/gi_common_reference/locales/domain",
+        "src/gi_common_reference/regions/domain"
+      ],
+      "mayDependOn": [],
+      "forbiddenImports": [
+        "psycopg",
+        "fastapi",
+        "starlette",
+        "uvicorn",
+        "alembic",
+        "sqlalchemy",
+        "httpx",
+        "jsonschema",
+        "pydantic"
+      ]
+    },
+    "application": {
+      "paths": [
+        "src/gi_common_reference/locales/application",
+        "src/gi_common_reference/regions/application"
+      ],
+      "mayDependOn": [
+        "domain"
+      ],
+      "forbiddenImports": [
+        "psycopg",
+        "fastapi",
+        "starlette",
+        "uvicorn",
+        "alembic",
+        "sqlalchemy",
+        "httpx",
+        "jsonschema",
+        "pydantic"
+      ]
+    },
+    "infrastructure": {
+      "paths": [
+        "src/gi_common_reference/locales/infrastructure",
+        "src/gi_common_reference/regions/infrastructure"
+      ],
+      "mayDependOn": [
+        "application",
+        "domain"
+      ]
+    },
+    "interfaces": {
+      "paths": [
+        "src/gi_common_reference/locales/interfaces",
+        "src/gi_common_reference/regions/interfaces"
+      ],
+      "mayDependOn": [
+        "application",
+        "domain"
+      ]
+    }
+  },
+  "modules": {
+    "locales": {
+      "path": "src/gi_common_reference/locales",
+      "public": [
+        "src/gi_common_reference/locales/interfaces/http"
+      ]
+    },
+    "regions": {
+      "path": "src/gi_common_reference/regions",
+      "public": [
+        "src/gi_common_reference/regions/interfaces/http"
+      ]
+    }
+  }
+}
