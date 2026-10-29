@@ -1,0 +1,8 @@
+{
+  "policy_version": 1,
+  "description": "Conjunto obligatorio de locales del catálogo Region/Subregion (spec 002, RF-31, S-7). Cambiarlo requiere decisión explícita. Los locale_id son la identidad publicada de en y es (acceptance/locales/gi-dev); el código es solo una guarda.",
+  "locales": [
+    { "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354", "code": "en" },
+    { "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91", "code": "es" }
+  ]
+}

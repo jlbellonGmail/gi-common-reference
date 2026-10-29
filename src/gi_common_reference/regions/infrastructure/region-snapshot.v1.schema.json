@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:gi:common-reference:region-snapshot:v1",
+  "title": "Region/Subregion snapshot v1",
+  "description": "Contrato entre gi-common-reference-prep y gi-common-reference (spec 002, RF-21). Catálogo completo de regiones y subregiones UN M49 con sus nombres por locale_id, más las recodificaciones y reasignaciones de código que introduce este snapshot. El schema solo valida estructura y tipos: formato de ids y códigos, identidad, jerarquía, ciclo de vida y localización los valida el dominio. El content_digest sigue las reglas y vectores de locale-snapshot.v1.vectors.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "snapshot_version",
+    "content_digest",
+    "provenance",
+    "regions",
+    "subregions",
+    "region_names",
+    "subregion_names",
+    "recodings",
+    "code_reassignments"
+  ],
+  "properties": {
+    "snapshot_version": {
+      "description": "Versión del snapshot del catálogo Region/Subregion, propia e independiente de Locale y de Countries (RF-37): entero positivo, estrictamente creciente entre snapshots nuevos; se admiten saltos.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "content_digest": {
+      "description": "SHA-256 del JSON canónico del documento sin este campo.",
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "provenance": { "$ref": "#/$defs/provenance" },
+    "regions": {
+      "description": "Todas las regiones publicadas y las nuevas (no un delta).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["region_id", "code", "status", "replacement_region_id"],
+        "properties": {
+          "region_id": { "description": "UUID asignado por PREP; el sistema no lo genera.", "type": "string" },
+          "code": { "description": "Código UN M49 vigente de 3 dígitos (p. ej. \"019\"), o null.", "type": ["string", "null"] },
+          "status": { "enum": ["active", "inactive"] },
+          "replacement_region_id": { "description": "Region sucesora; solo si es inactive.", "type": ["string", "null"] }
+        }
+      }
+    },
+    "subregions": {
+      "description": "Todas las subregiones publicadas y las nuevas (no un delta).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["subregion_id", "region_id", "code", "status", "replacement_subregion_id"],
+        "properties": {
+          "subregion_id": { "description": "UUID asignado por PREP; el sistema no lo genera.", "type": "string" },
+          "region_id": { "description": "Region que la contiene.", "type": "string" },
+          "code": { "description": "Código UN M49 vigente de 3 dígitos (p. ej. \"419\"), o null.", "type": ["string", "null"] },
+          "status": { "enum": ["active", "inactive"] },
+          "replacement_subregion_id": { "description": "Subregion sucesora; solo si es inactive.", "type": ["string", "null"] }
+        }
+      }
+    },
+    "region_names": {
+      "description": "Nombres de regiones por locale_id (RegionLocale). Debe haber uno por cada locale obligatorio.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["region_id", "locale_id", "name"],
+        "properties": {
+          "region_id": { "type": "string" },
+          "locale_id": { "type": "string" },
+          "name": { "description": "Sin vacío ni espacios al inicio o al final.", "type": "string" }
+        }
+      }
+    },
+    "subregion_names": {
+      "description": "Nombres de subregiones por locale_id (SubregionLocale). Debe haber uno por cada locale obligatorio.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["subregion_id", "locale_id", "name"],
+        "properties": {
+          "subregion_id": { "type": "string" },
+          "locale_id": { "type": "string" },
+          "name": { "description": "Sin vacío ni espacios al inicio o al final.", "type": "string" }
+        }
+      }
+    },
+    "recodings": {
+      "description": "Recodificaciones que introduce este snapshot respecto del catálogo vigente (RF-39): mismo id, otro código. previous_code debe ser el código vigente del id y new_code el que trae este snapshot; ambos son obligatorios: asignar un primer código o retirar uno no es una recodificación.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["entity_type", "entity_id", "previous_code", "new_code", "provenance"],
+        "properties": {
+          "entity_type": { "enum": ["region", "subregion"] },
+          "entity_id": { "type": "string" },
+          "previous_code": { "type": "string" },
+          "new_code": { "type": "string" },
+          "provenance": { "$ref": "#/$defs/provenance" }
+        }
+      }
+    },
+    "code_reassignments": {
+      "description": "Reasignaciones de código (RF-41): el id recibe en este snapshot un código que es vigente o histórico de otro id del catálogo.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["entity_type", "entity_id", "code", "provenance"],
+        "properties": {
+          "entity_type": { "enum": ["region", "subregion"] },
+          "entity_id": { "type": "string" },
+          "code": { "type": "string" },
+          "provenance": { "$ref": "#/$defs/provenance" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "provenance": {
+      "description": "Procedencia (fuente de autoridad y referencia); se admiten campos adicionales.",
+      "type": "object",
+      "required": ["source"],
+      "properties": {
+        "source": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

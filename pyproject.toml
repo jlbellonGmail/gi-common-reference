@@ -34,6 +34,10 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 "gi_common_reference.locales.infrastructure" = ["locale-snapshot.v1.schema.json"]
+"gi_common_reference.regions.infrastructure" = [
+    "region-snapshot.v1.schema.json",
+    "required-locales.v1.json",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests/unit", "tests/integration", "tests/contract"]

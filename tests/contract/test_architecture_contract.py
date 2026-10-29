@@ -9,6 +9,8 @@ from tests.fixtures.ai_native import architecture_check
 
 ROOT = Path(__file__).resolve().parents[2]
 LOCALES = "src/gi_common_reference/locales"
+REGIONS = "src/gi_common_reference/regions"
+LAYERS = ("domain", "application", "infrastructure", "interfaces")
 
 
 def _contract() -> dict[str, Any]:
@@ -19,10 +21,18 @@ def _contract() -> dict[str, Any]:
 def test_architecture_json_declares_layers_and_locales_module() -> None:
     contract = _contract()
     layers = contract["layers"]
-    assert set(layers) == {"domain", "application", "infrastructure", "interfaces"}
+    assert set(layers) == set(LAYERS)
     assert layers["domain"]["mayDependOn"] == []
     assert "locales" in contract["modules"]
     assert contract["modules"]["locales"]["path"] == LOCALES
+
+
+def test_architecture_json_declares_the_regions_module_in_every_layer() -> None:
+    contract = _contract()
+    assert contract["modules"]["regions"]["path"] == REGIONS
+    for name in LAYERS:
+        assert contract["layers"][name]["paths"] == [f"{LOCALES}/{name}", f"{REGIONS}/{name}"]
+        assert (ROOT / REGIONS / name / "__init__.py").is_file()
 
 
 def test_domain_forbids_infrastructure_and_frameworks() -> None:
