@@ -1,2 +1,6 @@
 # Snapshot publicado en gi-dev: bytes exactos, sin conversión de fin de línea.
 acceptance/locales/gi-dev/*.json -text
+
+# Assets de bandera: la suma de verificación se calcula sobre los bytes exactos (spec 003, RF-49).
+src/gi_common_reference/countries/assets/flags/*.svg -text
+tests/fixtures/flags/*.svg -text

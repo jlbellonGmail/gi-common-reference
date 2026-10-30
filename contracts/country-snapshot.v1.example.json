@@ -1,0 +1,299 @@
+{
+  "snapshot_version": 1,
+  "content_digest": "sha256:99cd7a4d64042d58c0b7f756dc7c7263d3eb068619971c4de27d39328fb83b0f",
+  "region_snapshot_version": 1,
+  "provenance": {
+    "sources": [
+      {
+        "role": "identity",
+        "name": "ISO 3166-1 (sintético)",
+        "edition": "synthetic-1",
+        "retrieved_at": "2026-10-30",
+        "location": "tests/fixtures (sintético, no productivo)",
+        "checksum": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "license": "CC0-1.0 (fixture sintético)"
+      },
+      {
+        "role": "names",
+        "name": "CLDR (sintético)",
+        "edition": "synthetic-1",
+        "retrieved_at": "2026-10-30",
+        "location": "tests/fixtures (sintético, no productivo)",
+        "checksum": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "license": "CC0-1.0 (fixture sintético)"
+      },
+      {
+        "role": "calling_code",
+        "name": "ITU-T E.164 (sintético)",
+        "edition": "synthetic-1",
+        "retrieved_at": "2026-10-30",
+        "location": "tests/fixtures (sintético, no productivo)",
+        "checksum": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "license": "CC0-1.0 (fixture sintético)"
+      },
+      {
+        "role": "classification",
+        "name": "UN M49 (sintético)",
+        "edition": "synthetic-1",
+        "retrieved_at": "2026-10-30",
+        "location": "tests/fixtures (sintético, no productivo)",
+        "checksum": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "license": "CC0-1.0 (fixture sintético)"
+      },
+      {
+        "role": "flags",
+        "name": "Banderas sintéticas de prueba",
+        "edition": "synthetic-1",
+        "retrieved_at": "2026-10-30",
+        "location": "tests/fixtures (sintético, no productivo)",
+        "checksum": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "license": "CC0-1.0 (fixture sintético)"
+      }
+    ],
+    "unresolved_conflicts": []
+  },
+  "countries": [
+    {
+      "country_id": "fe4be564-5597-5c73-b0c0-18ad9209f207",
+      "alpha2": "AR",
+      "alpha3": "ARG",
+      "numeric_code": "032",
+      "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+      "subregion_id": "1cc20843-3e0c-5637-b7a4-d220f48c2291",
+      "calling_code": "54",
+      "status": "active",
+      "replacement_country_id": null
+    },
+    {
+      "country_id": "62ecde64-cf73-56e9-9b02-a80b2b579c8d",
+      "alpha2": "NA",
+      "alpha3": "NAM",
+      "numeric_code": "516",
+      "region_id": "89686073-4ea5-5dc7-a82c-5e473f17d9df",
+      "subregion_id": "2bc04643-0870-5ced-acc0-aff0ddd9c241",
+      "calling_code": "264",
+      "status": "active",
+      "replacement_country_id": null
+    },
+    {
+      "country_id": "c8e77aeb-98ba-5f0c-8f78-0d01d2fa3b54",
+      "alpha2": "AQ",
+      "alpha3": "ATA",
+      "numeric_code": "010",
+      "region_id": null,
+      "subregion_id": null,
+      "calling_code": null,
+      "status": "active",
+      "replacement_country_id": null
+    },
+    {
+      "country_id": "4eda76ae-dcca-5dca-8c45-613ce1e1b663",
+      "alpha2": "TW",
+      "alpha3": "TWN",
+      "numeric_code": "158",
+      "region_id": null,
+      "subregion_id": null,
+      "calling_code": "886",
+      "status": "active",
+      "replacement_country_id": null
+    },
+    {
+      "country_id": "71705c97-1868-546f-a495-8ba94dce51a7",
+      "alpha2": "US",
+      "alpha3": "USA",
+      "numeric_code": "840",
+      "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+      "subregion_id": "0528e5b4-52aa-548b-b9bd-9f47a500876a",
+      "calling_code": "1",
+      "status": "active",
+      "replacement_country_id": null
+    },
+    {
+      "country_id": "856b1b92-68d7-5d9f-abb1-54613bea3e90",
+      "alpha2": "CA",
+      "alpha3": "CAN",
+      "numeric_code": "124",
+      "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+      "subregion_id": "0528e5b4-52aa-548b-b9bd-9f47a500876a",
+      "calling_code": "1",
+      "status": "active",
+      "replacement_country_id": null
+    },
+    {
+      "country_id": "c756eac0-5950-5d6d-b9eb-86c92a68a5ad",
+      "alpha2": "PR",
+      "alpha3": "PRI",
+      "numeric_code": "630",
+      "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+      "subregion_id": "1cc20843-3e0c-5637-b7a4-d220f48c2291",
+      "calling_code": "1",
+      "status": "active",
+      "replacement_country_id": null
+    },
+    {
+      "country_id": "35be21fd-7ddb-5ffb-b954-c8c9f87519d9",
+      "alpha2": "BV",
+      "alpha3": "BVT",
+      "numeric_code": "074",
+      "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+      "subregion_id": "1cc20843-3e0c-5637-b7a4-d220f48c2291",
+      "calling_code": null,
+      "status": "active",
+      "replacement_country_id": null
+    }
+  ],
+  "country_names": [
+    {
+      "country_id": "fe4be564-5597-5c73-b0c0-18ad9209f207",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Argentina",
+      "official_name": "Argentine Republic"
+    },
+    {
+      "country_id": "fe4be564-5597-5c73-b0c0-18ad9209f207",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Argentina",
+      "official_name": "República Argentina"
+    },
+    {
+      "country_id": "62ecde64-cf73-56e9-9b02-a80b2b579c8d",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Namibia",
+      "official_name": "Republic of Namibia"
+    },
+    {
+      "country_id": "62ecde64-cf73-56e9-9b02-a80b2b579c8d",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Namibia",
+      "official_name": "República de Namibia"
+    },
+    {
+      "country_id": "c8e77aeb-98ba-5f0c-8f78-0d01d2fa3b54",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Antarctica",
+      "official_name": null
+    },
+    {
+      "country_id": "c8e77aeb-98ba-5f0c-8f78-0d01d2fa3b54",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Antártida",
+      "official_name": null
+    },
+    {
+      "country_id": "4eda76ae-dcca-5dca-8c45-613ce1e1b663",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Taiwan",
+      "official_name": null
+    },
+    {
+      "country_id": "4eda76ae-dcca-5dca-8c45-613ce1e1b663",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Taiwán",
+      "official_name": null
+    },
+    {
+      "country_id": "71705c97-1868-546f-a495-8ba94dce51a7",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "United States",
+      "official_name": "United States of America"
+    },
+    {
+      "country_id": "71705c97-1868-546f-a495-8ba94dce51a7",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Estados Unidos",
+      "official_name": "Estados Unidos de América"
+    },
+    {
+      "country_id": "856b1b92-68d7-5d9f-abb1-54613bea3e90",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Canada",
+      "official_name": null
+    },
+    {
+      "country_id": "856b1b92-68d7-5d9f-abb1-54613bea3e90",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Canadá",
+      "official_name": null
+    },
+    {
+      "country_id": "c756eac0-5950-5d6d-b9eb-86c92a68a5ad",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Puerto Rico",
+      "official_name": null
+    },
+    {
+      "country_id": "c756eac0-5950-5d6d-b9eb-86c92a68a5ad",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Puerto Rico",
+      "official_name": null
+    },
+    {
+      "country_id": "35be21fd-7ddb-5ffb-b954-c8c9f87519d9",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Bouvet Island",
+      "official_name": null
+    },
+    {
+      "country_id": "35be21fd-7ddb-5ffb-b954-c8c9f87519d9",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Isla Bouvet",
+      "official_name": null
+    }
+  ],
+  "flags": [
+    {
+      "country_id": "fe4be564-5597-5c73-b0c0-18ad9209f207",
+      "asset_path": "ar.svg",
+      "sha256": "sha256:92d3cbef6dd5872c3ef9c06d9df95a47611002edb97e7563330ebae47d65ab4d",
+      "media_type": "image/svg+xml",
+      "source": "flags"
+    },
+    {
+      "country_id": "62ecde64-cf73-56e9-9b02-a80b2b579c8d",
+      "asset_path": "na.svg",
+      "sha256": "sha256:ae78289c71c8ebbb0e5683aa1331fe3e3b76877dd745855724fc13809c8b4fd0",
+      "media_type": "image/svg+xml",
+      "source": "flags"
+    },
+    {
+      "country_id": "4eda76ae-dcca-5dca-8c45-613ce1e1b663",
+      "asset_path": "tw.svg",
+      "sha256": "sha256:1677e2dc9ccec84fbb56a1fd92a4b47f9fd8ca73229d069e41d16fc4b1353142",
+      "media_type": "image/svg+xml",
+      "source": "flags"
+    },
+    {
+      "country_id": "71705c97-1868-546f-a495-8ba94dce51a7",
+      "asset_path": "us.svg",
+      "sha256": "sha256:dd92535a87696b635b9136faa12dc8213f0b686bbc23293942160434af0d480a",
+      "media_type": "image/svg+xml",
+      "source": "flags"
+    },
+    {
+      "country_id": "856b1b92-68d7-5d9f-abb1-54613bea3e90",
+      "asset_path": "ca.svg",
+      "sha256": "sha256:546360847bf149a0770e9879d6e2a64ba0f95ac6dd7894583152e44c58cc39f7",
+      "media_type": "image/svg+xml",
+      "source": "flags"
+    },
+    {
+      "country_id": "c756eac0-5950-5d6d-b9eb-86c92a68a5ad",
+      "asset_path": "pr.svg",
+      "sha256": "sha256:5bdb2ca96a6a471d17759f174e83ffc9370808ffcf79ef36cd5acb2c938860ee",
+      "media_type": "image/svg+xml",
+      "source": "flags"
+    }
+  ],
+  "flag_exceptions": [
+    {
+      "country_id": "c8e77aeb-98ba-5f0c-8f78-0d01d2fa3b54",
+      "reason": "El Tratado Antártico no define una bandera oficial"
+    },
+    {
+      "country_id": "35be21fd-7ddb-5ffb-b954-c8c9f87519d9",
+      "reason": "Sin bandera propia"
+    }
+  ],
+  "recodings": [],
+  "code_reassignments": []
+}

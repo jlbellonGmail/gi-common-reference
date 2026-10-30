@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:gi:common-reference:country-snapshot:v1",
+  "title": "Country snapshot v1",
+  "description": "Contrato entre gi-common-reference-prep y gi-common-reference (spec 003, RF-27). Catálogo completo de países ISO 3166-1 con sus nombres por locale_id, referencias de bandera, recodificaciones y reasignaciones de código que introduce este snapshot. Los códigos son siempre strings: nunca números ni nulos (`NA` es Namibia, `004` conserva sus ceros). El schema valida estructura, tipos y formato de los códigos; identidad, ciclo de vida, clasificación, localización, procedencia y banderas los valida el dominio. El content_digest sigue las reglas y vectores de locale-snapshot.v1.vectors.json. Los assets SVG no viajan en el documento: son archivos del repositorio referenciados por ruta relativa y suma de verificación.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "snapshot_version",
+    "content_digest",
+    "region_snapshot_version",
+    "provenance",
+    "countries",
+    "country_names",
+    "flags",
+    "flag_exceptions",
+    "recodings",
+    "code_reassignments"
+  ],
+  "properties": {
+    "snapshot_version": {
+      "description": "Versión del snapshot del catálogo Countries, propia e independiente de Locale y de Region/Subregion (D-17): entero positivo, estrictamente creciente entre snapshots nuevos; se admiten saltos.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "content_digest": {
+      "description": "SHA-256 del JSON canónico del documento sin este campo.",
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "region_snapshot_version": {
+      "description": "Versión del catálogo Region/Subregion con la que se construyó este snapshot (RF-47). Debe estar incorporada y no ser posterior a la vigente.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "provenance": { "$ref": "#/$defs/catalogProvenance" },
+    "countries": {
+      "description": "Todos los países publicados y los nuevos (no un delta).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "country_id",
+          "alpha2",
+          "alpha3",
+          "numeric_code",
+          "region_id",
+          "subregion_id",
+          "calling_code",
+          "status",
+          "replacement_country_id"
+        ],
+        "properties": {
+          "country_id": { "description": "UUID asignado por Reference; el sistema no lo genera.", "type": "string" },
+          "alpha2": { "description": "ISO 3166-1 alpha-2: 2 letras A-Z mayúsculas, sin normalizar.", "type": "string", "pattern": "^[A-Z]{2}$" },
+          "alpha3": { "description": "ISO 3166-1 alpha-3: 3 letras A-Z mayúsculas.", "type": "string", "pattern": "^[A-Z]{3}$" },
+          "numeric_code": { "description": "ISO 3166-1 numérico: 3 dígitos como texto, con ceros a la izquierda.", "type": "string", "pattern": "^[0-9]{3}$" },
+          "region_id": { "description": "Region canónica de 002, o null.", "type": ["string", "null"] },
+          "subregion_id": { "description": "Subregion canónica de 002 (implica region_id), o null.", "type": ["string", "null"] },
+          "calling_code": { "description": "Código de país E.164, 1 a 3 dígitos sin '+' ni cero inicial, o null.", "type": ["string", "null"], "pattern": "^[1-9][0-9]{0,2}$" },
+          "status": { "enum": ["active", "inactive"] },
+          "replacement_country_id": { "description": "País sucesor unívoco; solo si es inactive.", "type": ["string", "null"] }
+        }
+      }
+    },
+    "country_names": {
+      "description": "Nombres de países por locale_id (CountryLocale). Debe haber un name por cada locale obligatorio.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["country_id", "locale_id", "name", "official_name"],
+        "properties": {
+          "country_id": { "type": "string" },
+          "locale_id": { "type": "string" },
+          "name": { "description": "Nombre corto de uso común. Sin vacío ni espacios al inicio o al final.", "type": "string" },
+          "official_name": { "description": "Nombre formal en ese locale, o null. Sin espacios al inicio o al final.", "type": ["string", "null"] }
+        }
+      }
+    },
+    "flags": {
+      "description": "Referencias a los assets SVG de bandera del repositorio (RF-19, RF-49).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["country_id", "asset_path", "sha256", "media_type", "source"],
+        "properties": {
+          "country_id": { "type": "string" },
+          "asset_path": { "description": "Ruta relativa dentro del directorio de assets de bandera.", "type": "string" },
+          "sha256": { "description": "SHA-256 de los bytes exactos del archivo.", "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+          "media_type": { "const": "image/svg+xml" },
+          "source": { "description": "Rol de la fuente de procedencia que declara la licencia de la bandera.", "enum": ["identity", "names", "calling_code", "classification", "flags"] }
+        }
+      }
+    },
+    "flag_exceptions": {
+      "description": "Países activos sin bandera, con motivo explícito (RF-19).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["country_id", "reason"],
+        "properties": {
+          "country_id": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "recodings": {
+      "description": "Recodificaciones que introduce este snapshot (RF-41): el mismo país cambia uno o más códigos de su tripleta ISO. `previous` debe ser la tripleta vigente y `new` la que trae este snapshot; ambas completas.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["country_id", "previous", "new", "provenance"],
+        "properties": {
+          "country_id": { "type": "string" },
+          "previous": { "$ref": "#/$defs/codeTriple" },
+          "new": { "$ref": "#/$defs/codeTriple" },
+          "provenance": { "$ref": "#/$defs/provenance" }
+        }
+      }
+    },
+    "code_reassignments": {
+      "description": "Reasignaciones de código (RF-43): el país recibe un código que es vigente o histórico de otro país.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["country_id", "code_kind", "code", "provenance"],
+        "properties": {
+          "country_id": { "type": "string" },
+          "code_kind": { "enum": ["alpha2", "alpha3", "numeric_code"] },
+          "code": { "type": "string" },
+          "provenance": { "$ref": "#/$defs/provenance" }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "code_kind": { "const": "alpha2" } } },
+            "then": { "properties": { "code": { "pattern": "^[A-Z]{2}$" } } }
+          },
+          {
+            "if": { "properties": { "code_kind": { "const": "alpha3" } } },
+            "then": { "properties": { "code": { "pattern": "^[A-Z]{3}$" } } }
+          },
+          {
+            "if": { "properties": { "code_kind": { "const": "numeric_code" } } },
+            "then": { "properties": { "code": { "pattern": "^[0-9]{3}$" } } }
+          }
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "codeTriple": {
+      "description": "Tripleta ISO 3166-1 completa de un país.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["alpha2", "alpha3", "numeric_code"],
+      "properties": {
+        "alpha2": { "type": "string", "pattern": "^[A-Z]{2}$" },
+        "alpha3": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "numeric_code": { "type": "string", "pattern": "^[0-9]{3}$" }
+      }
+    },
+    "provenance": {
+      "description": "Referencia a la fuente de autoridad de una recodificación o reasignación; se admiten campos adicionales.",
+      "type": "object",
+      "required": ["source"],
+      "properties": {
+        "source": { "type": "string", "minLength": 1 }
+      }
+    },
+    "catalogProvenance": {
+      "description": "Procedencia del catálogo (RF-28, RF-29). Cada fuente declara nombre, edición, fecha de obtención, ubicación, suma de verificación del artefacto de origen y licencia; el dominio exige los campos, los roles requeridos y que no queden conflictos sin resolver.",
+      "type": "object",
+      "required": ["sources", "unresolved_conflicts"],
+      "properties": {
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role": { "enum": ["identity", "names", "calling_code", "classification", "flags"] },
+              "name": { "type": "string" },
+              "edition": { "type": "string" },
+              "retrieved_at": { "type": "string" },
+              "location": { "type": "string" },
+              "checksum": { "type": "string" },
+              "license": { "type": "string" }
+            }
+          }
+        },
+        "unresolved_conflicts": {
+          "description": "Conflictos entre fuentes sin resolver (p. ej. numérico ISO distinto de M49). Debe estar vacío para que el snapshot se acepte.",
+          "type": "array"
+        }
+      }
+    }
+  }
+}
