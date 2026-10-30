@@ -1,0 +1,1 @@
+040d142842a8e51c861da87c512f8b147f61f5b9320967cea0fc3c948da23dfc *acceptance/locales/gi-dev/locale-snapshot.v1.2.json

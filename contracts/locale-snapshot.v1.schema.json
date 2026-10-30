@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:gi:common-reference:locale-snapshot:v1",
+  "title": "Locale snapshot v1",
+  "description": "Contrato entre gi-common-reference-prep y gi-common-reference (spec 001, RF-30 y RF-31). El schema solo valida estructura y tipos: formato de códigos, minúsculas, reglas de publicación y coherencia con el artefacto IANA las valida el dominio. Los digests se calculan según las reglas y los vectores de locale-snapshot.v1.vectors.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["snapshot_version", "content_digest", "iana", "provenance", "locales"],
+  "properties": {
+    "snapshot_version": {
+      "description": "Versión del snapshot, asignada por PREP: entero positivo, estrictamente creciente entre snapshots nuevos; se admiten saltos.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "content_digest": {
+      "description": "SHA-256 del JSON canónico del documento sin este campo.",
+      "$ref": "#/$defs/digest"
+    },
+    "iana": {
+      "description": "Artefacto IANA de referencia: copia literal del registro, con su versión y su procedencia.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file_date", "digest", "provenance", "registry_text"],
+      "properties": {
+        "file_date": {
+          "description": "File-Date del registro (AAAA-MM-DD); debe coincidir con el File-Date de registry_text.",
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "digest": {
+          "description": "SHA-256 de los bytes UTF-8 exactos de registry_text.",
+          "$ref": "#/$defs/digest"
+        },
+        "provenance": { "$ref": "#/$defs/provenance" },
+        "registry_text": {
+          "description": "Contenido literal del archivo del IANA Language Subtag Registry (formato record-jar, RFC 5646). Cada entrada requiere Type y Subtag (o Tag). Deprecated y Preferred-Value son opcionales, pero si están no pueden estar vacíos: un campo presente sin valor hace el artefacto inválido y se rechaza el snapshot (RF-33). Un valor en una línea de continuación cuenta como presente.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "provenance": { "$ref": "#/$defs/provenance" },
+    "locales": {
+      "description": "Catálogo completo de locales (no un delta).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["locale_id", "code", "status", "iana_deprecated", "replacement_locale_id"],
+        "properties": {
+          "locale_id": {
+            "description": "UUID asignado por PREP; el sistema no lo genera.",
+            "type": "string"
+          },
+          "code": {
+            "description": "Subtag de idioma en minúsculas.",
+            "type": "string"
+          },
+          "status": { "enum": ["active", "inactive"] },
+          "iana_deprecated": { "type": "boolean" },
+          "replacement_locale_id": {
+            "description": "locale_id del Preferred-Value, o null.",
+            "type": ["string", "null"]
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "provenance": {
+      "description": "Procedencia de la fuente; se admiten campos adicionales.",
+      "type": "object",
+      "required": ["source"],
+      "properties": {
+        "source": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

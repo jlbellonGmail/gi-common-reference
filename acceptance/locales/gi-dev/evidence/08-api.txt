@@ -1,0 +1,37 @@
+[PASS] GET /v1/locales: 200 snapshot_version=2 n=8159 primeros=['aa', 'aaa', 'aab', 'aac', 'aad'] ordenado=True
+[PASS] GET /v1/locales?status=active: 200 n=8039
+[PASS] GET /v1/locales?status=inactive: 200 n=120
+[PASS] GET /by-code/es: 200 {'snapshot_version': 2, 'data': {'locale_id': '7d74e7f4-4dd7-4a85-a540-09d2393b9a91', 'code': 'es', 'status': 'active', 'iana_deprecated': False, 'replacement_locale_id': None}}
+[PASS] GET /by-code/ES (tolera mayúsculas): 200
+[PASS] GET /{locale_id}: 200 {'snapshot_version': 2, 'data': {'locale_id': '7d74e7f4-4dd7-4a85-a540-09d2393b9a91', 'code': 'es', 'status': 'active', 'iana_deprecated': False, 'replacement_locale_id': None}}
+[PASS] GET /{LOCALE_ID en mayúsculas}: 200
+[PASS] GET /by-code/iw (alias Preferred-Value → he): 200 {'snapshot_version': 2, 'data': {'locale_id': 'ad5bf05a-f627-4761-ae79-7e2d09f10990', 'code': 'he', 'status': 'active', 'iana_deprecated': False, 'replacement_locale_id': None}}
+[PASS] GET /by-code/IW (alias Preferred-Value → he): 200 {'snapshot_version': 2, 'data': {'locale_id': 'ad5bf05a-f627-4761-ae79-7e2d09f10990', 'code': 'he', 'status': 'active', 'iana_deprecated': False, 'replacement_locale_id': None}}
+[PASS] GET /by-code/in → id: 200 code=id
+[PASS] GET /by-code/ji → yi: 200 code=yi
+[PASS] GET /by-code/<deprecado sin Preferred-Value>: 200 {'snapshot_version': 2, 'data': {'locale_id': 'c7471a75-d562-4e03-984e-b32c2774089e', 'code': 'agp', 'status': 'inactive', 'iana_deprecated': True, 'replacement_locale_id': None}}
+[PASS] GET /v1/locales/by-code/qaa: 404 {'snapshot_version': 2, 'error': {'code': 'not_found', 'message': 'código no encontrado'}}
+[PASS] GET /v1/locales/by-code/und: 404 {'snapshot_version': 2, 'error': {'code': 'not_found', 'message': 'código no encontrado'}}
+[PASS] GET /v1/locales/00000000-0000-4000-8000-000000000000: 404 {'snapshot_version': 2, 'error': {'code': 'not_found', 'message': 'locale_id no encontrado'}}
+[PASS] GET /v1/locales/no-es-uuid: 404 {'snapshot_version': 2, 'error': {'code': 'not_found', 'message': 'locale_id no encontrado'}}
+[PASS] GET /v1/locales/by-code/es-AR: 422 {'snapshot_version': 2, 'error': {'code': 'invalid_code', 'message': "el código debe ser un subtag de idioma de 2 o 3 letras ASCII, sin '-' ni '_'"}}
+[PASS] GET /v1/locales/by-code/e: 422 {'snapshot_version': 2, 'error': {'code': 'invalid_code', 'message': "el código debe ser un subtag de idioma de 2 o 3 letras ASCII, sin '-' ni '_'"}}
+[PASS] GET /v1/locales/by-code/%20es: 422 {'snapshot_version': 2, 'error': {'code': 'invalid_code', 'message': "el código debe ser un subtag de idioma de 2 o 3 letras ASCII, sin '-' ni '_'"}}
+[PASS] GET /v1/locales?status=deprecated: 422 {'snapshot_version': 2, 'error': {'code': 'invalid_status', 'message': 'status debe ser uno de: active, inactive'}}
+[PASS] POST /v1/locales: 405
+[PASS] POST /v1/locales/7d74e7f4-4dd7-4a85-a540-09d2393b9a91: 405
+[PASS] POST /v1/locales/by-code/es: 405
+[PASS] PUT /v1/locales: 405
+[PASS] PUT /v1/locales/7d74e7f4-4dd7-4a85-a540-09d2393b9a91: 405
+[PASS] PUT /v1/locales/by-code/es: 405
+[PASS] PATCH /v1/locales: 405
+[PASS] PATCH /v1/locales/7d74e7f4-4dd7-4a85-a540-09d2393b9a91: 405
+[PASS] PATCH /v1/locales/by-code/es: 405
+[PASS] DELETE /v1/locales: 405
+[PASS] DELETE /v1/locales/7d74e7f4-4dd7-4a85-a540-09d2393b9a91: 405
+[PASS] DELETE /v1/locales/by-code/es: 405
+[PASS] OpenAPI: solo GET: paths=['/v1/locales', '/v1/locales/by-code/{code}', '/v1/locales/{locale_id}'] métodos=['get']
+[PASS] OpenAPI servido == contrato publicado: comparación JSON
+[PASS] docs deshabilitados: /docs → 404
+log del servidor: 42 líneas, 0 con ERROR
+resultado: PASS

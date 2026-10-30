@@ -1,0 +1,48 @@
+{
+  "snapshot_version": 2,
+  "content_digest": "sha256:bc5592ed12fe81da7b8172edfde34a895878d55fb8476cf3836a420f55dca2d8",
+  "iana": {
+    "file_date": "2026-09-01",
+    "digest": "sha256:ced47a29634fe4ea321b5401c699028c6399c807281160c4bc36e0e9df533e0b",
+    "provenance": {
+      "source": "https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry",
+      "retrieved_at": "2026-09-02T10:00:00Z"
+    },
+    "registry_text": "File-Date: 2026-09-01\n%%\nType: language\nSubtag: en\nDescription: English\nAdded: 2005-10-16\n%%\nType: language\nSubtag: es\nDescription: Spanish\nAdded: 2005-10-16\n%%\nType: language\nSubtag: he\nDescription: Hebrew\nAdded: 2005-10-16\n%%\nType: language\nSubtag: iw\nDescription: Hebrew\nAdded: 2005-10-16\nDeprecated: 1989-01-01\nPreferred-Value: he\n"
+  },
+  "provenance": {
+    "source": "gi-common-reference-prep",
+    "generated_at": "2026-09-02T10:05:00Z",
+    "tool_version": "0.1.0"
+  },
+  "locales": [
+    {
+      "locale_id": "0c5f2d3e-6b7a-4f0e-9a43-1d6a8b7c2e01",
+      "code": "en",
+      "status": "active",
+      "iana_deprecated": false,
+      "replacement_locale_id": null
+    },
+    {
+      "locale_id": "5e1b7a90-3c44-4b0a-8f5d-2a9c6d1e7f02",
+      "code": "es",
+      "status": "active",
+      "iana_deprecated": false,
+      "replacement_locale_id": null
+    },
+    {
+      "locale_id": "a3d94c18-7e2b-4d65-b1f0-9c8e5a4d3b03",
+      "code": "he",
+      "status": "active",
+      "iana_deprecated": false,
+      "replacement_locale_id": null
+    },
+    {
+      "locale_id": "7b2f6e45-1a9d-4c3e-8d70-5f4b3a2c1e04",
+      "code": "iw",
+      "status": "inactive",
+      "iana_deprecated": true,
+      "replacement_locale_id": "a3d94c18-7e2b-4d65-b1f0-9c8e5a4d3b03"
+    }
+  ]
+}

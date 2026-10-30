@@ -1,0 +1,2 @@
+# Snapshot publicado en gi-dev: bytes exactos, sin conversión de fin de línea.
+acceptance/locales/gi-dev/*.json -text

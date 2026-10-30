@@ -1,0 +1,26 @@
+[PASS] code en mayúsculas: exit=1 esperado=RF-28 base_idéntica=True
+        - RF-28: el código 'ES' no está en minúsculas
+[PASS] content_digest incorrecto: exit=1 esperado=RF-31 base_idéntica=True
+        - RF-31: el digest de contenido declarado no coincide con el recalculado
+[PASS] digest IANA incorrecto: exit=1 esperado=RF-30 base_idéntica=True
+        - RF-30: el digest IANA declarado no coincide con el recalculado
+[PASS] snapshot_version existente con otro digest: exit=1 esperado=RF-32 base_idéntica=True
+        - RF-32: la snapshot_version 2 ya existe con otro contenido
+[PASS] snapshot viejo nunca visto (v1 < v2): exit=1 esperado=RF-32 base_idéntica=True
+        - RF-32: la snapshot_version 1 es anterior a la última incorporada (2)
+[PASS] File-Date regresivo: exit=1 esperado=RF-29 base_idéntica=True
+        - RF-29: el File-Date 2026-09-01 es anterior al del último snapshot incorporado (2026-09-17)
+[PASS] File-Date declarado distinto del artefacto: exit=1 esperado=RF-30 base_idéntica=True
+        - RF-30: el File-Date del artefacto (2026-09-17) no coincide con el declarado (2026-09-18)
+[PASS] Preferred-Value: publicar iw como locale nuevo: exit=1 esperado=RF-4 base_idéntica=True
+        - RF-4: el código nuevo 'iw' no cumple las reglas de publicación: not_preferred
+[PASS] replacement sin Preferred-Value en IANA: exit=1 esperado=RF-26 base_idéntica=True
+        - RF-26: agp: el artefacto IANA no declara Preferred-Value, no puede tener replacement
+[PASS] Preferred-Value vacío en el artefacto: exit=1 esperado=RF-30 base_idéntica=True
+        - RF-30: artefacto IANA incompleto: entrada con Preferred-Value vacío: type=language, subtag=iw, preferred-value=
+[PASS] omite un locale publicado: exit=1 esperado=RF-15 base_idéntica=True
+        - RF-15: falta el locale publicado es (7d74e7f4-4dd7-4a85-a540-09d2393b9a91)
+[PASS] deprecado con status active: exit=1 esperado=RF-27 base_idéntica=True
+        - RF-27: agp está deprecado en el artefacto IANA y debe quedar inactive
+snapshot original intacto: True
+resultado: PASS
