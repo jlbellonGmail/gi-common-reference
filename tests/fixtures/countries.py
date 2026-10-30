@@ -15,8 +15,19 @@ from pathlib import Path
 from typing import Any
 
 from gi_common_reference.countries.domain.digest import content_digest
-from tests.fixtures.regions import EN, ES, region_id, subregion_id
+from gi_common_reference.countries.domain.model import (
+    LocaleCatalog,
+    LocaleInfo,
+    RegionCatalog,
+    RegionInfo,
+    SubregionInfo,
+)
+from gi_common_reference.countries.domain.policy import RequiredLocale, RequiredLocales
+from tests.fixtures.regions import EN, ES, FR, region_id, subregion_id
 
+POLICY = RequiredLocales(1, (RequiredLocale(EN, "en"), RequiredLocale(ES, "es")))
+REGION_KEYS = ("002", "019", "142")
+SUBREGION_PARENTS = {"202": "002", "419": "019", "021": "019", "035": "142"}
 FLAGS_DIR = Path(__file__).resolve().parent / "flags"
 NAMESPACE = uuid.UUID("33333333-4444-5555-6666-777777777777")
 
@@ -268,3 +279,45 @@ if __name__ == "__main__":
     # Regenera contracts/country-snapshot.v1.example.json:
     #   PYTHONUTF8=1 python -m tests.fixtures.countries > contracts/country-snapshot.v1.example.json
     print(json.dumps(build_snapshot(), indent=2, ensure_ascii=False))
+
+
+def locale_catalog(
+    version: int | None = 1, *, inactive: Sequence[str] = (), missing: Sequence[str] = ()
+) -> LocaleCatalog:
+    """Vista de Locale con `en`, `es` y `fr`; los de `inactive` quedan inactive."""
+    ids = {"en": EN, "es": ES, "fr": FR}
+    return LocaleCatalog(
+        version,
+        tuple(
+            LocaleInfo(locale_id, code, "inactive" if code in inactive else "active")
+            for code, locale_id in ids.items()
+            if code not in missing
+        ),
+    )
+
+
+def region_catalog(
+    version: int | None = 1,
+    *,
+    incorporated: Sequence[int] | None = None,
+    inactive: Sequence[str] = (),
+) -> RegionCatalog:
+    """Vista de Region/Subregion con las regiones y subregiones M49 que usan las fixtures.
+
+    `inactive` lista claves M49 (`"419"`, `"019"`) que quedan inactive.
+    """
+    versions = frozenset(incorporated if incorporated is not None else [version or 1])
+    return RegionCatalog(
+        version,
+        versions if version is not None else frozenset(),
+        tuple(
+            RegionInfo(region_id(key), "inactive" if key in inactive else "active")
+            for key in REGION_KEYS
+        ),
+        tuple(
+            SubregionInfo(
+                subregion_id(key), region_id(parent), "inactive" if key in inactive else "active"
+            )
+            for key, parent in SUBREGION_PARENTS.items()
+        ),
+    )
