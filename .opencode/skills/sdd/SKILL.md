@@ -17,7 +17,7 @@ Roles     : Coordinator  Planner  Implementer  Reviewer     (runtime ids: -, pla
 ```
 
 Canonical contract: `contracts/sdd-workflow.json`. Executable layer: `runtime/circuit/sdd-workflow.mjs`, `implement-all.mjs`, `coordinator.mjs`.
-In a consumer the release is reached only through the launcher `.ai-native/ai-native.mjs` (run it with node; it is `ai-native run -- <command>`): `sdd validate|status|next|mark|budget`, `hitl --base <ref>`, `knowledge <ref>`, `l3`. Never call `runtime/...` or `contracts/...` paths directly.
+In a consumer the release is reached only through the launcher `.ai-native/ai-native.mjs` (run it with node; it is `ai-native run -- <command>`): `sdd validate|status|next|mark|budget`, `sdd review validate|begin|record|status <slug> --base <ref>`, `hitl --base <ref>`, `knowledge <ref>`, `l3`. Never call `runtime/...` or `contracts/...` paths directly.
 
 ## Route (load only what the phase needs)
 
@@ -51,12 +51,14 @@ Then:
 * Discovery is not activation: never install, connect, enable or configure anything that needs credentials, permissions, an environment change or a human decision. That follows the existing permission and human-gate rules; this check adds no gate.
 * If it is unavailable, say exactly which part could not be done or verified (`NOT_RUN`) and continue with what is safe. Never simulate access, current knowledge or a check.
 * Automatic mode: the Coordinator checks before delegating and names any gap in the delegation; a role that meets a new gap reports it instead of improvising. Check again only on a new need, never per task.
+* Independent review is a capability of the runtime, not of the files: a defined `reviewer` role does not mean this session can run it isolated. The projected command says how this runtime can (or cannot); where nothing says it can, it is unavailable. Unavailable never blocks the work: validate, self-review, record it as `self`, and report `REVIEW_PENDING` with the human gate required (methodology: `review.md`).
 
 ## Invariants
 
 * A Task with level light creates no `spec.md`/`plan.md`/`tasks.md`.
 * `spec` = what/why, `plan` = how, `tasks` = decomposed execution. Never mix them.
 * The Reviewer is read-only and independent; repairs go Reviewer -> Coordinator -> Implementer -> Reviewer.
+* Validation PASS, green tests and a self-review are never an approval: `APPROVED` needs an independent review PASS of the current revision (`sdd review status`).
 * Failure handling is bounded convergence (budget in `contracts/sdd-levels.json`); a task that does not converge blocks the work unit. Never fake success.
 * Memory is auxiliary context; Git, governance, STATUS, validators and evidence are authoritative.
 * Merge is a human decision.
