@@ -252,7 +252,7 @@ Reparto de responsabilidades:
 - CA-2. Cada Country tiene un `country_id` UUID único e inmutable; dos `active` no comparten `alpha2`, `alpha3` ni `numeric_code`; un duplicado `active`, un código mal formado o un par región/subregión incoherente falla en persistencia (RF-2, RF-3, RF-5, RF-6, RNF-5).
 - CA-3. Resolver por `country_id`, `alpha2` (`ar`, `AR`), `alpha3` y `numeric_code` devuelve el mismo registro con todos los campos de RF-15, y `na`/`NA` resuelve Namibia (RF-8, RF-9, RF-15, CL-5).
 - CA-4. Los códigos numéricos conservan sus ceros (`004`) en snapshot, persistencia y respuesta (RF-5, CL-6).
-- CA-5. Un código inexistente devuelve "no encontrado"; un código o id mal formado devuelve error de validación; ambos son distinguibles; un código `inactive` devuelve el país indicando su `status`; un código histórico es "no encontrado" (RF-10–RF-12).
+- CA-5. Un código inexistente devuelve "no encontrado"; un código mal formado devuelve error de validación (un `country_id` mal formado es "no encontrado", RF-12); ambos son distinguibles; un código `inactive` devuelve el país indicando su `status`; un código histórico es "no encontrado" (RF-10–RF-12).
 - CA-6. La consulta de un `country_id` activo, inactivo e inexistente permite distinguir `active`, `inactive` y no encontrado (RF-14).
 - CA-7. El listado devuelve por defecto solo `active`, en orden por `alpha2`, con opción de incluir `inactive` y filtrar por región/subregión (RF-13).
 - CA-8. Con `locale_id`, la respuesta incluye `name` y `official_name` persistidos; sin traducción quedan ausentes sin fallback; un `locale_id` inexistente es error de validación; ningún camino invoca traducción ni IA (RF-37, RF-38).

@@ -86,7 +86,7 @@ Todas las columnas son `NOT NULL` salvo las marcadas opcionales. Ninguna `tenant
 - **`country_locale`:** D9.
 - **`country_flag`:** D11, con FK a `country` y a `country_snapshot`.
 - **`country_recoding`:** PK (`country_id`, `snapshot_version`); `previous_alpha2`, `previous_alpha3`, `previous_numeric_code`, `new_alpha2`, `new_alpha3`, `new_numeric_code` (todos `NOT NULL`, con formato), `provenance jsonb`; CHECK de que la tripleta anterior difiere de la nueva. Inmutable.
-- **Triggers:** sin `DELETE` ni `TRUNCATE` en `country`, `country_locale`, `country_flag`, `country_snapshot` y `country_recoding` (RF-7, RF-21); `country_id`, `first_snapshot_version` y el par (`country_id`, `locale_id`) inmutables. Mutables solo: códigos y `codes_snapshot_version` (únicamente junto a una recodificación del mismo snapshot, validado en dominio y en la prueba SQL), `status`, reemplazo, `region_id`, `subregion_id`, `calling_code`, `last_changed_snapshot_version`, nombres, bandera.
+- **Triggers:** sin `DELETE` ni `TRUNCATE` en `country`, `country_locale`, `country_flag`, `country_snapshot` y `country_recoding` (RF-7, RF-21); `country_id`, `first_snapshot_version` y el par (`country_id`, `locale_id`) inmutables. Mutables solo: códigos y `codes_snapshot_version` (un trigger rechaza cambiar la tripleta si no existe la fila de `country_recoding` del mismo `codes_snapshot_version`; el dominio valida su contenido), `status`, reemplazo, `region_id`, `subregion_id`, `calling_code`, `last_changed_snapshot_version`, nombres, bandera.
 - **Privilegios** (D10 de 001): `reference_reader` solo `SELECT`; `reference_loader` `SELECT`, `INSERT` y `UPDATE` de las columnas mutables. Nada para `PUBLIC`, `anon`, `authenticated`. Condicionales a que los roles existan, como 0001 y 0002.
 - La versión vigente es `max(country_snapshot.snapshot_version)`, independiente de Locale, Regions y Currency (D-17).
 
@@ -170,14 +170,14 @@ Una transacción con los locks de D15. Ante el primer paso que falla se informan
 | RF-3, RF-4, RF-5, RF-44 | D4, D7, pasos 1 y 5 |
 | RF-6, RF-48 | D5, D20, paso 7, integración con 002 |
 | RF-7, RF-21 | Triggers sin `DELETE`, paso 4 |
-| RF-8–RF-15 | API, D6, D13, D14 |
+| RF-8–RF-15 (incl. RF-11 "no encontrado" y RF-12 validación, D19) | API, D6, D13, D14 |
 | RF-16, RF-17, RF-18 | API, `country_snapshot`, versionado de contrato, sin escritura |
 | RF-19, RF-49, RF-50 | D11, D12, paso 10, endpoint de bandera |
 | RF-20, RF-22–RF-25, RF-27 | D2, pasos 1–2 y 11, D15, D17, rollback |
 | RF-26, RNF-8 | Sin red en runtime ni en pruebas |
 | RF-28, RF-29 | Paso 9, formato del snapshot |
 | RF-30 | D18, `diff` |
-| RF-31–RF-33, RF-35–RF-38 | D9, D10, paso 8, API |
+| RF-31–RF-33, RF-35–RF-38 (incl. RF-32 recorte por CHECK, D9, y RF-37 solo textos persistidos) | D9, D10, paso 8, API |
 | RF-39, RF-40 | D8, paso 6 |
 | RF-41–RF-43, RF-46 | D7, paso 5, `country_recoding` |
 | RF-47, RF-51 | `country_snapshot` (versiones declarada, vigente y de política), columnas de versión de `country`, paso 3 |
