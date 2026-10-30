@@ -38,6 +38,11 @@ where = ["src"]
     "region-snapshot.v1.schema.json",
     "required-locales.v1.json",
 ]
+"gi_common_reference.countries.infrastructure" = [
+    "country-snapshot.v1.schema.json",
+    "required-locales.v1.json",
+]
+"gi_common_reference.countries.assets" = ["flags/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests/unit", "tests/integration", "tests/contract"]

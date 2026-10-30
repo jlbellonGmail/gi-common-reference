@@ -2,7 +2,8 @@
 
 El check `architecture` de AI-NATIVE solo resuelve imports relativos; esta prueba aplica las
 mismas reglas de `architecture.json` a los imports absolutos del paquete. Cada catálogo (`locales`,
-`regions`) solo importa sus propias capas: importar otro catálogo, aunque sea del mismo repositorio,
+`regions`, `countries`) solo importa sus propias capas: importar otro catálogo, aunque sea del
+mismo repositorio,
 es una violación. La raíz de composición (`gi_common_reference.bootstrap`) solo puede importarse
 dentro de un bloque `if __name__ == "__main__":`, el punto de entrada que conecta los adaptadores.
 """
@@ -18,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[2]
 PACKAGE = "gi_common_reference"
 LOCALES = f"{PACKAGE}.locales"
 REGIONS = f"{PACKAGE}.regions"
+COUNTRIES = f"{PACKAGE}.countries"
 COMPOSITION_ROOT = f"{PACKAGE}.bootstrap"
 
 
@@ -99,7 +101,9 @@ def tree_with(tmp_path: Path, files: dict[str, str], catalog: str = "locales") -
 def layers_under(tmp_path: Path) -> dict[str, Any]:
     return {
         name: {
-            "paths": [f"src/{PACKAGE}/{catalog}/{name}" for catalog in ("locales", "regions")],
+            "paths": [
+                f"src/{PACKAGE}/{catalog}/{name}" for catalog in ("locales", "regions", "countries")
+            ],
             "mayDependOn": spec["mayDependOn"],
         }
         for name, spec in _layers().items()
@@ -184,5 +188,47 @@ def test_allowed_dependencies_inside_regions_are_accepted(tmp_path: Path) -> Non
             "infrastructure/a.py": f"from {REGIONS}.domain.ports import P\n",
         },
         catalog="regions",
+    )
+    assert violations(root, layers_under(root)) == []
+
+
+@pytest.mark.parametrize(
+    ("file", "source", "expected"),
+    [
+        ("domain/a.py", f"from {COUNTRIES}.infrastructure import x\n", "domain -> infrastructure"),
+        ("application/a.py", f"import {COUNTRIES}.interfaces.http\n", "application -> interfaces"),
+        ("domain/a.py", f"from {LOCALES}.domain.model import Violation\n", "otro catálogo"),
+        ("domain/a.py", f"from {REGIONS}.domain.model import RegionRecord\n", "otro catálogo"),
+        ("infrastructure/a.py", f"import {REGIONS}.infrastructure.conninfo\n", "otro catálogo"),
+        ("domain/a.py", f"from {PACKAGE}.currency import model\n", "otro catálogo"),
+        ("interfaces/a.py", f"from {COMPOSITION_ROOT} import x\n", "fuera de __main__"),
+    ],
+)
+def test_violations_of_the_countries_catalog_are_detected(
+    tmp_path: Path, file: str, source: str, expected: str
+) -> None:
+    root = tree_with(tmp_path, {file: source}, catalog="countries")
+    found = violations(root, layers_under(root))
+    assert any(expected in item for item in found), found
+
+
+@pytest.mark.parametrize("catalog", ["locales", "regions"])
+def test_other_catalogs_importing_countries_are_detected(tmp_path: Path, catalog: str) -> None:
+    root = tree_with(
+        tmp_path, {"domain/a.py": f"from {COUNTRIES}.domain.model import C\n"}, catalog=catalog
+    )
+    found = violations(root, layers_under(root))
+    assert any("otro catálogo" in item for item in found), found
+
+
+def test_allowed_dependencies_inside_countries_are_accepted(tmp_path: Path) -> None:
+    root = tree_with(
+        tmp_path,
+        {
+            "application/a.py": f"from {COUNTRIES}.domain.model import CountryRecord\n",
+            "interfaces/a.py": f"from {COUNTRIES}.application.queries import q\n",
+            "infrastructure/a.py": f"from {COUNTRIES}.domain.ports import P\n",
+        },
+        catalog="countries",
     )
     assert violations(root, layers_under(root)) == []
