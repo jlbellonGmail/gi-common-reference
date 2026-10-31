@@ -1,10 +1,11 @@
 """Assets SVG de bandera: ruta segura y contenido sin partes activas (RF-49, D12 del plan).
 
-La ruta es relativa al directorio de assets del paquete y se compone de segmentos simples: sin `..`,
-sin rutas absolutas, sin separadores de Windows y con extensión `.svg` (la misma regla que la
-constraint `country_flag_asset_path_format`). El contenido es una función pura: un SVG de bandera es
-datos, nunca ejecuta nada ni carga recursos externos. Las rutas, la existencia y la suma de
-verificación las comprueba la aplicación a través del puerto `FlagStore`.
+La ruta es un nombre de archivo plano dentro del directorio de assets del paquete, sin
+subdirectorios (el empaquetado y `.gitattributes` cubren solo ese nivel): sin `..`, sin rutas
+absolutas, sin separadores de Windows y con extensión `.svg` (la misma regla que la constraint
+`country_flag_asset_path_format`). El contenido es una función pura: un SVG de bandera es datos,
+nunca ejecuta nada ni carga recursos externos. Las rutas, la existencia y la suma de verificación
+las comprueba la aplicación a través del puerto `FlagStore`.
 """
 
 import hashlib
@@ -14,7 +15,7 @@ import xml.etree.ElementTree as ET
 SVG_MEDIA_TYPE = "image/svg+xml"
 SVG_NAMESPACE = "http://www.w3.org/2000/svg"
 MAX_SVG_BYTES = 512 * 1024
-ASSET_PATH = re.compile(r"([A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\.svg")
+ASSET_PATH = re.compile(r"[A-Za-z0-9_-]+\.svg")
 # Una bandera es arte estático: tampoco se admite animación SMIL, que puede escribir un `href`
 # peligroso por `to`, `from`, `by` o `values` sin que el atributo `href` figure en el documento.
 FORBIDDEN_ELEMENTS = frozenset(
@@ -35,7 +36,7 @@ URL_REFERENCE = re.compile(r"url\(\s*(?P<quote>['\"]?)(?P<target>[^)]*?)(?P=quot
 
 
 def is_safe_asset_path(path: str) -> bool:
-    """`ar.svg` y `4x3/ar.svg` sí; `../ar.svg`, `/ar.svg`, `a//b.svg`, `ar.png` y `a\\b.svg` no."""
+    """`ar.svg` sí; `4x3/ar.svg`, `../ar.svg`, `/ar.svg`, `ar.png` y `a\\b.svg` no."""
     return ASSET_PATH.fullmatch(path) is not None
 
 

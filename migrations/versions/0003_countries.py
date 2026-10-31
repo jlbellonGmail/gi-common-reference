@@ -117,7 +117,7 @@ CREATE TABLE reference.country_flag (
     snapshot_version bigint NOT NULL,
     CONSTRAINT country_flag_pkey PRIMARY KEY (country_id),
     CONSTRAINT country_flag_asset_path_format
-        CHECK (asset_path ~ '^([A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\.svg$'),
+        CHECK (asset_path ~ '^[A-Za-z0-9_-]+\.svg$'),
     CONSTRAINT country_flag_sha256_format CHECK (sha256 ~ '^sha256:[0-9a-f]{64}$'),
     CONSTRAINT country_flag_exception_reason_trimmed
         CHECK (exception_reason IS NULL

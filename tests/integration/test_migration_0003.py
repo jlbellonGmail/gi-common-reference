@@ -834,14 +834,15 @@ def test_a_flag_is_either_an_asset_reference_or_a_declared_exception(
 
 
 @pytest.mark.parametrize(
-    "path", ["../ar.svg", "/ar.svg", "a//b.svg", "ar.png", "ar", "a\\b.svg", "x/../y.svg", ".svg"]
+    "path",
+    ["../ar.svg", "/ar.svg", "a//b.svg", "4x3/ar.svg", "ar.png", "ar", "a\\b.svg", ".svg"],
 )
 def test_the_asset_path_is_relative_without_traversal(
     catalog: psycopg.Connection, path: str
 ) -> None:
     with rejected(errors.CheckViolation, "country_flag_asset_path_format"):
         insert(catalog, "country_flag", flag(AR, asset_path=path))
-    insert(catalog, "country_flag", flag(AR, asset_path="4x3/ar.svg"))
+    insert(catalog, "country_flag", flag(AR, asset_path="ar.svg"))
 
 
 @pytest.mark.parametrize("digest", ["abc", "sha256:" + "E" * 64, "sha256:" + "e" * 63, "e" * 64])

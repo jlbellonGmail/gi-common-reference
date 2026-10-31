@@ -88,7 +88,7 @@
         "required": ["country_id", "asset_path", "sha256", "media_type", "source"],
         "properties": {
           "country_id": { "type": "string" },
-          "asset_path": { "description": "Ruta relativa dentro del directorio de assets de bandera.", "type": "string" },
+          "asset_path": { "description": "Nombre del archivo SVG dentro del directorio de assets de bandera (sin subdirectorios), p. ej. ar.svg.", "type": "string" },
           "sha256": { "description": "SHA-256 de los bytes exactos del archivo.", "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
           "media_type": { "const": "image/svg+xml" },
           "source": { "description": "Rol de la fuente de procedencia que declara la licencia de la bandera.", "enum": ["identity", "names", "calling_code", "classification", "flags"] }

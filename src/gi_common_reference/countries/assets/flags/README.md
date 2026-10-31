@@ -5,7 +5,7 @@ Este directorio viaja dentro del paquete instalado (`gi_common_reference.countri
 
 Contrato de cada asset:
 
-- Archivo SVG con ruta relativa a este directorio, sin `..` ni rutas absolutas.
+- Archivo SVG directamente en este directorio (sin subdirectorios), con un nombre simple.
 - Referenciado desde el snapshot de Countries por `asset_path`, `sha256` (de los bytes exactos del
   archivo) y `media_type` = `image/svg+xml`. La suma se verifica al incorporar y al servir.
 - Bien formado, de hasta 512 KiB y sin contenido activo: sin DTD ni entidades, `script`,

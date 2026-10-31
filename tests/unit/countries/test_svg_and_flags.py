@@ -128,21 +128,21 @@ def declaration(path: str, data: bytes, *, sha256: str | None = None) -> FlagDec
 
 @pytest.fixture
 def store(tmp_path: Path) -> DirectoryFlagStore:
-    (tmp_path / "4x3").mkdir()
     (tmp_path / "ar.svg").write_bytes(VALID[0])
-    (tmp_path / "4x3" / "na.svg").write_bytes(VALID[1])
+    (tmp_path / "na.svg").write_bytes(VALID[1])
     (tmp_path / "bad.svg").write_bytes(REJECTED["script"])
     return DirectoryFlagStore(tmp_path)
 
 
 def test_the_directory_store_reads_files_by_relative_path(store: DirectoryFlagStore) -> None:
     assert store.read("ar.svg") == VALID[0]
-    assert store.read("4x3/na.svg") == VALID[1]
+    assert store.read("na.svg") == VALID[1]
     assert store.read("missing.svg") is None
-    assert store.read("4x3") is None  # un directorio no es un asset
 
 
-@pytest.mark.parametrize("path", ["../ar.svg", "/ar.svg", "a/../ar.svg", "ar.png", "a\\b.svg", ""])
+@pytest.mark.parametrize(
+    "path", ["../ar.svg", "/ar.svg", "a/../ar.svg", "4x3/ar.svg", "ar.png", "a\\b.svg", ""]
+)
 def test_the_store_never_reads_outside_its_root(
     tmp_path: Path, store: DirectoryFlagStore, path: str
 ) -> None:
@@ -157,7 +157,7 @@ def test_the_packaged_store_serves_the_package_directory_and_reads_no_network() 
 
 
 def test_declared_flags_that_match_their_asset_pass(store: DirectoryFlagStore) -> None:
-    flags = [declaration("ar.svg", VALID[0]), declaration("4x3/na.svg", VALID[1])]
+    flags = [declaration("ar.svg", VALID[0]), declaration("na.svg", VALID[1])]
     assert verify_flag_declarations(flags, store) == []
 
 
