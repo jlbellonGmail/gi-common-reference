@@ -41,7 +41,7 @@ countries/interfaces (HTTP read-only, CLI de incorporación y diff)
 | D5 | Clasificación: `region_id` y `subregion_id` nullable; `CHECK (subregion_id IS NULL OR region_id IS NOT NULL)`; `region_id → reference.region`; FK compuesta `(region_id, subregion_id) → reference.subregion (region_id, subregion_id) DEFERRABLE INITIALLY DEFERRED` (MATCH SIMPLE: no se evalúa sin `subregion_id`). Una reclasificación de 002 que deja un Country incoherente falla al commit salvo que la misma transacción lo corrija | Trigger propio de coherencia: duplica lo que una FK compuesta ya garantiza (D8 de 002) | RF-6, RF-48, CL-17 |
 | D6 | `codes_snapshot_version` por país: snapshot en que obtuvo su tripleta vigente. Búsqueda por código: el `active` que lo posee; si no, el `inactive` con mayor `codes_snapshot_version` (desempate por `country_id`); códigos históricos no resuelven (RF-10) | Buscar en el historial de artefactos: costo por request | RF-9, RF-10 |
 | D7 | Recodificación = una traza `country_recoding` por (país, snapshot) con la tripleta anterior y la nueva completas (`NOT NULL`, al menos un código distinto) y su provenance. Los códigos históricos para RF-43 salen de esa traza. Reasignación = declaración `code_reassignments` (país, tipo de código, código, provenance) | Una traza por código: una recodificación real (TP/TMP/626 → TL/TLS/626) cambia varios a la vez y la tripleta es indivisible (RF-4) | RF-4, RF-41–RF-43, RF-46 |
-| D8 | Estado y reemplazo como 002: `status IN ('active','inactive')`, `replacement_country_id` solo si `inactive`, distinto de sí mismo, FK diferible, sin ciclos (validado en dominio) | Atributo `is_active`: prohibido por la convención común (RF-39) | RF-39, RF-40 |
+| D8 | Estado como 002: `status IN ('active','inactive')`. El reemplazo es **0..N** (`replacement_country_ids`, D21), solo no vacío si `inactive`, sin duplicados ni el propio país, existencia por constraint trigger diferido y sin ciclos en el grafo (validado en dominio) | Atributo `is_active`: prohibido por la convención común (RF-39). Reemplazo singular: no expresa una división (AN → CW/SX/BQ) | RF-39, RF-40, RF-52 |
 | D9 | `country_locale (country_id, locale_id, name, official_name)`, PK (`country_id`, `locale_id`), FK a `reference.country` y `reference.locale`, CHECK de recorte en `name` y en `official_name` (si no es `NULL`). Sin ningún texto en `reference.country` | Columnas `name_es`/`name_en`: viola RF-23 de 001 y RF-34 | RF-31–RF-34 |
 | D10 | Conjunto obligatorio de locales de Countries = archivo versionado y empaquetado `countries/infrastructure/required-locales.v1.json` (`policy_version` 1, mismos `locale_id` de `en` y `es` que fija la política de Regions, con el código como guarda). Política propia: Countries no importa la de Regions | Reutilizar el archivo de Regions: acopla dos catálogos que versionan por separado (D-17) | RF-35, S-4 |
 | D11 | Banderas (el `asset_path` es un nombre de archivo plano, sin subdirectorios, para que `package-data` `flags/*` y `-text` de `.gitattributes` lo cubran exactamente): tabla `country_flag (country_id PK, asset_path, sha256, exception_reason, snapshot_version)` con `CHECK` de exactamente una de (`asset_path` + `sha256`) o `exception_reason`. El asset vive como archivo versionado bajo `src/gi_common_reference/countries/assets/flags/` (se empaqueta como package-data) y se resuelve por el puerto `FlagStore`. Nada binario en `country` ni en la base | Guardar el SVG en la base: duplica la fuente de verdad del repositorio y mezcla blobs con el catálogo (D-3). Servirlo desde una ruta de configuración: el DB y el archivo servido podrían diferir | RF-19, RF-49, RF-50 |
@@ -54,6 +54,7 @@ countries/interfaces (HTTP read-only, CLI de incorporación y diff)
 | D18 | Diff (RF-30): comando de solo lectura `diff <archivo>` que carga el estado vigente y reutiliza el plan de cambios del dominio; no toma el lock exclusivo ni escribe. No verifica los assets (eso ocurre al incorporar) | Dry-run dentro de `incorporate`: mezcla revisión con escritura | RF-30 |
 | D19 | Errores con códigos estables en inglés minúscula (`country_not_found`, `invalid_country_id`, `invalid_code`, `invalid_locale_id`, `unknown_locale`, `flag_not_declared`, `flag_integrity_error`) y sin mensajes localizados | Mensajes traducidos en el catálogo: pertenecen a la capa consumidora (D-19 de la spec) | RNF-9 |
 | D20 | La coherencia de clasificación contra `active` de 002 (RF-48) se valida al incorporar, bajo los locks compartidos, no con constraint: depende de estado de otro catálogo en el tiempo y 002 puede inactivar después | Trigger entre catálogos: haría depender a 002 de 003 (RNF-7) | RF-48 |
+| D21 | Reemplazo 0..N como columna `replacement_country_ids uuid[] NOT NULL DEFAULT '{}'` en `country`, con CHECKs (sin `NULL` ni duplicados, sin el propio `country_id`, no vacío solo si `inactive`) y un constraint trigger diferido que exige que cada sucesor exista (una FK no aplica a un arreglo). El dominio ordena el conjunto ascendente por `country_id` al leerlo del snapshot, así comparar contra el vigente ignora el orden y la lectura es determinista. Como la columna cambia de tipo y `0003` no se mergeó ni se desplegó, se modifica `0003` en su lugar: una `0004` dejaría una columna singular creada y eliminada en la misma entrega. Los sucesores de una división no necesitan un tipo de relación: la semántica de la sucesión queda fuera de alcance (spec) | Tabla puente `country_replacement (country_id, successor_id)`: dos FK reales, pero obliga a borrar filas al reactivar un país y choca con la regla de no borrar físicamente (RF-7); un arreglo se limpia con un `UPDATE` permitido. Mantener `replacement_country_id` y agregar otro campo: dos formas de decir lo mismo | RF-40, RF-52, RNF-5 |
 
 ## Archivos probables
 
@@ -80,8 +81,8 @@ docs/operacion.md, docs/desarrollo.md, README.md
 Todas las columnas son `NOT NULL` salvo las marcadas opcionales. Ninguna `tenant_id` ni texto dependiente del idioma en `country` (RF-1, RF-34). Ninguna FK hacia Currency ni consumidores (RNF-7).
 
 - **`country_snapshot`:** `snapshot_version bigint PK CHECK > 0`, `content_digest`, `locale_snapshot_version bigint REFERENCES locale_snapshot`, `region_snapshot_version bigint REFERENCES region_snapshot` (declarada, RF-47), `region_current_snapshot_version bigint REFERENCES region_snapshot` (vigente al incorporar), `required_locales_version integer`, `provenance jsonb`, `artifact jsonb`, `incorporated_at`. Sin `UPDATE`/`DELETE`/`TRUNCATE` (RNF-2). `region_current_snapshot_version >= region_snapshot_version`.
-- **`country`:** `country_id uuid PK`, `alpha2`, `alpha3`, `numeric_code` (con sus CHECK), `region_id` y `subregion_id` (opcionales, con D5), `calling_code` (opcional), `status CHECK IN ('active','inactive')`, `replacement_country_id uuid` (opcional, FK diferible), `first_snapshot_version`, `codes_snapshot_version`, `last_changed_snapshot_version`.
-  - CHECKs: reemplazo distinto de sí mismo; reemplazo solo si `inactive`; `subregion_id` implica `region_id`.
+- **`country`:** `country_id uuid PK`, `alpha2`, `alpha3`, `numeric_code` (con sus CHECK), `region_id` y `subregion_id` (opcionales, con D5), `calling_code` (opcional), `status CHECK IN ('active','inactive')`, `replacement_country_ids uuid[] NOT NULL DEFAULT '{}'` (0..N, D21), `first_snapshot_version`, `codes_snapshot_version`, `last_changed_snapshot_version`.
+  - CHECKs: `replacement_country_ids` sin `NULL`, sin duplicados y sin el propio `country_id`, no vacío solo si `inactive`, y cada sucesor existente (constraint trigger diferido, D21); `subregion_id` implica `region_id`.
   - `EXCLUDE USING btree (alpha2 WITH =) WHERE (status = 'active') DEFERRABLE INITIALLY DEFERRED`, e igual para `alpha3` y `numeric_code` (RF-3).
 - **`country_locale`:** D9.
 - **`country_flag`:** D11, con FK a `country` y a `country_snapshot`.
@@ -100,7 +101,7 @@ Todas las columnas son `NOT NULL` salvo las marcadas opcionales. Ninguna `tenant
     "unresolved_conflicts": [] },
   "countries": [{"country_id": "uuid", "alpha2": "NA", "alpha3": "NAM", "numeric_code": "516",
                  "region_id": "uuid", "subregion_id": "uuid", "calling_code": "264",
-                 "status": "active", "replacement_country_id": null}],
+                 "status": "active", "replacement_country_ids": []}],
   "country_names": [{"country_id": "uuid", "locale_id": "uuid", "name": "Namibia", "official_name": "Republic of Namibia"}],
   "flags": [{"country_id": "uuid", "asset_path": "na.svg", "sha256": "sha256:…", "media_type": "image/svg+xml", "source": "flags"}],
   "flag_exceptions": [{"country_id": "uuid", "reason": "…"}],
@@ -122,7 +123,7 @@ Una transacción con los locks de D15. Ante el primer paso que falla se informan
 3. Contexto: hay una versión vigente de Locale; cada `locale_id` obligatorio existe, es `active` y su código coincide con la política (RF-35, RF-36); `region_snapshot_version` declarada está incorporada y es ≤ la vigente (RF-47).
 4. Identidad y completitud: `country_id` UUID, sin repetir; ningún país, nombre ni bandera publicado ausente (RF-21); ids nuevos nunca usados (RF-45).
 5. Códigos: formato (RF-5); cambio de tripleta sin recodificación declarada rechazado (RF-4, RF-42); cada recodificación es de un país publicado con tripleta anterior = vigente, tripleta nueva = la del snapshot, provenance y al menos un código distinto (RF-41, RF-42); un código vigente o histórico de **otro** id exige reasignación declarada y una reasignación que no corresponde se rechaza (RF-43); RF-3 sobre el estado final (RF-44).
-6. Ciclo de vida: `status` válido; reemplazo solo en `inactive`, existente, no a sí mismo, sin ciclos (RF-40); `calling_code` con formato (RF-5).
+6. Ciclo de vida: `status` válido; reemplazos (0..N) solo en `inactive`, sin duplicados, existentes, ninguno a sí mismo y sin ciclos en el grafo (RF-40, RF-52); `calling_code` con formato (RF-5).
 7. Clasificación: `region_id`/`subregion_id` existentes en Regions vigente, `subregion_id` solo con `region_id`, par coherente, `active` solo con clasificación `active` (RF-6, RF-48).
 8. Localizaciones: país y `locale_id` existentes; a lo sumo una por par; `name`/`official_name` sin vacío ni espacios en los bordes; nombre **nuevo** con locale `inactive` rechazado, los publicados se conservan; cada país tiene `name` en cada locale obligatorio (RF-31–RF-36).
 9. Procedencia: fuentes con todos sus campos, roles requeridos presentes, `unresolved_conflicts` vacío (RF-28, RF-29).
@@ -145,7 +146,7 @@ Una transacción con los locks de D15. Ante el primer paso que falla se informan
 
 - Las rutas `by-*` se declaran antes que `{country_id}` y `{country_id}/flag`; una prueba cubre el solapamiento (`/by-alpha2/flag`, `/by-numeric/na`).
 - Forma: `{snapshot_version, data}` o `{snapshot_version, error}`; `snapshot_version` es la versión vigente de Countries y `null` con catálogo vacío; nunca 500 por catálogo vacío (RF-16).
-- `Country` = `{country_id, alpha2, alpha3, numeric_code, status, replacement_country_id, region_id, subregion_id, calling_code, name, official_name}`. `name` y `official_name` son los del `locale_id` pedido, o `null` si no se pidió locale o no hay traducción: sin fallback (RF-38). No se devuelven nombres ni códigos de región: el consumidor resuelve `region_id` por el contrato de Regions.
+- `Country` = `{country_id, alpha2, alpha3, numeric_code, status, replacement_country_ids, region_id, subregion_id, calling_code, name, official_name}`. `name` y `official_name` son los del `locale_id` pedido, o `null` si no se pidió locale o no hay traducción: sin fallback (RF-38). No se devuelven nombres ni códigos de región: el consumidor resuelve `region_id` por el contrato de Regions.
 - `locale_id` mal formado o inexistente → 422 (`invalid_locale_id`, `unknown_locale`), distinto de 404. `status`, `region_id` y `subregion_id` inválidos → 422.
 - Los códigos de error son los de D19; ninguna respuesta lleva mensajes localizados.
 
@@ -178,7 +179,7 @@ Una transacción con los locks de D15. Ante el primer paso que falla se informan
 | RF-28, RF-29 | Paso 9, formato del snapshot |
 | RF-30 | D18, `diff` |
 | RF-31–RF-33, RF-35–RF-38 (incl. RF-32 recorte por CHECK, D9, y RF-37 solo textos persistidos) | D9, D10, paso 8, API |
-| RF-39, RF-40 | D8, paso 6 |
+| RF-39, RF-40, RF-52 | D8, D21, paso 6 |
 | RF-41–RF-43, RF-46 | D7, paso 5, `country_recoding` |
 | RF-47, RF-51 | `country_snapshot` (versiones declarada, vigente y de política), columnas de versión de `country`, paso 3 |
 | RNF-1 | Orden determinístico, prueba en dos bases |
