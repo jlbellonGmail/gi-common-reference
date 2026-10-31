@@ -85,6 +85,17 @@ COUNTRIES: dict[str, Row] = {
         "Democratic Republic of Timor-Leste",
         "República Democrática de Timor-Leste",
     ),
+    "AF": (
+        "AFG",
+        "004",
+        "93",
+        "142",
+        None,
+        "Afghanistan",
+        "Afganistán",
+        "Islamic Republic of Afghanistan",
+        "República Islámica de Afganistán",
+    ),
     "AN": (
         "ANT",
         "530",

@@ -1,7 +1,7 @@
 """Raíz de composición: conecta las interfaces con los adaptadores concretos.
 
-Vive fuera de las capas de `locales` y `regions` a propósito: las interfaces no dependen de
-infraestructura.
+Vive fuera de las capas de `locales`, `regions` y `countries` a propósito: las interfaces no
+dependen de infraestructura.
 
 Es el único módulo, fuera de cada catálogo, autorizado a importar sus internos (puertos del dominio
 y adaptadores de infraestructura), porque su función es cablearlos. Cualquier otro código externo
@@ -12,6 +12,18 @@ solo puede importar `<catálogo>.interfaces.http` (`architecture.json`). La prue
 from pathlib import Path
 from typing import Any
 
+from gi_common_reference.countries.domain.policy import RequiredLocales as CountryRequiredLocales
+from gi_common_reference.countries.domain.ports import CountryRepository, FlagStore
+from gi_common_reference.countries.infrastructure.flag_store import packaged_flag_store
+from gi_common_reference.countries.infrastructure.policy_reader import (
+    load_required_locales as load_country_required_locales,
+)
+from gi_common_reference.countries.infrastructure.postgres_repository import (
+    PostgresCountryRepository,
+)
+from gi_common_reference.countries.infrastructure.snapshot_reader import (
+    read_snapshot_document as read_country_snapshot_document,
+)
 from gi_common_reference.locales.domain.ports import LocaleReader, LocaleRepository
 from gi_common_reference.locales.infrastructure.postgres_reader import PostgresLocaleReader
 from gi_common_reference.locales.infrastructure.postgres_repository import (
@@ -56,3 +68,19 @@ def required_locales() -> RequiredLocales:
 
 def postgres_region_reader(conninfo: str) -> RegionReader:
     return PostgresRegionReader(conninfo)
+
+
+def postgres_country_repository(conninfo: str) -> CountryRepository:
+    return PostgresCountryRepository(conninfo)
+
+
+def read_country_snapshot(path: Path) -> dict[str, Any]:
+    return read_country_snapshot_document(path)
+
+
+def country_required_locales() -> CountryRequiredLocales:
+    return load_country_required_locales()
+
+
+def country_flag_store() -> FlagStore:
+    return packaged_flag_store()
