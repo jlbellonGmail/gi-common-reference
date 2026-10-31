@@ -16,7 +16,7 @@ Los datos de este módulo son globales: no dependen de un tenant ni incorporan l
 
 `countries` es el catálogo global de países de GI.
 
-Proporciona identidades estables y datos normalizados basados en estándares internacionales, incluyendo códigos como `alpha2`, `alpha3` y código numérico, además de información geográfica y otros datos de referencia aprobados para el catálogo.
+Proporciona identidades estables (`country_id`) y datos normalizados basados en estándares internacionales: códigos ISO 3166-1 (`alpha2`, `alpha3` y código numérico, que son claves de resolución y no la identidad), clasificación por `region_id` y `subregion_id` del catálogo Regions, código de llamada E.164, nombres por `locale_id` del catálogo de Locale y bandera SVG. Se consulta en `GET /v1/countries` (contrato en `contracts/countries-api.v1.openapi.json`). Spec: [`specs/003-countries`](specs/003-countries/spec.md).
 
 Módulos como Persons, Tenants, CRM, ERP u otros pueden referenciar un país mediante `country_id`, pero la propiedad y mantenimiento del catálogo permanece en `gi-common-reference`.
 
