@@ -73,6 +73,16 @@ REJECTED = {
     "utf-16": svg("<rect/>").decode().encode("utf-16"),
     "nul byte": svg("<rect/>") + b"\x00",
     "invalid utf-8": b"\xff\xfe<svg/>",
+    "smil set href": svg('<a><set attributeName="href" to="javascript:alert(1)"/></a>'),
+    "smil animate href": svg(
+        '<a><animate attributeName="href" values="https://example.com/x"/></a>'
+    ),
+    "smil animate onload": svg('<rect><animate attributeName="onload" to="x()"/></rect>'),
+    "smil animateTransform": svg(
+        '<rect><animateTransform attributeName="transform" to="0"/></rect>'
+    ),
+    "smil animateMotion": svg('<rect><animateMotion path="M0 0"/></rect>'),
+    "smil discard": svg('<rect><discard begin="1s"/></rect>'),
     "too large": svg("<!-- " + "x" * MAX_SVG_BYTES + " -->"),
 }
 

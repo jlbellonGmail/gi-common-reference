@@ -9,7 +9,7 @@ Contrato de cada asset:
 - Referenciado desde el snapshot de Countries por `asset_path`, `sha256` (de los bytes exactos del
   archivo) y `media_type` = `image/svg+xml`. La suma se verifica al incorporar y al servir.
 - Bien formado, de hasta 512 KiB y sin contenido activo: sin DTD ni entidades, `script`,
-  `foreignObject`, `iframe`, `object`, `embed`, atributos `on*` ni referencias que no sean
+  `foreignObject`, `iframe`, `object`, `embed`, animación SMIL (`set`, `animate*`, `discard`), atributos `on*` ni referencias que no sean
   fragmentos locales `#id`.
 - La fuente y la licencia se declaran en la procedencia del snapshot (rol `flags`).
 

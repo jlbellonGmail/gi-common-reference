@@ -15,7 +15,22 @@ SVG_MEDIA_TYPE = "image/svg+xml"
 SVG_NAMESPACE = "http://www.w3.org/2000/svg"
 MAX_SVG_BYTES = 512 * 1024
 ASSET_PATH = re.compile(r"([A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\.svg")
-FORBIDDEN_ELEMENTS = frozenset({"script", "foreignobject", "iframe", "object", "embed"})
+# Una bandera es arte estático: tampoco se admite animación SMIL, que puede escribir un `href`
+# peligroso por `to`, `from`, `by` o `values` sin que el atributo `href` figure en el documento.
+FORBIDDEN_ELEMENTS = frozenset(
+    {
+        "script",
+        "foreignobject",
+        "iframe",
+        "object",
+        "embed",
+        "set",
+        "animate",
+        "animatetransform",
+        "animatemotion",
+        "discard",
+    }
+)
 URL_REFERENCE = re.compile(r"url\(\s*(?P<quote>['\"]?)(?P<target>[^)]*?)(?P=quote)\s*\)", re.I)
 
 
