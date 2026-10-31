@@ -32,6 +32,10 @@ FORBIDDEN_ELEMENTS = frozenset(
         "discard",
     }
 )
+# Funciones CSS que cargan un recurso a partir de un string: no se admiten en una bandera.
+RESOURCE_FUNCTION = re.compile(
+    r"(?<![\w-])(?:-webkit-)?(?:image-set|image|src|cross-fade|element|paint)\s*\(", re.I
+)
 URL_REFERENCE = re.compile(r"url\(\s*(?P<quote>['\"]?)(?P<target>[^)]*?)(?P=quote)\s*\)", re.I)
 
 
@@ -76,7 +80,8 @@ def svg_content_problems(data: bytes) -> list[str]:
         if local in FORBIDDEN_ELEMENTS:
             problems.append(f"elemento <{local}> no permitido")
         if local == "style":
-            problems += _css_problems(element.text or "", "elemento <style>")
+            # Un navegador concatena todos los nodos de texto de <style>: `u<x/>rl(` es `url(`.
+            problems += _css_problems("".join(element.itertext()), "elemento <style>")
         for attribute, value in element.attrib.items():
             name = attribute.rsplit("}", 1)[-1].lower()
             if name.startswith("on"):
@@ -96,6 +101,8 @@ def _css_problems(text: str, where: str) -> list[str]:
     problems: list[str] = []
     if "\\" in text:
         problems.append(f"{where} usa escapes CSS")
+    if RESOURCE_FUNCTION.search(text):
+        problems.append(f"{where} usa una función CSS que carga recursos")
     if "@import" in text.lower():
         problems.append(f"{where} importa una hoja de estilos")
     for match in URL_REFERENCE.finditer(text):

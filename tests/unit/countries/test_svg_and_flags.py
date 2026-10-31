@@ -66,6 +66,13 @@ REJECTED = {
     "attribute url": svg('<rect fill="url(http://example.com/a)"/>'),
     "style element import": svg("<style>@import url(http://example.com/a.css);</style>"),
     "style element url": svg("<style>rect { fill: url(http://example.com/a); }</style>"),
+    "style split by a child": svg("<style>.a{fill:u<x/>rl(http://evil.example/a)}</style>"),
+    "style import split": svg("<style>@im<x/>port url(http://evil.example/a.css);</style>"),
+    "style image-set": svg('<style>rect { fill: image-set("http://evil.example/a" 1x); }</style>'),
+    "attribute image-set": svg(
+        "<rect style=\"background:image-set('http://evil.example/a' 1x)\"/>"
+    ),
+    "style src function": svg('<style>@font-face { src: src("http://evil.example/f"); }</style>'),
     "stylesheet pi": b'<?xml-stylesheet href="http://example.com/a.css"?>' + svg(""),
     "not well formed": b"<svg " + NS.encode() + b"><rect></svg>",
     "empty": b"",

@@ -356,6 +356,9 @@ def test_the_flag_is_served_verified_with_its_checksum_as_etag(api: TestClient) 
     assert response.headers["content-type"] == "image/svg+xml"
     assert response.content == flag_bytes("AR")
     assert response.headers["etag"] == f'"{flag_digest(flag_bytes("AR"))}"'
+    assert response.headers["x-content-type-options"] == "nosniff"
+    policy = response.headers["content-security-policy"]
+    assert "default-src 'none'" in policy and "sandbox" in policy
     tl = api.get(f"/v1/countries/{country_id('TP')}/flag")
     assert tl.status_code == 200 and tl.content == flag_bytes("TP")  # la bandera sigue al id
 

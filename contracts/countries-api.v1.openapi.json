@@ -253,6 +253,18 @@
                   "type": "string"
                 },
                 "description": "`\"sha256:…\"`"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "`nosniff`"
+              },
+              "Content-Security-Policy": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Sin recursos externos ni scripts: el SVG se trata como datos."
               }
             }
           },

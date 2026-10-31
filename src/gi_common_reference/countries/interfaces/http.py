@@ -111,11 +111,23 @@ NOT_FOUND: dict[int | str, dict[str, Any]] = {
 INVALID: dict[int | str, dict[str, Any]] = {
     422: {"model": ErrorEnvelope, "description": "Parámetro inválido (distinto de 404)."}
 }
+# Si un consumidor navega a la URL, el SVG no debe ejecutar ni cargar nada (defensa en profundidad).
+FLAG_SECURITY_HEADERS = {
+    "X-Content-Type-Options": "nosniff",
+    "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; sandbox",
+}
 FLAG_RESPONSES: dict[int | str, dict[str, Any]] = {
     200: {
         "description": "El asset SVG de la bandera; `ETag` es su suma de verificación.",
         "content": {SVG: {"schema": {"type": "string", "format": "binary"}}},
-        "headers": {"ETag": {"schema": {"type": "string"}, "description": '`"sha256:…"`'}},
+        "headers": {
+            "ETag": {"schema": {"type": "string"}, "description": '`"sha256:…"`'},
+            "X-Content-Type-Options": {"schema": {"type": "string"}, "description": "`nosniff`"},
+            "Content-Security-Policy": {
+                "schema": {"type": "string"},
+                "description": "Sin recursos externos ni scripts: el SVG se trata como datos.",
+            },
+        },
     },
     404: {
         "model": ErrorEnvelope,
@@ -229,7 +241,9 @@ def create_api(reader: CountryReader, flags: FlagStore) -> FastAPI:
         version = result.snapshot_version
         if result.status is FlagStatus.FOUND and result.content is not None:
             return Response(
-                content=result.content, media_type=SVG, headers={"ETag": f'"{result.sha256}"'}
+                content=result.content,
+                media_type=SVG,
+                headers={"ETag": f'"{result.sha256}"', **FLAG_SECURITY_HEADERS},
             )
         if result.status is FlagStatus.COUNTRY_NOT_FOUND:
             return _error(404, version, "country_not_found", "no encontrado")
