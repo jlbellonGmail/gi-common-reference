@@ -1,8 +1,9 @@
 """L-1: fuera de cada catálogo solo su `interfaces.http` es importable, salvo la raíz de
 composición.
 
-`architecture.json` declara público únicamente `<catálogo>/interfaces/http` para `locales` y
-`regions`. El check de AI-NATIVE solo resuelve imports relativos, así que esta prueba aplica la
+`architecture.json` declara público únicamente `<catálogo>/interfaces/http` para `locales`,
+`regions` y `countries`. El check de AI-NATIVE solo resuelve imports relativos, así que esta prueba
+aplica la
 regla a los imports absolutos de todo el código fuente que no pertenece al catálogo importado.
 `bootstrap.py` es la única excepción: es la raíz de composición, cuyo trabajo es cablear los
 puertos del dominio con los adaptadores de infraestructura. Su lista de imports internos está
@@ -20,7 +21,8 @@ ROOT = Path(__file__).resolve().parents[2]
 PACKAGE = "gi_common_reference"
 LOCALES = f"{PACKAGE}.locales"
 REGIONS = f"{PACKAGE}.regions"
-CATALOGS = ("locales", "regions")
+COUNTRIES = f"{PACKAGE}.countries"
+CATALOGS = ("locales", "regions", "countries")
 PUBLIC = f"{LOCALES}.interfaces.http"
 PUBLIC_SURFACES = {f"{PACKAGE}.{catalog}.interfaces.http" for catalog in CATALOGS}
 ANCESTORS = {PACKAGE} | {
@@ -40,6 +42,13 @@ COMPOSITION_ROOT_MAY_IMPORT = {
     f"{REGIONS}.infrastructure.postgres_reader",
     f"{REGIONS}.infrastructure.postgres_repository",
     f"{REGIONS}.infrastructure.snapshot_reader",
+    f"{COUNTRIES}.domain.policy",
+    f"{COUNTRIES}.domain.ports",
+    f"{COUNTRIES}.infrastructure.flag_store",
+    f"{COUNTRIES}.infrastructure.policy_reader",
+    f"{COUNTRIES}.infrastructure.postgres_reader",
+    f"{COUNTRIES}.infrastructure.postgres_repository",
+    f"{COUNTRIES}.infrastructure.snapshot_reader",
 }
 SOURCE = ROOT / "src" / PACKAGE
 
@@ -196,7 +205,60 @@ def test_modules_inside_a_catalog_may_import_their_own_internals(tmp_path: Path)
     assert violations(root) == []
 
 
+def test_countries_http_reexports_what_the_app_needs() -> None:
+    from gi_common_reference.countries.interfaces import http
+
+    expected = {"OPENAPI_URL", "CountryReader", "CountrySession", "FlagStore", "create_api"}
+    assert expected <= set(http.__all__)
+
+
 def test_regions_http_reexports_what_the_app_needs() -> None:
     from gi_common_reference.regions.interfaces import http
 
     assert {"OPENAPI_URL", "RegionReader", "RegionSession", "create_api"} <= set(http.__all__)
+
+
+def test_an_external_module_importing_a_countries_internal_is_detected(tmp_path: Path) -> None:
+    root = tree(tmp_path, {"app.py": f"from {COUNTRIES}.domain.ports import CountryReader\n"})
+    assert any("app.py" in item and "countries.domain.ports" in item for item in violations(root))
+
+
+def test_catalogs_importing_internals_of_countries_or_the_reverse_are_detected(
+    tmp_path: Path,
+) -> None:
+    root = tree(
+        tmp_path,
+        {
+            "countries/domain/a.py": f"from {LOCALES}.domain.model import Violation\n",
+            "countries/infrastructure/b.py": f"import {REGIONS}.infrastructure.postgres_reader\n",
+            "regions/domain/c.py": f"from {COUNTRIES}.domain.model import CountryRecord\n",
+            "locales/domain/d.py": f"import {COUNTRIES}.infrastructure.postgres_reader\n",
+        },
+    )
+    found = violations(root)
+    assert any("countries/domain/a.py" in item and "locales.domain" in item for item in found)
+    assert any("countries/infrastructure/b.py" in item for item in found)
+    assert any("regions/domain/c.py" in item and "countries.domain" in item for item in found)
+    assert any(
+        "locales/domain/d.py" in item and "countries.infrastructure" in item for item in found
+    )
+
+
+def test_modules_inside_countries_may_import_their_own_internals(tmp_path: Path) -> None:
+    root = tree(tmp_path, {"countries/domain/a.py": f"from {COUNTRIES}.infrastructure import x\n"})
+    assert violations(root) == []
+
+
+def test_the_countries_public_surface_is_accepted_for_any_importer(tmp_path: Path) -> None:
+    root = tree(tmp_path, {"app.py": f"from {COUNTRIES}.interfaces.http import create_api\n"})
+    assert violations(root) == []
+
+
+def test_nothing_but_the_composition_root_imports_countries_internals_in_the_repository() -> None:
+    importers = [
+        path.relative_to(SOURCE).as_posix()
+        for path in sorted(SOURCE.rglob("*.py"))
+        if path.relative_to(SOURCE).parts[0] != "countries"
+        and any(_within(name, {COUNTRIES}) for name in internal_imports(path))
+    ]
+    assert set(importers) <= {COMPOSITION_ROOT}, importers

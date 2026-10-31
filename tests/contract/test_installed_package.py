@@ -187,3 +187,65 @@ def test_a_missing_regions_resource_is_reported_as_an_incomplete_installation(
     done = run_python(broken, *REGIONS_CLI, str(snapshot), cwd=elsewhere, environ=environ)
     assert done.returncode == 2, done.stderr
     assert "instalación incompleta" in done.stderr and Path(resource).name in done.stderr
+
+
+# --- Countries (spec 003): schema, política y directorio de assets viajan en el wheel ----------
+
+COUNTRIES_RESOURCES = (
+    "gi_common_reference/countries/infrastructure/country-snapshot.v1.schema.json",
+    "gi_common_reference/countries/infrastructure/required-locales.v1.json",
+    "gi_common_reference/countries/assets/__init__.py",
+    "gi_common_reference/countries/assets/flags/README.md",
+)
+COUNTRIES_CLI = ["-m", "gi_common_reference.countries.interfaces.cli", "incorporate"]
+
+
+def test_the_wheel_contains_the_countries_schema_policy_and_flag_assets_directory(
+    wheel: Path,
+) -> None:
+    with zipfile.ZipFile(wheel) as archive:
+        names = archive.namelist()
+    for resource in COUNTRIES_RESOURCES:
+        assert resource in names, resource
+
+
+def test_the_installed_copy_serves_the_packaged_flag_directory(site: Path, elsewhere: Path) -> None:
+    code = (
+        "from importlib import resources;"
+        "from gi_common_reference.bootstrap import country_flag_store;"
+        "flags = resources.files('gi_common_reference.countries.assets').joinpath('flags');"
+        "print(flags.is_dir(), flags.joinpath('README.md').is_file());"
+        "print(country_flag_store().read('missing.svg'))"
+    )
+    done = run_python(site, "-c", code, cwd=elsewhere)
+    assert done.returncode == 0, done.stderr
+    assert done.stdout.splitlines() == ["True True", "None"]
+
+
+def test_the_countries_cli_reaches_the_database_from_the_installed_copy(
+    site: Path, elsewhere: Path
+) -> None:
+    example = json.loads(
+        (ROOT / "contracts" / "country-snapshot.v1.example.json").read_text("utf-8")
+    )
+    snapshot = write_snapshot(elsewhere, example)
+    environ = {"REFERENCE_DATABASE_URL": UNREACHABLE}
+    done = run_python(site, *COUNTRIES_CLI, str(snapshot), cwd=elsewhere, environ=environ)
+    assert done.returncode == 2, done.stderr
+    assert "falló la base de datos" in done.stderr
+    assert "instalación incompleta" not in done.stderr
+    assert SECRET not in done.stdout + done.stderr
+
+
+@pytest.mark.parametrize("resource", COUNTRIES_RESOURCES[:2])
+def test_a_missing_countries_resource_is_reported_as_an_incomplete_installation(
+    site: Path, elsewhere: Path, tmp_path: Path, resource: str
+) -> None:
+    broken = tmp_path / "broken-site"
+    shutil.copytree(site, broken)
+    (broken / resource).unlink()
+    snapshot = write_snapshot(elsewhere, {"snapshot_version": 1})
+    environ = {"REFERENCE_DATABASE_URL": UNREACHABLE}
+    done = run_python(broken, *COUNTRIES_CLI, str(snapshot), cwd=elsewhere, environ=environ)
+    assert done.returncode == 2, done.stderr
+    assert "instalación incompleta" in done.stderr and Path(resource).name in done.stderr
