@@ -2,7 +2,7 @@
 
 from collections.abc import Callable
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol
 
 from gi_common_reference.countries.domain.policy import RequiredLocales
 
@@ -20,3 +20,11 @@ SnapshotReader = Callable[[Path], dict[str, Any]]
 
 PolicyLoader = Callable[[], RequiredLocales]
 """Carga el conjunto obligatorio de locales versionado en el repositorio (RF-35)."""
+
+
+class FlagStore(Protocol):
+    """Lee los assets de bandera del repositorio por ruta relativa (RF-49, RF-50)."""
+
+    def read(self, asset_path: str) -> bytes | None:
+        """Los bytes exactos del archivo, o `None` si no existe o la ruta no es segura."""
+        ...
