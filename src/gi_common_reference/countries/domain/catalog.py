@@ -5,6 +5,8 @@ detiene en el primer paso que falla, informando todas las violaciones de ese pas
 
 3. Contexto de Locale y de Region/Subregion: RF-35, RF-36, RF-47.
 4. Identidad y completitud: RF-2, RF-21, RF-45.
+5. Códigos: RF-3, RF-4, RF-5, RF-41, RF-42, RF-43, RF-44.
+6. Ciclo de vida: RF-5, RF-39, RF-40.
 
 Los pasos 1 y 2 (digest y clasificación A/B/C/D) los evalúa `snapshot.evaluate_snapshot`. Si todo
 pasa devuelve el plan de cambios en el orden de escritura.
@@ -16,7 +18,10 @@ from collections.abc import Callable, Iterable, Mapping
 from dataclasses import dataclass, field
 from typing import Any
 
+from gi_common_reference.countries.domain.codes import is_valid_calling_code, is_valid_code
 from gi_common_reference.countries.domain.model import (
+    CODE_KINDS,
+    STATUSES,
     CatalogState,
     CodeTriple,
     CountryRecord,
@@ -169,7 +174,12 @@ def plan_catalog_changes(
     policy: RequiredLocales,
 ) -> CatalogPlan:
     context = _Context(incoming, current, locales, regions, policy)
-    checks: tuple[Check, ...] = (_check_context, _check_identity)
+    checks: tuple[Check, ...] = (
+        _check_context,
+        _check_identity,
+        _check_codes,
+        _check_lifecycle,
+    )
     for check in checks:
         violations = check(context)
         if violations:
@@ -279,6 +289,189 @@ def _check_identity(context: _Context) -> list[Violation]:
     return violations
 
 
+# --- paso 5: códigos ----------------------------------------------------------------------------
+
+
+def _check_codes(context: _Context) -> list[Violation]:
+    violations: list[Violation] = []
+    for country in context.incoming.countries:
+        for kind in CODE_KINDS:
+            code = country.triple.code(kind)
+            if not is_valid_code(kind, code):
+                message = (
+                    f"país {country.country_id}: el {kind} {code!r} no tiene el formato ISO 3166-1"
+                )
+                violations.append(Violation("RF-5", message))
+    if violations:
+        return violations
+    violations += _check_recodings(context)
+    violations += _check_reassignments(context)
+    violations += _check_final_codes(context)
+    return violations
+
+
+def _check_recodings(context: _Context) -> list[Violation]:
+    violations: list[Violation] = []
+    final = {c.country_id: c for c in context.incoming.countries}
+    declared: set[str] = set()
+    for item in context.incoming.recodings:
+        label = f"recodificación del país {item.country_id}"
+        if item.country_id in declared:
+            violations.append(Violation("RF-41", f"{label}: está declarada más de una vez"))
+            continue
+        declared.add(item.country_id)
+        published = context.published.get(item.country_id)
+        if published is None:
+            violations.append(Violation("RF-42", f"{label}: el país no está publicado"))
+            continue
+        for side, triple in (("anterior", item.previous), ("nueva", item.new)):
+            for kind in CODE_KINDS:
+                if not is_valid_code(kind, triple.code(kind)):
+                    message = f"{label}: el {kind} de la tripleta {side} no tiene formato válido"
+                    violations.append(Violation("RF-5", message))
+        if not _has_provenance(item.provenance):
+            violations.append(Violation("RF-42", f"{label}: no tiene referencia de provenance"))
+        if item.previous != published.triple:
+            message = (
+                f"{label}: declara la tripleta anterior {_show(item.previous)}, pero la vigente "
+                f"es {_show(published.triple)}"
+            )
+            violations.append(Violation("RF-42", message))
+        if item.previous == item.new:
+            violations.append(Violation("RF-42", f"{label}: no cambia ningún código"))
+        incoming = final.get(item.country_id)
+        if incoming is not None and incoming.triple != item.new:
+            message = (
+                f"{label}: declara la tripleta nueva {_show(item.new)}, pero el snapshot trae "
+                f"{_show(incoming.triple)}"
+            )
+            violations.append(Violation("RF-41", message))
+
+    for country_id, published in sorted(context.published.items()):
+        incoming = final.get(country_id)
+        if incoming is None or incoming.triple == published.triple or country_id in declared:
+            continue
+        message = (
+            f"país {country_id}: cambia su tripleta vigente {_show(published.triple)} por "
+            f"{_show(incoming.triple)} sin declarar una recodificación"
+        )
+        violations.append(Violation("RF-42", message))
+    return violations
+
+
+def _check_reassignments(context: _Context) -> list[Violation]:
+    """RF-43: un país solo recibe un código vigente o histórico de otro si lo declara."""
+    holders: dict[tuple[str, str], set[str]] = {}
+    for holder in context.published.values():
+        for kind in CODE_KINDS:
+            holders.setdefault((kind, holder.triple.code(kind)), set()).add(holder.country_id)
+    for kind, code, country_id in context.current.historical_codes:
+        holders.setdefault((kind, code), set()).add(country_id)
+
+    needed: set[tuple[str, str, str]] = set()
+    for country in context.incoming.countries:
+        published = context.published.get(country.country_id)
+        for kind in CODE_KINDS:
+            code = country.triple.code(kind)
+            if published is not None and published.triple.code(kind) == code:
+                continue
+            if holders.get((kind, code), set()) - {country.country_id}:
+                needed.add((country.country_id, kind, code))
+
+    violations: list[Violation] = []
+    declared: set[tuple[str, str, str]] = set()
+    for item in context.incoming.reassignments:
+        key = (item.country_id, item.code_kind, item.code)
+        label = f"reasignación del {item.code_kind} {item.code} al país {item.country_id}"
+        if key in declared:
+            violations.append(Violation("RF-43", f"{label}: está declarada más de una vez"))
+        elif key not in needed:
+            message = f"{label}: no corresponde (el país no recibe ese código o nadie más lo tuvo)"
+            violations.append(Violation("RF-43", message))
+        elif not _has_provenance(item.provenance):
+            violations.append(Violation("RF-43", f"{label}: no tiene referencia de provenance"))
+        declared.add(key)
+    for country_id, needed_kind, code in sorted(needed - declared):
+        message = (
+            f"el país {country_id} recibe el {needed_kind} {code}, vigente o histórico de otro "
+            f"país, sin declarar la reasignación"
+        )
+        violations.append(Violation("RF-43", message))
+    return violations
+
+
+def _check_final_codes(context: _Context) -> list[Violation]:
+    """RF-3 sobre el estado final del snapshot completo (RF-44)."""
+    violations: list[Violation] = []
+    for kind in CODE_KINDS:
+        counts = Counter(
+            c.triple.code(kind) for c in context.incoming.countries if c.status == "active"
+        )
+        for code, count in sorted(counts.items()):
+            if count > 1:
+                message = f"{count} países active comparten el {kind} {code}"
+                violations.append(Violation("RF-3", message))
+    return violations
+
+
+# --- paso 6: ciclo de vida ----------------------------------------------------------------------
+
+
+def _check_lifecycle(context: _Context) -> list[Violation]:
+    violations: list[Violation] = []
+    for country in context.incoming.countries:
+        if country.status not in STATUSES:
+            message = (
+                f"país {country.country_id}: status {country.status!r} fuera de la convención "
+                f"común ({', '.join(STATUSES)})"
+            )
+            violations.append(Violation("RF-39", message))
+        if country.calling_code is not None and not is_valid_calling_code(country.calling_code):
+            message = f"país {country.country_id}: el calling_code no es un código E.164"
+            violations.append(Violation("RF-5", message))
+    return violations + _check_replacements(context)
+
+
+def _check_replacements(context: _Context) -> list[Violation]:
+    countries = context.incoming.countries
+    ids = {c.country_id for c in countries}
+    violations: list[Violation] = []
+    for country in countries:
+        target = country.replacement_country_id
+        if target is None:
+            continue
+        if country.status == "active":
+            message = f"país active {country.country_id} no puede tener reemplazo"
+            violations.append(Violation("RF-40", message))
+        if target == country.country_id:
+            violations.append(Violation("RF-40", f"país {country.country_id}: reemplazo a sí"))
+        elif target not in ids:
+            message = f"país {country.country_id}: el reemplazo {target} no existe"
+            violations.append(Violation("RF-40", message))
+    next_of = {c.country_id: c.replacement_country_id for c in countries}
+    reported: set[str] = set()
+    for start in sorted(next_of):
+        cycle = _cycle_from(start, next_of)
+        if cycle and not reported.intersection(cycle):
+            reported.update(cycle)
+            path = " → ".join([*cycle, cycle[0]])
+            violations.append(Violation("RF-40", f"ciclo de reemplazos: {path}"))
+    return violations
+
+
+def _cycle_from(start: str, next_of: Mapping[str, str | None]) -> list[str]:
+    """Ids del ciclo al que llega `start` siguiendo los reemplazos; vacío si no hay ciclo."""
+    path: list[str] = []
+    node: str | None = start
+    while node is not None and node in next_of and node not in path:
+        path.append(node)
+        node = next_of[node]
+    if node is None or node not in path:
+        return []
+    cycle = path[path.index(node) :]
+    return [] if len(cycle) == 1 else cycle  # el reemplazo a sí mismo se reporta aparte
+
+
 # --- plan ---------------------------------------------------------------------------------------
 
 
@@ -326,6 +519,18 @@ def _flag_changes(
 
 
 # --- utilidades ---------------------------------------------------------------------------------
+
+
+def _show(triple: CodeTriple) -> str:
+    return f"{triple.alpha2}/{triple.alpha3}/{triple.numeric_code}"
+
+
+def _has_provenance(provenance: Any) -> bool:
+    """RF-41, RF-43, S-11: una referencia a la fuente de autoridad, con `source` no vacío."""
+    if not isinstance(provenance, Mapping):
+        return False
+    source = provenance.get("source")
+    return isinstance(source, str) and bool(source.strip())
 
 
 def _triple(value: object) -> CodeTriple:
