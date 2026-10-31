@@ -508,17 +508,13 @@
             "title": "Status",
             "description": "`active`: apto para nuevas referencias; `inactive`: sigue resoluble."
           },
-          "replacement_country_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Replacement Country Id",
-            "description": "País sucesor unívoco; solo si es `inactive`."
+          "replacement_country_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Replacement Country Ids",
+            "description": "Países sucesores (0..N), en orden ascendente de `country_id`; vacío si no hay sucesión declarada o si el país es `active`."
           },
           "region_id": {
             "anyOf": [
@@ -588,7 +584,7 @@
           "alpha3",
           "numeric_code",
           "status",
-          "replacement_country_id",
+          "replacement_country_ids",
           "region_id",
           "subregion_id",
           "calling_code",

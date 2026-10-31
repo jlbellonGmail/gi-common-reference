@@ -78,7 +78,7 @@ GRANT SELECT ON reference.country_snapshot, reference.country, reference.country
 GRANT SELECT, INSERT ON reference.country_snapshot, reference.country, reference.country_locale,
     reference.country_flag, reference.country_recoding TO reference_loader;
 GRANT UPDATE (alpha2, alpha3, numeric_code, codes_snapshot_version, region_id, subregion_id,
-    calling_code, status, replacement_country_id, last_changed_snapshot_version)
+    calling_code, status, replacement_country_ids, last_changed_snapshot_version)
     ON reference.country TO reference_loader;
 GRANT UPDATE (name, official_name) ON reference.country_locale TO reference_loader;
 GRANT UPDATE (asset_path, sha256, exception_reason, snapshot_version)
@@ -214,6 +214,7 @@ Lista altas, cambios de códigos, de clasificación, de atributos, de estado, de
 Los códigos de salida son los de la sección 4 (0 `INCORPORADO`, `NO-OP` o diff calculado; 1 `RECHAZADO`; 2 error operativo). La incorporación es atómica y toma su propio lock exclusivo más locks compartidos sobre los de Locale y Regions: mientras dura, ninguno de los dos cambia el catálogo contra el que se valida. Reglas que conviene conocer:
 
 - El snapshot es el catálogo completo: omitir un país, un nombre o una bandera publicados se rechaza; un retiro es `status = inactive`.
+- El reemplazo es **0..N** (`replacement_country_ids`): un país `inactive` declara todos sus sucesores (tres en una división como AN → CW, SX y BQ, uno en una fusión, ninguno si la fuente no declara sucesión). El orden en el snapshot no importa: se guarda y se devuelve ascendente por `country_id`. Un `active` no tiene reemplazos; un repetido, un `null`, un sucesor inexistente o un ciclo se rechazan.
 - Los códigos `alpha2`, `alpha3` y `numeric_code` forman una tripleta: solo cambian con una recodificación declarada (con referencia de provenance), que conserva el `country_id`. Reutilizar un código vigente o histórico de otro país exige declarar la reasignación.
 - Una versión de Regions o una clasificación `inactive` en un país `active` se rechaza (`RF-48`). Una reclasificación de Regions que deje incoherente a un país la rechaza Regions (`RF-35` de 002): hasta que exista un procedimiento de incorporación conjunta, esa reclasificación queda bloqueada.
 - Una constraint de la base violada al final de la transacción es un rechazo (salida 1) con el nombre de la constraint, no un error operativo.

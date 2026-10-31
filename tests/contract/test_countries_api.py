@@ -75,21 +75,23 @@ FRENCH_AR = {
     "name": "Argentine",
     "official_name": "République argentine",
 }
-ACTIVE = ["AF", "AQ", "AR", "BV", "CA", "NA", "PR", "TL", "TW", "US"]
+ACTIVE = ["AF", "AQ", "AR", "BQ", "BV", "CA", "CW", "NA", "PR", "SX", "TL", "TW", "US"]
+SUCCESSORS = sorted(country_id(k) for k in ("CW", "SX", "BQ"))
 
 
 def scenario() -> tuple[dict[str, Any], dict[str, Any]]:
     """v1: los países base + AF (004), TP y AN; AR también en francés.
-    v2: TP se recodifica a TL (mismo id) y AN se retira (`inactive`)."""
+    v2: TP se recodifica a TL (mismo id) y AN se divide: se retira (`inactive`) y sus tres
+    sucesores, CW, SX y BQ, son países nuevos."""
     v1 = build_snapshot(1, keys=(*BASE, "AF", "TP", "AN"))
     v1["country_names"].append(FRENCH_AR)
-    keys = (*BASE, "AF")
+    keys = (*BASE, "AF", "CW", "SX", "BQ")
     v2 = build_snapshot(
         2,
         countries=[
             *(country(k) for k in keys),
             country("TL", identity="TP"),
-            country("AN", status="inactive"),
+            country("AN", status="inactive", replacement_country_ids=list(reversed(SUCCESSORS))),
         ],
         country_names=[
             *(n for k in keys for n in names(k)),
@@ -160,7 +162,7 @@ def test_the_default_list_is_active_countries_in_binary_alpha2_order(api: TestCl
         "alpha3",
         "numeric_code",
         "status",
-        "replacement_country_id",
+        "replacement_country_ids",
         "region_id",
         "subregion_id",
         "calling_code",
@@ -182,7 +184,7 @@ def test_inactive_countries_are_listed_only_on_request(api: TestClient) -> None:
 
 def test_the_list_can_be_filtered_by_region_and_subregion(api: TestClient) -> None:
     americas = api.get("/v1/countries", params={"region_id": region_id("019").upper()})
-    assert alpha2(americas) == ["AR", "BV", "CA", "PR", "US"]
+    assert alpha2(americas) == ["AR", "BQ", "BV", "CA", "CW", "PR", "SX", "US"]
     northern = api.get("/v1/countries", params={"subregion_id": subregion_id("021")})
     assert alpha2(northern) == ["CA", "US"]
     both = api.get(
@@ -193,7 +195,7 @@ def test_the_list_can_be_filtered_by_region_and_subregion(api: TestClient) -> No
             "status": "all",
         },
     )
-    assert alpha2(both) == ["AN", "AR", "BV", "PR"]
+    assert alpha2(both) == ["AN", "AR", "BQ", "BV", "CW", "PR", "SX"]
     unknown = api.get("/v1/countries", params={"region_id": str(uuid.uuid4())})
     assert unknown.status_code == 200 and unknown.json()["data"] == []
 
@@ -541,7 +543,7 @@ def test_the_countries_contract_declares_only_get_operations_and_its_errors() ->
         "alpha3",
         "numeric_code",
         "status",
-        "replacement_country_id",
+        "replacement_country_ids",
         "region_id",
         "subregion_id",
         "calling_code",
@@ -574,3 +576,35 @@ def test_the_countries_contract_declares_only_get_operations_and_its_errors() ->
 def test_requests_are_routed_by_path(path: str, countries: bool, regions: bool) -> None:
     assert belongs_to_countries(path) is countries
     assert belongs_to_regions(path) is regions
+
+
+# --- reemplazo 0..N (RF-52, CA-21) ---------------------------------------------------------------
+
+
+def test_a_split_country_exposes_every_successor_in_ascending_order(api: TestClient) -> None:
+    """CL-12: AN → CW, SX y BQ; se devuelven ordenados aunque el snapshot los trajo al revés."""
+    by_id = api.get(f"/v1/countries/{country_id('AN')}").json()["data"]
+    assert by_id["status"] == "inactive" and by_id["replacement_country_ids"] == SUCCESSORS
+    by_code = api.get("/v1/countries/by-alpha2/AN").json()["data"]
+    assert by_code["replacement_country_ids"] == SUCCESSORS
+    listed = {
+        c["alpha2"]: c for c in api.get("/v1/countries", params={"status": "all"}).json()["data"]
+    }
+    assert listed["AN"]["replacement_country_ids"] == SUCCESSORS
+    for successor in ("CW", "SX", "BQ"):
+        assert api.get(f"/v1/countries/{country_id(successor)}").status_code == 200
+
+
+def test_active_and_retired_countries_without_succession_have_an_empty_set(api: TestClient) -> None:
+    data = {
+        c["alpha2"]: c for c in api.get("/v1/countries", params={"status": "all"}).json()["data"]
+    }
+    assert all(c["replacement_country_ids"] == [] for k, c in data.items() if k != "AN")
+    assert isinstance(data["AN"]["replacement_country_ids"], list)
+
+
+def test_the_replacement_is_a_list_in_the_published_contract() -> None:
+    schema = countries_openapi_document()["components"]["schemas"]["Country"]["properties"]
+    assert schema["replacement_country_ids"]["type"] == "array"
+    assert schema["replacement_country_ids"]["items"] == {"type": "string"}
+    assert "replacement_country_id" not in schema

@@ -73,8 +73,11 @@ class Country(BaseModel):
     status: Literal["active", "inactive"] = Field(
         description="`active`: apto para nuevas referencias; `inactive`: sigue resoluble."
     )
-    replacement_country_id: str | None = Field(
-        description="País sucesor unívoco; solo si es `inactive`."
+    replacement_country_ids: list[str] = Field(
+        description=(
+            "Países sucesores (0..N), en orden ascendente de `country_id`; vacío si no hay "
+            "sucesión declarada o si el país es `active`."
+        )
     )
     region_id: str | None = Field(description="Region de Region/Subregion, o `null`.")
     subregion_id: str | None = Field(description="Subregion de Region/Subregion, o `null`.")
@@ -145,7 +148,7 @@ def _country(view: CountryView) -> dict[str, Any]:
         "alpha3": record.alpha3,
         "numeric_code": record.numeric_code,
         "status": record.status,
-        "replacement_country_id": record.replacement_country_id,
+        "replacement_country_ids": list(record.replacement_country_ids),
         "region_id": record.region_id,
         "subregion_id": record.subregion_id,
         "calling_code": record.calling_code,
