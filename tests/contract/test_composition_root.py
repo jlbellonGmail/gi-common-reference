@@ -46,6 +46,7 @@ COMPOSITION_ROOT_MAY_IMPORT = {
     f"{COUNTRIES}.domain.ports",
     f"{COUNTRIES}.infrastructure.flag_store",
     f"{COUNTRIES}.infrastructure.policy_reader",
+    f"{COUNTRIES}.infrastructure.postgres_reader",
     f"{COUNTRIES}.infrastructure.postgres_repository",
     f"{COUNTRIES}.infrastructure.snapshot_reader",
 }
@@ -202,6 +203,13 @@ def test_modules_inside_a_catalog_may_import_their_own_internals(tmp_path: Path)
         },
     )
     assert violations(root) == []
+
+
+def test_countries_http_reexports_what_the_app_needs() -> None:
+    from gi_common_reference.countries.interfaces import http
+
+    expected = {"OPENAPI_URL", "CountryReader", "CountrySession", "FlagStore", "create_api"}
+    assert expected <= set(http.__all__)
 
 
 def test_regions_http_reexports_what_the_app_needs() -> None:

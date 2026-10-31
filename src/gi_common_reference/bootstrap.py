@@ -13,11 +13,12 @@ from pathlib import Path
 from typing import Any
 
 from gi_common_reference.countries.domain.policy import RequiredLocales as CountryRequiredLocales
-from gi_common_reference.countries.domain.ports import CountryRepository, FlagStore
+from gi_common_reference.countries.domain.ports import CountryReader, CountryRepository, FlagStore
 from gi_common_reference.countries.infrastructure.flag_store import packaged_flag_store
 from gi_common_reference.countries.infrastructure.policy_reader import (
     load_required_locales as load_country_required_locales,
 )
+from gi_common_reference.countries.infrastructure.postgres_reader import PostgresCountryReader
 from gi_common_reference.countries.infrastructure.postgres_repository import (
     PostgresCountryRepository,
 )
@@ -84,3 +85,7 @@ def country_required_locales() -> CountryRequiredLocales:
 
 def country_flag_store() -> FlagStore:
     return packaged_flag_store()
+
+
+def postgres_country_reader(conninfo: str) -> CountryReader:
+    return PostgresCountryReader(conninfo)

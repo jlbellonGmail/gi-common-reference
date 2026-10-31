@@ -17,6 +17,7 @@ from gi_common_reference.countries.domain.model import (
     Recoding,
     RegionCatalog,
 )
+from gi_common_reference.countries.domain.ports import ReaderUnavailable
 from gi_common_reference.countries.domain.snapshot import HistoricalSnapshot
 from tests.fixtures.countries import locale_catalog, region_catalog
 
@@ -152,3 +153,51 @@ class FakeCountryRepository:
     def inspect(self) -> Iterator[FakeCatalogView]:
         self.inspections += 1
         yield FakeCatalogView(copy.deepcopy(self.state), self)
+
+
+class FakeCountrySession:
+    """Sesión vacía: alcanza para probar el manejo de sesiones y de la base caída."""
+
+    def __init__(self, reader: "FakeCountryReader") -> None:
+        self._reader = reader
+
+    def snapshot_version(self) -> int | None:
+        return self._reader.version
+
+    def locale_exists(self, locale_id: str) -> bool:
+        return locale_id in self._reader.locale_ids
+
+    def countries(
+        self,
+        status: str | None,
+        region_id: str | None,
+        subregion_id: str | None,
+        locale_id: str | None,
+    ) -> Sequence[Any]:
+        return []
+
+    def country_by_id(self, country_id: str, locale_id: str | None) -> None:
+        return None
+
+    def country_by_code(self, kind: CodeKind, code: str, locale_id: str | None) -> None:
+        return None
+
+    def flag(self, country_id: str) -> None:
+        return None
+
+
+class FakeCountryReader:
+    """Lector en memoria; cuenta las sesiones para comprobar una sola por consulta."""
+
+    def __init__(self, version: int | None = None, locale_ids: Sequence[str] = ()) -> None:
+        self.version = version
+        self.locale_ids = set(locale_ids)
+        self.sessions = 0
+        self.unavailable = False
+
+    @contextmanager
+    def session(self) -> Iterator[FakeCountrySession]:
+        if self.unavailable:
+            raise ReaderUnavailable("la base no responde")
+        self.sessions += 1
+        yield FakeCountrySession(self)

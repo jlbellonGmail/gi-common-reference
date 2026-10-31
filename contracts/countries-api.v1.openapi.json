@@ -1,0 +1,681 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "gi-common-reference: countries",
+    "description": "Catálogo global de países ISO 3166-1, versionado y de solo lectura: identidad `country_id`, códigos de resolución, clasificación por `region_id`/`subregion_id`, nombres por `locale_id` y bandera SVG.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/countries/by-alpha2/{code}": {
+      "get": {
+        "tags": [
+          "countries"
+        ],
+        "summary": "Obtener un país por su código ISO alpha-2 vigente",
+        "description": "Sin distinguir mayúsculas. El `active` que lo posee; si ninguno, el `inactive` que lo\nobtuvo más recientemente. Un código mal formado es 422; uno histórico, 404.",
+        "operationId": "getCountryByAlpha2",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code"
+            }
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CountryEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/countries/by-alpha3/{code}": {
+      "get": {
+        "tags": [
+          "countries"
+        ],
+        "summary": "Obtener un país por su código ISO alpha-3 vigente",
+        "operationId": "getCountryByAlpha3",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code"
+            }
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CountryEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/countries/by-numeric/{code}": {
+      "get": {
+        "tags": [
+          "countries"
+        ],
+        "summary": "Obtener un país por su código ISO numérico vigente",
+        "description": "Texto exacto de 3 dígitos (`004`); `4` es 422.",
+        "operationId": "getCountryByNumeric",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code"
+            }
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CountryEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/countries/{country_id}/flag": {
+      "get": {
+        "tags": [
+          "countries"
+        ],
+        "summary": "Obtener la bandera SVG de un país",
+        "operationId": "getCountryFlag",
+        "parameters": [
+          {
+            "name": "country_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Country Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "El asset SVG de la bandera; `ETag` es su suma de verificación.",
+            "content": {
+              "image/svg+xml": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            },
+            "headers": {
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "`\"sha256:…\"`"
+              }
+            }
+          },
+          "404": {
+            "description": "`country_not_found`, o `flag_not_declared` si el país no tiene bandera.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "`flag_integrity_error`: el asset no coincide.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/countries/{country_id}": {
+      "get": {
+        "tags": [
+          "countries"
+        ],
+        "summary": "Obtener un país por su country_id, cualquiera sea su status",
+        "description": "Un `country_id` mal formado es \"no encontrado\" (404), no un error de validación.",
+        "operationId": "getCountryById",
+        "parameters": [
+          {
+            "name": "country_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Country Id"
+            }
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CountryEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/countries": {
+      "get": {
+        "tags": [
+          "countries"
+        ],
+        "summary": "Listar los países, ordenados por alpha2",
+        "operationId": "listCountries",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "active",
+                "inactive",
+                "all"
+              ],
+              "default": "active"
+            },
+            "description": "`active` (por defecto), `inactive` o `all` para incluir ambos."
+          },
+          {
+            "name": "region_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Restringe el resultado a una Region.",
+              "title": "Region Id"
+            },
+            "description": "Restringe el resultado a una Region."
+          },
+          {
+            "name": "subregion_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Restringe el resultado a una Subregion.",
+              "title": "Subregion Id"
+            },
+            "description": "Restringe el resultado a una Subregion."
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CountryListEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Country": {
+        "properties": {
+          "country_id": {
+            "type": "string",
+            "title": "Country Id",
+            "description": "Identidad estable del país (UUID de Reference)."
+          },
+          "alpha2": {
+            "type": "string",
+            "title": "Alpha2",
+            "description": "ISO 3166-1 alpha-2 vigente (`NA` es Namibia)."
+          },
+          "alpha3": {
+            "type": "string",
+            "title": "Alpha3",
+            "description": "ISO 3166-1 alpha-3 vigente."
+          },
+          "numeric_code": {
+            "type": "string",
+            "title": "Numeric Code",
+            "description": "ISO 3166-1 numérico vigente, con ceros (`004`)."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive"
+            ],
+            "title": "Status",
+            "description": "`active`: apto para nuevas referencias; `inactive`: sigue resoluble."
+          },
+          "replacement_country_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Replacement Country Id",
+            "description": "País sucesor unívoco; solo si es `inactive`."
+          },
+          "region_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Id",
+            "description": "Region de Region/Subregion, o `null`."
+          },
+          "subregion_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subregion Id",
+            "description": "Subregion de Region/Subregion, o `null`."
+          },
+          "calling_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calling Code",
+            "description": "Código de país E.164 sin `+`, o `null`."
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "Nombre en el `locale_id` pedido, o `null`."
+          },
+          "official_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Official Name",
+            "description": "Nombre formal en el `locale_id`, o `null`."
+          }
+        },
+        "type": "object",
+        "required": [
+          "country_id",
+          "alpha2",
+          "alpha3",
+          "numeric_code",
+          "status",
+          "replacement_country_id",
+          "region_id",
+          "subregion_id",
+          "calling_code",
+          "name",
+          "official_name"
+        ],
+        "title": "Country",
+        "description": "País o área ISO 3166-1. La identidad es `country_id`; los códigos son claves de resolución.\n\nSin ningún texto propio (los nombres son de `CountryLocale`) ni códigos de región (RF-34, RF-6)."
+      },
+      "CountryEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "type": "integer",
+            "title": "Snapshot Version",
+            "description": "Snapshot vigente del catálogo Countries."
+          },
+          "data": {
+            "$ref": "#/components/schemas/Country"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "CountryEnvelope"
+      },
+      "CountryListEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version",
+            "description": "Snapshot vigente; `null` si todavía no se incorporó ninguno."
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/Country"
+            },
+            "type": "array",
+            "title": "Data"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "CountryListEnvelope"
+      },
+      "ErrorBody": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorBody"
+      },
+      "ErrorEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version",
+            "description": "Snapshot vigente, o `null` si no hay."
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorBody"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "error"
+        ],
+        "title": "ErrorEnvelope"
+      }
+    }
+  }
+}

@@ -52,12 +52,11 @@ from tests.fixtures.countries import (
     names,
     reassignment,
     recoding,
+    regions_snapshot,
     seal,
 )
-from tests.fixtures.regions import build_snapshot as build_regions_snapshot
 from tests.fixtures.regions import (
     locale_snapshot,
-    region,
     region_id,
     subregion,
     subregion_id,
@@ -78,22 +77,6 @@ TABLES = {
     "country_recoding": "country_id::text, snapshot_version, previous_alpha2, previous_alpha3, "
     "previous_numeric_code, new_alpha2, new_alpha3, new_numeric_code, provenance",
 }
-
-
-def regions_snapshot(version: int = 1, **changes: Any) -> dict[str, Any]:
-    """Regions con lo que usan las fixtures de Countries: 002, 019, 142 y sus subregiones."""
-    subregions = changes.pop("subregions", None) or [
-        subregion("202"),
-        subregion("419"),
-        subregion("021"),
-        subregion("035", "142"),
-    ]
-    return build_regions_snapshot(
-        version,
-        regions=[region("002"), region("019"), region("142")],
-        subregions=subregions,
-        **changes,
-    )
 
 
 def incorporate(url: str, document: dict[str, Any]) -> IncorporationResult:

@@ -23,7 +23,8 @@ from gi_common_reference.countries.domain.model import (
     SubregionInfo,
 )
 from gi_common_reference.countries.domain.policy import RequiredLocale, RequiredLocales
-from tests.fixtures.regions import EN, ES, FR, region_id, subregion_id
+from tests.fixtures.regions import EN, ES, FR, region, region_id, subregion, subregion_id
+from tests.fixtures.regions import build_snapshot as build_regions_snapshot
 
 POLICY = RequiredLocales(1, (RequiredLocale(EN, "en"), RequiredLocale(ES, "es")))
 REGION_KEYS = ("002", "019", "142")
@@ -290,6 +291,23 @@ if __name__ == "__main__":
     # Regenera contracts/country-snapshot.v1.example.json:
     #   PYTHONUTF8=1 python -m tests.fixtures.countries > contracts/country-snapshot.v1.example.json
     print(json.dumps(build_snapshot(), indent=2, ensure_ascii=False))
+
+
+def regions_snapshot(version: int = 1, **changes: Any) -> dict[str, Any]:
+    """Snapshot de Regions con lo que usan las fixtures de Countries: 002, 019, 142 y sus
+    subregiones 202, 419, 021 y 035."""
+    subregions = changes.pop("subregions", None) or [
+        subregion("202"),
+        subregion("419"),
+        subregion("021"),
+        subregion("035", "142"),
+    ]
+    return build_regions_snapshot(
+        version,
+        regions=[region("002"), region("019"), region("142")],
+        subregions=subregions,
+        **changes,
+    )
 
 
 def locale_catalog(

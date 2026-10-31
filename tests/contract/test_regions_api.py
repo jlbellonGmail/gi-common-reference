@@ -21,6 +21,8 @@ from gi_common_reference.app import (
     regions_openapi_document,
 )
 from gi_common_reference.bootstrap import (
+    country_flag_store,
+    postgres_country_reader,
     postgres_reader,
     postgres_region_reader,
     postgres_region_repository,
@@ -32,6 +34,7 @@ from gi_common_reference.locales.application.incorporate import (
 )
 from gi_common_reference.regions.application.incorporate import Outcome, incorporate_snapshot
 from tests.conftest import NetworkGuard, alembic_config, with_database
+from tests.fixtures.country_fakes import FakeCountryReader
 from tests.fixtures.fakes import FakeReader
 from tests.fixtures.region_fakes import FakeRegionReader
 from tests.fixtures.regions import (
@@ -261,7 +264,14 @@ def test_the_reader_role_cannot_write_through_the_api_connection(reader_url: str
 def empty(database_factory: Callable[[], str]) -> TestClient:
     url = database_factory()
     incorporate_locales(locale_snapshot(1), postgres_repository(url))
-    return TestClient(create_catalog_app(postgres_reader(url), postgres_region_reader(url)))
+    return TestClient(
+        create_catalog_app(
+            postgres_reader(url),
+            postgres_region_reader(url),
+            postgres_country_reader(url),
+            country_flag_store(),
+        )
+    )
 
 
 def test_an_empty_catalog_is_never_an_error(empty: TestClient) -> None:
@@ -278,7 +288,9 @@ def test_an_empty_catalog_is_never_an_error(empty: TestClient) -> None:
 def test_an_unavailable_database_is_503_without_details() -> None:
     reader = FakeRegionReader()
     reader.unavailable = True
-    client = TestClient(create_catalog_app(FakeReader(), reader))
+    client = TestClient(
+        create_catalog_app(FakeReader(), reader, FakeCountryReader(), country_flag_store())
+    )
     response = client.get("/v1/regions")
     assert response.status_code == 503
     assert response.json() == {
@@ -289,7 +301,9 @@ def test_an_unavailable_database_is_503_without_details() -> None:
 
 def test_each_query_uses_a_single_session() -> None:
     reader = FakeRegionReader(version=1, locale_ids=[EN])
-    client = TestClient(create_catalog_app(FakeReader(), reader))
+    client = TestClient(
+        create_catalog_app(FakeReader(), reader, FakeCountryReader(), country_flag_store())
+    )
     client.get("/v1/regions", params={"locale_id": EN})
     client.get("/v1/subregions/by-code/419", params={"locale_id": EN})
     assert reader.sessions == 2

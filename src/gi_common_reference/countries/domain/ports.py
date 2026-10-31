@@ -2,11 +2,13 @@
 
 from collections.abc import Callable, Mapping, Sequence
 from contextlib import AbstractContextManager
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Protocol
 
 from gi_common_reference.countries.domain.model import (
     CatalogState,
+    CodeKind,
     CountryRecord,
     FlagRecord,
     LocaleCatalog,
@@ -94,4 +96,51 @@ class CountryRepository(Protocol):
 
     def inspect(self) -> AbstractContextManager[CatalogView]:
         """Una vista de solo lectura del catálogo: no toma el lock exclusivo ni escribe (RF-30)."""
+        ...
+
+
+class ReaderUnavailable(Exception):
+    """La fuente de lectura no responde (p. ej. la base está caída)."""
+
+
+@dataclass(frozen=True)
+class CountryView:
+    """Un Country con sus textos en el locale pedido (`None` si no se pidió o no existen, RF-38)."""
+
+    record: CountryRecord
+    name: str | None
+    official_name: str | None
+
+
+class CountrySession(Protocol):
+    """Lecturas de una sesión consistente: todas ven el mismo estado del catálogo."""
+
+    def snapshot_version(self) -> int | None: ...
+
+    def locale_exists(self, locale_id: str) -> bool: ...
+
+    def countries(
+        self,
+        status: str | None,
+        region_id: str | None,
+        subregion_id: str | None,
+        locale_id: str | None,
+    ) -> Sequence[CountryView]:
+        """Orden determinista por `alpha2` en orden binario y desempate por `country_id`."""
+        ...
+
+    def country_by_id(self, country_id: str, locale_id: str | None) -> CountryView | None: ...
+
+    def country_by_code(
+        self, kind: CodeKind, code: str, locale_id: str | None
+    ) -> CountryView | None:
+        """El `active` que posee el código; si no, el `inactive` que lo obtuvo más recientemente."""
+        ...
+
+    def flag(self, country_id: str) -> FlagRecord | None: ...
+
+
+class CountryReader(Protocol):
+    def session(self) -> AbstractContextManager[CountrySession]:
+        """Una sesión de solo lectura; `snapshot_version` y los datos salen del mismo estado."""
         ...
