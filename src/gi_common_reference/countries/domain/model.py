@@ -47,7 +47,7 @@ class CountryRecord:
     subregion_id: str | None
     calling_code: str | None
     status: str
-    replacement_country_id: str | None
+    replacement_country_ids: tuple[str, ...]  # 0..N sucesores, ascendente por country_id (RF-52)
 
     @property
     def triple(self) -> CodeTriple:

@@ -20,6 +20,7 @@ from tests.fixtures.countries import (
     names,
     reassignment,
     recoding,
+    seal,
 )
 from tests.unit.countries.helpers import messages, plan, published, rules
 
@@ -401,7 +402,7 @@ def test_a_split_creates_new_ids_and_leaves_the_old_one_inactive_without_replace
     assert {c.alpha2 for c in result.new_countries} == {"CW", "SX", "BQ"}
     assert len({c.country_id for c in result.new_countries}) == 3
     (old,) = result.updated_countries
-    assert (old.alpha2, old.status, old.replacement_country_id) == ("AN", "inactive", None)
+    assert (old.alpha2, old.status, old.replacement_country_ids) == ("AN", "inactive", ())
 
 
 def test_a_merge_into_a_successor_records_an_unambiguous_replacement() -> None:
@@ -411,7 +412,7 @@ def test_a_merge_into_a_successor_records_an_unambiguous_replacement() -> None:
         2,
         countries=[
             *(country(k) for k in ALL),
-            country("AN", status="inactive", replacement_country_id=country_id("AR")),
+            country("AN", status="inactive", replacement_country_ids=[country_id("AR")]),
         ],
         country_names=[*(n for k in ALL for n in names(k)), *names("AN")],
         flags=[*(flag(k) for k in ALL if k not in ("AQ", "BV")), flag("AN")],
@@ -419,14 +420,14 @@ def test_a_merge_into_a_successor_records_an_unambiguous_replacement() -> None:
     )
     result = plan(document, current)
     assert result.ok, messages(result)
-    assert result.updated_countries[0].replacement_country_id == country_id("AR")
+    assert result.updated_countries[0].replacement_country_ids == (country_id("AR"),)
 
 
 def test_reactivating_an_inactive_country_is_accepted_when_the_final_state_is_valid() -> None:
     inactive = build_snapshot(
         1,
         countries=[
-            country("AR", status="inactive", replacement_country_id=country_id("NA")),
+            country("AR", status="inactive", replacement_country_ids=[country_id("NA")]),
             country("NA"),
         ],
         keys=("AR", "NA"),
@@ -436,7 +437,7 @@ def test_reactivating_an_inactive_country_is_accepted_when_the_final_state_is_va
     result = plan(reactivated, current)
     assert result.ok, messages(result)
     (back,) = result.updated_countries
-    assert (back.status, back.replacement_country_id) == ("active", None)
+    assert (back.status, back.replacement_country_ids) == ("active", ())
 
 
 def test_reactivating_with_a_colliding_code_or_a_leftover_replacement_is_rejected() -> None:
@@ -455,7 +456,7 @@ def test_reactivating_with_a_colliding_code_or_a_leftover_replacement_is_rejecte
     assert "RF-3" in rules(plan(colliding, current))
     leftover = build_snapshot(
         2,
-        countries=[country("AR", replacement_country_id=country_id("NA")), country("NA")],
+        countries=[country("AR", replacement_country_ids=[country_id("NA")]), country("NA")],
         keys=("AR", "NA"),
     )
     assert rules(plan(leftover, current)) == {"RF-40"}
@@ -474,15 +475,15 @@ def test_replacement_rules() -> None:
     nobody = "00000000-0000-4000-8000-000000000000"
     cases = {
         "active with replacement": [
-            country("AR", replacement_country_id=country_id("NA")),
+            country("AR", replacement_country_ids=[country_id("NA")]),
             country("NA"),
         ],
         "to itself": [
-            country("AR", status="inactive", replacement_country_id=country_id("AR")),
+            country("AR", status="inactive", replacement_country_ids=[country_id("AR")]),
             country("NA"),
         ],
         "nonexistent": [
-            country("AR", status="inactive", replacement_country_id=nobody),
+            country("AR", status="inactive", replacement_country_ids=[nobody]),
             country("NA"),
         ],
     }
@@ -494,8 +495,8 @@ def test_replacement_rules() -> None:
 def test_a_replacement_cycle_is_rejected() -> None:
     document = build_snapshot(
         countries=[
-            country("AR", status="inactive", replacement_country_id=country_id("NA")),
-            country("NA", status="inactive", replacement_country_id=country_id("AR")),
+            country("AR", status="inactive", replacement_country_ids=[country_id("NA")]),
+            country("NA", status="inactive", replacement_country_ids=[country_id("AR")]),
         ],
         keys=("AR", "NA"),
     )
@@ -506,7 +507,7 @@ def test_a_replacement_cycle_is_rejected() -> None:
 def test_a_replacement_to_a_country_of_the_same_snapshot_is_accepted() -> None:
     document = build_snapshot(
         countries=[
-            country("AR", status="inactive", replacement_country_id=country_id("NA")),
+            country("AR", status="inactive", replacement_country_ids=[country_id("NA")]),
             country("NA"),
         ],
         keys=("AR", "NA"),
@@ -523,3 +524,152 @@ def test_the_status_never_creates_a_new_country_id() -> None:
     assert {c.country_id for c in result.updated_countries} <= {
         c.country_id for c in current.countries
     }
+
+
+# --- reemplazo 0..N (RF-52, CL-12, CL-22, CL-23) ------------------------------------------------
+
+
+def split_document(version: int, *, successors: list[str], extra_status: str = "active") -> Any:
+    """AN `inactive` con los sucesores indicados; CW, SX y BQ existen en el snapshot."""
+    keys = (*ALL, "CW", "SX", "BQ")
+    ids = {"CW": country_id("CW"), "SX": country_id("SX"), "BQ": country_id("BQ")}
+    return build_snapshot(
+        version,
+        countries=[
+            *(country(k) for k in keys),
+            country("AN", status="inactive", replacement_country_ids=[ids[k] for k in successors]),
+        ],
+        country_names=[*(n for k in keys for n in names(k)), *names("AN")],
+        flags=[*(flag(k) for k in keys if k not in ("AQ", "BV")), flag("AN")],
+        flag_exceptions=[flag_exception("AQ"), flag_exception("BV")],
+    )
+
+
+def test_a_split_records_every_successor_in_ascending_id_order() -> None:
+    """CL-12, CA-21: AN → CW, SX y BQ."""
+    current = published(build_snapshot(1, keys=(*ALL, "AN")))
+    result = plan(split_document(2, successors=["SX", "CW", "BQ"]), current)
+    assert result.ok, messages(result)
+    (old,) = result.updated_countries
+    expected = tuple(sorted(country_id(k) for k in ("CW", "SX", "BQ")))
+    assert old.replacement_country_ids == expected and len(expected) == 3
+
+
+def test_zero_one_or_many_successors_are_all_valid() -> None:
+    current = published(build_snapshot(1, keys=(*ALL, "AN")))
+    for successors, size in (([], 0), (["CW"], 1), (["CW", "SX"], 2), (["CW", "SX", "BQ"], 3)):
+        result = plan(split_document(2, successors=successors), current)
+        assert result.ok, messages(result)
+        assert len(result.updated_countries[0].replacement_country_ids) == size
+
+
+def test_the_same_successors_in_another_order_are_not_a_change() -> None:
+    first = split_document(1, successors=["CW", "SX", "BQ"])
+    current = published(first)
+    reordered = split_document(2, successors=["BQ", "CW", "SX"])
+    result = plan(reordered, current)
+    assert result.ok and result.is_empty, messages(result)
+
+
+def test_adding_or_removing_a_successor_is_a_change_of_the_country() -> None:
+    current = published(split_document(1, successors=["CW", "SX"]))
+    added = plan(split_document(2, successors=["CW", "SX", "BQ"]), current)
+    removed = plan(split_document(2, successors=["CW"]), current)
+    assert [c.alpha2 for c in added.updated_countries] == ["AN"]
+    assert [c.alpha2 for c in removed.updated_countries] == ["AN"]
+
+
+def test_a_repeated_successor_is_rejected() -> None:
+    """CL-22."""
+    result = plan(split_document(1, successors=["CW", "CW"]))
+    assert rules(result) == {"RF-40"} and "repetido" in messages(result)
+
+
+def test_a_null_successor_inside_the_set_is_rejected() -> None:
+    document = split_document(1, successors=["CW"])
+    an = next(c for c in document["countries"] if c["alpha2"] == "AN")
+    an["replacement_country_ids"] = [None, country_id("CW")]
+    assert rules(plan(seal(document))) == {"RF-40"}
+
+
+def test_an_active_country_cannot_have_any_successor() -> None:
+    document = build_snapshot(
+        countries=[
+            country("AR", replacement_country_ids=[country_id("NA"), country_id("US")]),
+            country("NA"),
+            country("US"),
+        ],
+        keys=("AR", "NA", "US"),
+    )
+    assert rules(plan(document)) == {"RF-40"}
+
+
+def test_every_nonexistent_successor_is_reported() -> None:
+    nobody = "00000000-0000-4000-8000-000000000000"
+    other = "00000000-0000-4000-8000-000000000001"
+    document = build_snapshot(
+        countries=[
+            country(
+                "AR", status="inactive", replacement_country_ids=[nobody, other, country_id("NA")]
+            ),
+            country("NA"),
+        ],
+        keys=("AR", "NA"),
+    )
+    result = plan(document)
+    assert rules(result) == {"RF-40"} and len(result.violations) == 2
+
+
+def test_a_successor_may_be_inactive_in_a_chain_but_a_longer_cycle_is_rejected() -> None:
+    """CL-23."""
+    chain = build_snapshot(
+        countries=[
+            country("AR", status="inactive", replacement_country_ids=[country_id("NA")]),
+            country("NA", status="inactive", replacement_country_ids=[country_id("US")]),
+            country("US"),
+        ],
+        keys=("AR", "NA", "US"),
+    )
+    assert plan(chain).ok
+    cycle = build_snapshot(
+        countries=[
+            country("AR", status="inactive", replacement_country_ids=[country_id("NA")]),
+            country("NA", status="inactive", replacement_country_ids=[country_id("US")]),
+            country("US", status="inactive", replacement_country_ids=[country_id("AR")]),
+        ],
+        keys=("AR", "NA", "US"),
+    )
+    result = plan(cycle)
+    assert rules(result) == {"RF-40"} and "ciclo" in messages(result)
+
+
+def test_a_cycle_through_one_of_several_successors_is_rejected() -> None:
+    document = build_snapshot(
+        countries=[
+            country(
+                "AR",
+                status="inactive",
+                replacement_country_ids=[country_id("US"), country_id("NA")],
+            ),
+            country("NA", status="inactive", replacement_country_ids=[country_id("AR")]),
+            country("US"),
+        ],
+        keys=("AR", "NA", "US"),
+    )
+    assert "ciclo" in messages(plan(document))
+
+
+def test_reactivating_a_country_clears_every_successor() -> None:
+    current = published(split_document(1, successors=["CW", "SX", "BQ"]))
+    keys = (*ALL, "CW", "SX", "BQ")
+    reactivated = build_snapshot(
+        2,
+        countries=[*(country(k) for k in keys), country("AN")],
+        country_names=[*(n for k in keys for n in names(k)), *names("AN")],
+        flags=[*(flag(k) for k in keys if k not in ("AQ", "BV")), flag("AN")],
+        flag_exceptions=[flag_exception("AQ"), flag_exception("BV")],
+    )
+    result = plan(reactivated, current)
+    assert result.ok, messages(result)
+    (back,) = result.updated_countries
+    assert (back.status, back.replacement_country_ids) == ("active", ())

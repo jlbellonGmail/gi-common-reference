@@ -49,7 +49,7 @@
           "subregion_id",
           "calling_code",
           "status",
-          "replacement_country_id"
+          "replacement_country_ids"
         ],
         "properties": {
           "country_id": { "description": "UUID asignado por Reference; el sistema no lo genera.", "type": "string" },
@@ -60,7 +60,12 @@
           "subregion_id": { "description": "Subregion canónica de 002 (implica region_id), o null.", "type": ["string", "null"] },
           "calling_code": { "description": "Código de país E.164, 1 a 3 dígitos sin '+' ni cero inicial, o null.", "type": ["string", "null"], "pattern": "^[1-9][0-9]{0,2}$" },
           "status": { "enum": ["active", "inactive"] },
-          "replacement_country_id": { "description": "País sucesor unívoco; solo si es inactive.", "type": ["string", "null"] }
+          "replacement_country_ids": {
+            "description": "Países sucesores (0..N) de un país inactive: vacío si no hay sucesión declarada o si es active. Sin null ni repetidos; el orden no tiene significado (se persiste ascendente).",
+            "type": "array",
+            "items": { "type": "string" },
+            "uniqueItems": true
+          }
         }
       }
     },

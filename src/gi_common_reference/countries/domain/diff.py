@@ -82,15 +82,16 @@ def _country_changes(before: CountryRecord, after: CountryRecord) -> list[DiffEn
         )
     if before.calling_code != after.calling_code:
         add("atributos", f"calling_code {before.calling_code} → {after.calling_code}")
-    if (before.status, before.replacement_country_id) != (
+    if (before.status, before.replacement_country_ids) != (
         after.status,
-        after.replacement_country_id,
+        after.replacement_country_ids,
     ):
-        add(
-            "estado",
-            f"status {before.status} → {after.status}; "
-            f"replacement {before.replacement_country_id} → {after.replacement_country_id}",
-        )
+        added = sorted(set(after.replacement_country_ids) - set(before.replacement_country_ids))
+        removed = sorted(set(before.replacement_country_ids) - set(after.replacement_country_ids))
+        detail = f"status {before.status} → {after.status}"
+        if added or removed:
+            detail += f"; reemplazos: agrega {added or '—'}, quita {removed or '—'}"
+        add("estado", detail)
     return entries
 
 

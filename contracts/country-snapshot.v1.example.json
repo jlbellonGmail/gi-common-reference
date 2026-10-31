@@ -1,6 +1,6 @@
 {
   "snapshot_version": 1,
-  "content_digest": "sha256:99cd7a4d64042d58c0b7f756dc7c7263d3eb068619971c4de27d39328fb83b0f",
+  "content_digest": "sha256:e00da0d3264e24216986d72e1b9dfbea6076b0516e00006ff83b1059b8ec4b26",
   "region_snapshot_version": 1,
   "provenance": {
     "sources": [
@@ -62,7 +62,7 @@
       "subregion_id": "1cc20843-3e0c-5637-b7a4-d220f48c2291",
       "calling_code": "54",
       "status": "active",
-      "replacement_country_id": null
+      "replacement_country_ids": []
     },
     {
       "country_id": "62ecde64-cf73-56e9-9b02-a80b2b579c8d",
@@ -73,7 +73,7 @@
       "subregion_id": "2bc04643-0870-5ced-acc0-aff0ddd9c241",
       "calling_code": "264",
       "status": "active",
-      "replacement_country_id": null
+      "replacement_country_ids": []
     },
     {
       "country_id": "c8e77aeb-98ba-5f0c-8f78-0d01d2fa3b54",
@@ -84,7 +84,7 @@
       "subregion_id": null,
       "calling_code": null,
       "status": "active",
-      "replacement_country_id": null
+      "replacement_country_ids": []
     },
     {
       "country_id": "4eda76ae-dcca-5dca-8c45-613ce1e1b663",
@@ -95,7 +95,7 @@
       "subregion_id": null,
       "calling_code": "886",
       "status": "active",
-      "replacement_country_id": null
+      "replacement_country_ids": []
     },
     {
       "country_id": "71705c97-1868-546f-a495-8ba94dce51a7",
@@ -106,7 +106,7 @@
       "subregion_id": "0528e5b4-52aa-548b-b9bd-9f47a500876a",
       "calling_code": "1",
       "status": "active",
-      "replacement_country_id": null
+      "replacement_country_ids": []
     },
     {
       "country_id": "856b1b92-68d7-5d9f-abb1-54613bea3e90",
@@ -117,7 +117,7 @@
       "subregion_id": "0528e5b4-52aa-548b-b9bd-9f47a500876a",
       "calling_code": "1",
       "status": "active",
-      "replacement_country_id": null
+      "replacement_country_ids": []
     },
     {
       "country_id": "c756eac0-5950-5d6d-b9eb-86c92a68a5ad",
@@ -128,7 +128,7 @@
       "subregion_id": "1cc20843-3e0c-5637-b7a4-d220f48c2291",
       "calling_code": "1",
       "status": "active",
-      "replacement_country_id": null
+      "replacement_country_ids": []
     },
     {
       "country_id": "35be21fd-7ddb-5ffb-b954-c8c9f87519d9",
@@ -139,7 +139,7 @@
       "subregion_id": "1cc20843-3e0c-5637-b7a4-d220f48c2291",
       "calling_code": null,
       "status": "active",
-      "replacement_country_id": null
+      "replacement_country_ids": []
     }
   ],
   "country_names": [

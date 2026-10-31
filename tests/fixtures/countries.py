@@ -146,7 +146,7 @@ def country(key: str, /, identity: str | None = None, **overrides: Any) -> dict[
         "subregion_id": subregion_id(subregion) if subregion else None,
         "calling_code": calling,
         "status": "active",
-        "replacement_country_id": None,
+        "replacement_country_ids": [],
     }
     return {**base, **overrides}
 

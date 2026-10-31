@@ -105,7 +105,7 @@ def incoming_from(document: Mapping[str, Any]) -> IncomingCatalog:
                 _optional(item.get("subregion_id")),
                 _optional(item.get("calling_code")),
                 _text(item.get("status")),
-                _optional(item.get("replacement_country_id")),
+                _successors(item.get("replacement_country_ids")),
             )
             for item in document.get("countries", ())
         ),
@@ -442,25 +442,34 @@ def _check_lifecycle(context: _Context) -> list[Violation]:
 
 
 def _check_replacements(context: _Context) -> list[Violation]:
+    """RF-40, RF-52: reemplazos 0..N solo en `inactive`, sin repetidos, existentes, sin el propio
+    país y sin ciclos en el grafo de sucesión."""
     countries = context.incoming.countries
     ids = {c.country_id for c in countries}
     violations: list[Violation] = []
     for country in countries:
-        target = country.replacement_country_id
-        if target is None:
+        successors = country.replacement_country_ids
+        if not successors:
             continue
+        label = f"país {country.country_id}"
         if country.status == "active":
-            message = f"país active {country.country_id} no puede tener reemplazo"
+            message = f"país active {country.country_id} no puede tener reemplazos"
             violations.append(Violation("RF-40", message))
-        if target == country.country_id:
-            violations.append(Violation("RF-40", f"país {country.country_id}: reemplazo a sí"))
-        elif target not in ids:
-            message = f"país {country.country_id}: el reemplazo {target} no existe"
+        for repeated in sorted({s for s in successors if successors.count(s) > 1}):
+            message = f"{label}: el reemplazo {repeated!r} está repetido"
             violations.append(Violation("RF-40", message))
-    next_of = {c.country_id: c.replacement_country_id for c in countries}
+        for target in dict.fromkeys(successors):
+            if target == "":
+                violations.append(Violation("RF-40", f"{label}: un reemplazo no es un string"))
+            elif target == country.country_id:
+                violations.append(Violation("RF-40", f"{label}: reemplazo a sí mismo"))
+            elif target not in ids:
+                message = f"{label}: el reemplazo {target} no existe"
+                violations.append(Violation("RF-40", message))
+    graph = {c.country_id: tuple(dict.fromkeys(c.replacement_country_ids)) for c in countries}
     reported: set[str] = set()
-    for start in sorted(next_of):
-        cycle = _cycle_from(start, next_of)
+    for start in sorted(graph):
+        cycle = _cycle_from(start, graph)
         if cycle and not reported.intersection(cycle):
             reported.update(cycle)
             path = " → ".join([*cycle, cycle[0]])
@@ -468,17 +477,28 @@ def _check_replacements(context: _Context) -> list[Violation]:
     return violations
 
 
-def _cycle_from(start: str, next_of: Mapping[str, str | None]) -> list[str]:
-    """Ids del ciclo al que llega `start` siguiendo los reemplazos; vacío si no hay ciclo."""
-    path: list[str] = []
-    node: str | None = start
-    while node is not None and node in next_of and node not in path:
-        path.append(node)
-        node = next_of[node]
-    if node is None or node not in path:
+def _cycle_from(start: str, graph: Mapping[str, tuple[str, ...]]) -> list[str]:
+    """Un ciclo (de dos o más países) alcanzable desde `start` siguiendo los reemplazos; vacío si
+    no hay. El reemplazo a sí mismo se reporta aparte."""
+    stack: list[str] = []
+    done: set[str] = set()
+
+    def visit(node: str) -> list[str]:
+        if node in stack:
+            cycle = stack[stack.index(node) :]
+            return [] if len(cycle) == 1 else cycle
+        if node in done or node not in graph:
+            return []
+        stack.append(node)
+        for successor in graph[node]:
+            found = visit(successor)
+            if found:
+                return found
+        stack.pop()
+        done.add(node)
         return []
-    cycle = path[path.index(node) :]
-    return [] if len(cycle) == 1 else cycle  # el reemplazo a sí mismo se reporta aparte
+
+    return visit(start)
 
 
 # --- paso 7: clasificación ----------------------------------------------------------------------
@@ -710,6 +730,13 @@ def _flag_changes(
 def _is_trimmed(text: str) -> bool:
     """No vacío y sin espacios (ni tabulaciones o saltos) al inicio o al final (RF-32)."""
     return bool(text) and text == text.strip()
+
+
+def _successors(value: object) -> tuple[str, ...]:
+    """RF-52: el conjunto de sucesores en orden ascendente de `country_id` (su orden en el snapshot
+    no tiene significado). Un elemento que no es string queda como `""` y el dominio lo rechaza."""
+    items = value if isinstance(value, list) else []
+    return tuple(sorted(item if isinstance(item, str) else "" for item in items))
 
 
 def _show(triple: CodeTriple) -> str:
