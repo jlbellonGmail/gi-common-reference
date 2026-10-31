@@ -43,6 +43,15 @@ CREATE TABLE reference.country_snapshot (
         REFERENCES reference.region_snapshot (snapshot_version)
 );
 
+-- RF-52: el conjunto de reemplazos se guarda en orden ascendente y sin repetidos, así dos bases con
+-- el mismo contenido lógico son idénticas (RNF-1). Estrictamente ascendente implica sin repetidos.
+CREATE FUNCTION reference.is_strictly_ascending(ids uuid[]) RETURNS boolean
+LANGUAGE sql IMMUTABLE AS $$
+    SELECT NOT EXISTS (
+        SELECT 1 FROM generate_subscripts(ids, 1) AS i WHERE i > 1 AND ids[i - 1] >= ids[i]
+    )
+$$;
+
 -- Sin ningún texto dependiente del idioma (RF-34): los nombres viven en `country_locale`.
 CREATE TABLE reference.country (
     country_id uuid NOT NULL,
@@ -53,7 +62,7 @@ CREATE TABLE reference.country (
     subregion_id uuid,
     calling_code text,
     status text NOT NULL,
-    replacement_country_id uuid,
+    replacement_country_ids uuid[] NOT NULL DEFAULT '{}',
     first_snapshot_version bigint NOT NULL,
     codes_snapshot_version bigint NOT NULL,
     last_changed_snapshot_version bigint NOT NULL,
@@ -63,9 +72,16 @@ CREATE TABLE reference.country (
     CONSTRAINT country_numeric_code_format CHECK (numeric_code ~ '^[0-9]{3}$'),
     CONSTRAINT country_calling_code_format CHECK (calling_code ~ '^[1-9][0-9]{0,2}$'),
     CONSTRAINT country_status_valid CHECK (status IN ('active', 'inactive')),
-    CONSTRAINT country_replacement_not_self CHECK (replacement_country_id <> country_id),
+    -- Reemplazos 0..N (RF-40, RF-52): sin nulos, ascendentes y sin repetidos, sin el propio país y
+    -- solo en un país `inactive`. Que cada sucesor exista lo exige un constraint trigger diferido.
+    CONSTRAINT country_replacement_no_nulls
+        CHECK (array_position(replacement_country_ids, NULL) IS NULL),
+    CONSTRAINT country_replacement_ascending_unique
+        CHECK (reference.is_strictly_ascending(replacement_country_ids)),
+    CONSTRAINT country_replacement_not_self
+        CHECK (NOT (country_id = ANY (replacement_country_ids))),
     CONSTRAINT country_replacement_requires_inactive
-        CHECK (replacement_country_id IS NULL OR status = 'inactive'),
+        CHECK (cardinality(replacement_country_ids) = 0 OR status = 'inactive'),
     CONSTRAINT country_subregion_requires_region
         CHECK (subregion_id IS NULL OR region_id IS NOT NULL),
     -- RF-3, RF-44: unicidad entre `active` sobre el estado final de la transacción.
@@ -75,8 +91,6 @@ CREATE TABLE reference.country (
         WHERE (status = 'active') DEFERRABLE INITIALLY DEFERRED,
     CONSTRAINT country_numeric_code_active_unique EXCLUDE USING btree (numeric_code WITH =)
         WHERE (status = 'active') DEFERRABLE INITIALLY DEFERRED,
-    CONSTRAINT country_replacement_fk FOREIGN KEY (replacement_country_id)
-        REFERENCES reference.country (country_id) DEFERRABLE INITIALLY DEFERRED,
     CONSTRAINT country_region_fk FOREIGN KEY (region_id)
         REFERENCES reference.region (region_id),
     -- RF-6, RF-29 de 002: el par pertenece a una Subregion de esa Region. MATCH SIMPLE: sin
@@ -233,6 +247,24 @@ BEGIN
 END
 $$;
 
+-- RF-52: cada sucesor existe al commit (una FK no aplica a un arreglo). Los países no se borran,
+-- así que existir al commit basta. `check_violation` lo informa como un rechazo, no como una FK.
+CREATE FUNCTION reference.check_country_replacements_exist() RETURNS trigger
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM unnest(NEW.replacement_country_ids) AS r(successor_id)
+        WHERE NOT EXISTS (
+            SELECT 1 FROM reference.country c WHERE c.country_id = r.successor_id
+        )
+    ) THEN
+        RAISE EXCEPTION 'a replacement of reference.country does not exist'
+            USING ERRCODE = 'check_violation', CONSTRAINT = 'country_replacement_exists';
+    END IF;
+    RETURN NULL;
+END
+$$;
+
 CREATE TRIGGER country_snapshot_immutable
     BEFORE UPDATE OR DELETE ON reference.country_snapshot
     FOR EACH ROW EXECUTE FUNCTION reference.reject_country_history_change();
@@ -260,6 +292,10 @@ CREATE TRIGGER country_identity_immutable
 CREATE TRIGGER country_codes_snapshot_coupled
     BEFORE UPDATE ON reference.country
     FOR EACH ROW EXECUTE FUNCTION reference.check_country_codes_snapshot_coupled();
+CREATE CONSTRAINT TRIGGER country_replacement_exists
+    AFTER INSERT OR UPDATE OF replacement_country_ids ON reference.country
+    DEFERRABLE INITIALLY DEFERRED
+    FOR EACH ROW EXECUTE FUNCTION reference.check_country_replacements_exist();
 CREATE CONSTRAINT TRIGGER country_codes_require_recoding
     AFTER UPDATE ON reference.country DEFERRABLE INITIALLY DEFERRED
     FOR EACH ROW
@@ -311,7 +347,7 @@ BEGIN
     IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'reference_loader') THEN
         GRANT SELECT, INSERT ON {TABLES} TO reference_loader;
         GRANT UPDATE (alpha2, alpha3, numeric_code, codes_snapshot_version, region_id,
-                      subregion_id, calling_code, status, replacement_country_id,
+                      subregion_id, calling_code, status, replacement_country_ids,
                       last_changed_snapshot_version)
             ON reference.country TO reference_loader;
         GRANT UPDATE (name, official_name) ON reference.country_locale TO reference_loader;
@@ -328,11 +364,13 @@ DROP TABLE reference.country_flag;
 DROP TABLE reference.country_locale;
 DROP TABLE reference.country;
 DROP TABLE reference.country_snapshot;
+DROP FUNCTION reference.check_country_replacements_exist();
 DROP FUNCTION reference.check_country_codes_require_recoding();
 DROP FUNCTION reference.check_country_codes_snapshot_coupled();
 DROP FUNCTION reference.reject_country_identity_change();
 DROP FUNCTION reference.reject_country_catalog_delete();
 DROP FUNCTION reference.reject_country_history_change();
+DROP FUNCTION reference.is_strictly_ascending(uuid[]);
 """
 
 

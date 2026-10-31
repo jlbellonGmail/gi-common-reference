@@ -70,7 +70,7 @@ TABLES = {
     "region_snapshot_version, region_current_snapshot_version, required_locales_version, "
     "provenance, artifact",
     "country": "country_id::text, alpha2, alpha3, numeric_code, region_id::text, "
-    "subregion_id::text, calling_code, status, replacement_country_id::text, "
+    "subregion_id::text, calling_code, status, replacement_country_ids::text[], "
     "first_snapshot_version, codes_snapshot_version, last_changed_snapshot_version",
     "country_locale": "country_id::text, locale_id::text, name, official_name",
     "country_flag": "country_id::text, asset_path, sha256, exception_reason, snapshot_version",
@@ -300,10 +300,11 @@ def test_the_database_enforces_the_trace_even_if_the_application_were_bypassed(u
         conn.execute("UPDATE reference.country SET alpha2 = 'XX', codes_snapshot_version = 1")
 
 
-def split_snapshot(version: int, *, merge: bool) -> dict[str, Any]:
+def successors_snapshot(version: int, successors: list[str]) -> dict[str, Any]:
+    """AN `inactive` con los sucesores indicados (claves de país); CW, SX y BQ existen."""
     keys = (*BASE, "CW", "SX", "BQ")
     an = country(
-        "AN", status="inactive", **({"replacement_country_id": country_id("CW")} if merge else {})
+        "AN", status="inactive", replacement_country_ids=[country_id(k) for k in successors]
     )
     return build_snapshot(
         version,
@@ -314,18 +315,81 @@ def split_snapshot(version: int, *, merge: bool) -> dict[str, Any]:
     )
 
 
-def test_a_split_creates_new_ids_and_a_merge_records_the_replacement(url: str) -> None:
+def test_a_split_creates_new_ids_and_records_every_successor(url: str) -> None:
+    """CL-12, CA-21: AN → CW, SX y BQ."""
     incorporate(url, build_snapshot(1, keys=(*BASE, "AN")))
-    result = incorporate(url, split_snapshot(2, merge=False))
+    result = incorporate(url, successors_snapshot(2, ["SX", "CW", "BQ"]))
     assert result.outcome is Outcome.INCORPORATED, result.violations
     state = logical_state(url)
     an = row_of(state, "AN")
-    assert (an[7], an[8], an[1]) == ("inactive", None, "AN")  # retirado: conserva id y códigos
+    assert (an[7], an[1]) == ("inactive", "AN")  # retirado: conserva id y códigos
+    assert an[8] == sorted(country_id(k) for k in ("CW", "SX", "BQ"))
     assert {row_of(state, k)[1] for k in ("CW", "SX", "BQ")} == {"CW", "SX", "BQ"}
     assert len({row_of(state, k)[0] for k in ("CW", "SX", "BQ", "AN")}) == 4
-    result = incorporate(url, split_snapshot(3, merge=True))
+    assert row_of(state, "AR")[8] == []
+
+
+def test_a_merge_records_one_successor_and_a_retirement_none(url: str) -> None:
+    incorporate(url, build_snapshot(1, keys=(*BASE, "AN")))
+    assert incorporate(url, successors_snapshot(2, [])).outcome is Outcome.INCORPORATED
+    assert row_of(logical_state(url), "AN")[8] == []
+    result = incorporate(url, successors_snapshot(3, ["CW"]))
     assert result.outcome is Outcome.INCORPORATED, result.violations
-    assert row_of(logical_state(url), "AN")[8] == country_id("CW")
+    assert row_of(logical_state(url), "AN")[8] == [country_id("CW")]
+
+
+def test_the_same_successors_in_another_order_are_a_noop_of_content(url: str) -> None:
+    incorporate(url, build_snapshot(1, keys=(*BASE, "AN")))
+    incorporate(url, successors_snapshot(2, ["SX", "CW", "BQ"]))
+    before = logical_state(url)
+    result = incorporate(url, successors_snapshot(3, ["BQ", "CW", "SX"]))
+    assert result.outcome is Outcome.INCORPORATED and result.updated == 0
+    after = logical_state(url)
+    assert row_of(after, "AN")[8] == row_of(before, "AN")[8]
+    assert row_of(after, "AN")[9:12] == row_of(before, "AN")[9:12]  # sin cambio de contenido
+
+
+def test_changing_the_successors_updates_the_last_change_only(url: str) -> None:
+    incorporate(url, build_snapshot(1, keys=(*BASE, "AN")))
+    incorporate(url, successors_snapshot(2, ["CW"]))
+    incorporate(url, successors_snapshot(3, ["CW", "SX"]))
+    an = row_of(logical_state(url), "AN")
+    assert an[8] == sorted([country_id("CW"), country_id("SX")])
+    assert an[9:12] == (1, 1, 3)
+
+
+def test_invalid_successors_are_rejected_leaving_the_catalog_identical(url: str) -> None:
+    incorporate(url, build_snapshot(1, keys=(*BASE, "AN")))
+    before = logical_state(url)
+    duplicate = incorporate(url, successors_snapshot(2, ["CW", "CW"]))
+    assert {v.rule for v in duplicate.violations} == {"RF-40"}
+    ghost = successors_snapshot(2, ["CW"])
+    an = next(c for c in ghost["countries"] if c["alpha2"] == "AN")
+    an["replacement_country_ids"] = ["00000000-0000-4000-8000-000000000000"]
+    assert {v.rule for v in incorporate(url, seal(ghost)).violations} == {"RF-40"}
+    cycle = successors_snapshot(2, ["CW"])
+    for item in cycle["countries"]:
+        if item["alpha2"] == "CW":
+            item.update(status="inactive", replacement_country_ids=[country_id("AN")])
+    assert {v.rule for v in incorporate(url, seal(cycle)).violations} == {"RF-40"}
+    assert logical_state(url) == before
+
+
+def test_reactivating_a_retired_country_clears_its_successors(url: str) -> None:
+    incorporate(url, build_snapshot(1, keys=(*BASE, "AN")))
+    incorporate(url, successors_snapshot(2, ["CW", "SX", "BQ"]))
+    keys = (*BASE, "CW", "SX", "BQ")
+    back = build_snapshot(
+        3,
+        countries=[*(country(k) for k in keys), country("AN")],
+        country_names=[*(n for k in keys for n in names(k)), *names("AN")],
+        flags=[*(flag(k) for k in keys if k not in ("AQ", "BV")), flag("AN")],
+        flag_exceptions=[flag_exception("AQ"), flag_exception("BV")],
+    )
+    result = incorporate(url, back)
+    assert result.outcome is Outcome.INCORPORATED, result.violations
+    an = row_of(logical_state(url), "AN")
+    assert (an[7], an[8]) == ("active", [])
 
 
 # --- clasificación (RF-48) y coordinación con Regions (RF-35 de 002) ----------------------------

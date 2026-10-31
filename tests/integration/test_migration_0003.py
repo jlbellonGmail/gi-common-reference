@@ -44,7 +44,7 @@ COLUMNS = {
         "subregion_id",
         "calling_code",
         "status",
-        "replacement_country_id",
+        "replacement_country_ids",
         "first_snapshot_version",
         "codes_snapshot_version",
         "last_changed_snapshot_version",
@@ -67,7 +67,6 @@ NULLABLE = {
     "region_id",
     "subregion_id",
     "calling_code",
-    "replacement_country_id",
     "official_name",
     "asset_path",
     "sha256",
@@ -108,7 +107,7 @@ def country_row(**overrides: Any) -> dict[str, Any]:
         "subregion_id": LATAM,
         "calling_code": "54",
         "status": "active",
-        "replacement_country_id": None,
+        "replacement_country_ids": [],
         "first_snapshot_version": 1,
         "codes_snapshot_version": 1,
         "last_changed_snapshot_version": 1,
@@ -265,7 +264,7 @@ def test_deferred_constraints_are_evaluated_at_the_commit(conn: psycopg.Connecti
         "country_alpha2_active_unique",
         "country_alpha3_active_unique",
         "country_numeric_code_active_unique",
-        "country_replacement_fk",
+        "country_replacement_exists",
         "country_classification_fk",
         "country_codes_require_recoding",
     ]
@@ -423,7 +422,7 @@ def test_two_active_countries_cannot_share_any_code(catalog: psycopg.Connection)
 def test_inactive_countries_may_keep_a_code_that_an_active_one_has(
     catalog: psycopg.Connection,
 ) -> None:
-    insert(catalog, "country", country_row(status="inactive", replacement_country_id=AR))
+    insert(catalog, "country", country_row(status="inactive", replacement_country_ids=ids(AR)))
 
 
 def test_a_collision_left_at_commit_is_rejected(catalog: psycopg.Connection) -> None:
@@ -666,50 +665,130 @@ def test_status_is_active_or_inactive_only(base: psycopg.Connection) -> None:
             insert(base, "country", country_row(status=status))
 
 
-def test_replacement_rules(catalog: psycopg.Connection) -> None:
+def ids(*values: str) -> list[uuid.UUID]:
+    return [uuid.UUID(value) for value in values]
+
+
+def inactive(**overrides: Any) -> dict[str, Any]:
+    base = {"alpha2": "BR", "alpha3": "BRA", "numeric_code": "076", "status": "inactive"}
+    return country_row(**{**base, **overrides})
+
+
+def test_replacement_is_a_set_of_zero_one_or_many_successors(catalog: psycopg.Connection) -> None:
+    """RF-52: la columna acepta 0..N sucesores en orden ascendente."""
+    successors = sorted([AR, NA, AQ])
+    insert(catalog, "country", inactive(replacement_country_ids=[]))
+    insert(
+        catalog,
+        "country",
+        inactive(alpha2="BO", alpha3="BOL", numeric_code="068", replacement_country_ids=ids(AR)),
+    )
+    insert(
+        catalog,
+        "country",
+        inactive(
+            alpha2="CL",
+            alpha3="CHL",
+            numeric_code="152",
+            replacement_country_ids=ids(*successors),
+        ),
+    )
+    rows: dict[str, list[str]] = dict(
+        catalog.execute(
+            "SELECT alpha2, replacement_country_ids::text[] FROM reference.country "
+            "WHERE status = 'inactive'"
+        ).fetchall()
+    )
+    assert rows == {"BR": [], "BO": [AR], "CL": successors}
+
+
+def test_replacement_rejects_an_active_country_with_successors(catalog: psycopg.Connection) -> None:
     with rejected(errors.CheckViolation, "country_replacement_requires_inactive"):
         insert(
             catalog,
             "country",
-            country_row(alpha2="BR", alpha3="BRA", numeric_code="076", replacement_country_id=AR),
+            country_row(
+                alpha2="BR", alpha3="BRA", numeric_code="076", replacement_country_ids=ids(AR)
+            ),
         )
+
+
+def test_replacement_rejects_the_country_itself(catalog: psycopg.Connection) -> None:
     own = str(uuid.uuid4())
     with rejected(errors.CheckViolation, "country_replacement_not_self"):
         insert(
             catalog,
             "country",
-            country_row(
-                country_id=own,
-                alpha2="BR",
-                alpha3="BRA",
-                numeric_code="076",
-                status="inactive",
-                replacement_country_id=own,
-            ),
+            inactive(country_id=own, replacement_country_ids=ids(own)),
         )
-    with rejected(errors.ForeignKeyViolation, "country_replacement_fk"):
+    with rejected(errors.CheckViolation, "country_replacement_not_self"):
         insert(
             catalog,
             "country",
-            country_row(
-                alpha2="BR",
-                alpha3="BRA",
-                numeric_code="076",
-                status="inactive",
-                replacement_country_id=str(uuid.uuid4()),
-            ),
+            inactive(country_id=own, replacement_country_ids=ids(*sorted([own, AR]))),
         )
-    insert(
-        catalog,
-        "country",
-        country_row(
-            alpha2="BR",
-            alpha3="BRA",
-            numeric_code="076",
-            status="inactive",
-            replacement_country_id=AR,
-        ),
+
+
+def test_replacement_rejects_repeated_unsorted_and_null_elements(
+    catalog: psycopg.Connection,
+) -> None:
+    low, high = sorted([AR, NA])
+    with rejected(errors.CheckViolation, "country_replacement_ascending_unique"):
+        insert(catalog, "country", inactive(replacement_country_ids=ids(AR, AR)))
+    with rejected(errors.CheckViolation, "country_replacement_ascending_unique"):
+        insert(catalog, "country", inactive(replacement_country_ids=ids(high, low)))
+    with rejected(errors.CheckViolation, "country_replacement_no_nulls"):
+        catalog.execute(
+            "INSERT INTO reference.country (country_id, alpha2, alpha3, numeric_code, status, "
+            "replacement_country_ids, first_snapshot_version, codes_snapshot_version, "
+            "last_changed_snapshot_version) VALUES (gen_random_uuid(), 'BR', 'BRA', '076', "
+            "'inactive', ARRAY[NULL, %s::uuid], 1, 1, 1)",
+            [AR],
+        )
+
+
+def test_every_successor_must_exist_at_the_commit(catalog: psycopg.Connection) -> None:
+    missing = str(uuid.uuid4())
+    with rejected(errors.CheckViolation, "country_replacement_exists"):
+        insert(catalog, "country", inactive(replacement_country_ids=ids(AR)))
+        catalog.execute(
+            "UPDATE reference.country SET replacement_country_ids = %s WHERE alpha2 = 'BR'",
+            [ids(*sorted([AR, missing]))],
+        )
+    with pytest.raises(errors.CheckViolation), catalog.transaction():
+        insert(catalog, "country", inactive(replacement_country_ids=ids(missing)))
+
+
+def test_a_successor_created_in_the_same_transaction_is_valid(catalog: psycopg.Connection) -> None:
+    """La existencia se evalúa al commit: país retirado y sucesores pueden ir en la misma carga."""
+    new = str(uuid.uuid4())
+    with catalog.transaction():
+        insert(catalog, "country", inactive(replacement_country_ids=ids(new)))
+        insert(
+            catalog,
+            "country",
+            country_row(country_id=new, alpha2="BO", alpha3="BOL", numeric_code="068"),
+        )
+    stored = catalog.execute(
+        "SELECT replacement_country_ids::text[] FROM reference.country WHERE alpha2 = 'BR'"
+    ).fetchone()
+    assert stored == ([new],)
+
+
+def test_replacement_defaults_to_the_empty_set_and_is_never_null(
+    catalog: psycopg.Connection,
+) -> None:
+    catalog.execute(
+        "INSERT INTO reference.country (country_id, alpha2, alpha3, numeric_code, status, "
+        "first_snapshot_version, codes_snapshot_version, last_changed_snapshot_version) "
+        "VALUES (gen_random_uuid(), 'BR', 'BRA', '076', 'active', 1, 1, 1)"
     )
+    stored = catalog.execute(
+        "SELECT replacement_country_ids::text[] FROM reference.country WHERE alpha2 = 'BR'"
+    ).fetchone()
+    assert stored == ([],)
+    with rejected(errors.NotNullViolation):
+        catalog.execute("UPDATE reference.country SET replacement_country_ids = NULL")
 
 
 def test_every_version_column_of_a_country_needs_an_incorporated_snapshot(
@@ -956,10 +1035,10 @@ def test_status_replacement_classification_calling_code_names_and_flags_are_muta
     insert(catalog, "country_flag", flag(AR))
     with catalog.transaction():
         catalog.execute(
-            "UPDATE reference.country SET status = 'inactive', replacement_country_id = %s, "
+            "UPDATE reference.country SET status = 'inactive', replacement_country_ids = %s, "
             "region_id = NULL, subregion_id = NULL, calling_code = '55', "
             "last_changed_snapshot_version = 2 WHERE country_id = %s",
-            [NA, AR],
+            [ids(NA), AR],
         )
         catalog.execute(
             "UPDATE reference.country_locale SET name = 'República Argentina', "
@@ -967,7 +1046,7 @@ def test_status_replacement_classification_calling_code_names_and_flags_are_muta
         )
         catalog.execute("UPDATE reference.country_flag SET snapshot_version = 2")
     catalog.execute(
-        "UPDATE reference.country SET status = 'active', replacement_country_id = NULL, "
+        "UPDATE reference.country SET status = 'active', replacement_country_ids = '{}', "
         "last_changed_snapshot_version = 2 WHERE country_id = %s",
         [AR],
     )

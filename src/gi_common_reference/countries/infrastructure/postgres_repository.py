@@ -108,7 +108,7 @@ class PostgresCatalogView:
         execute = self._connection.execute
         countries = execute(
             "SELECT country_id::text, alpha2, alpha3, numeric_code, region_id::text, "
-            "subregion_id::text, calling_code, status, replacement_country_id::text "
+            "subregion_id::text, calling_code, status, replacement_country_ids::text[] "
             "FROM reference.country ORDER BY country_id"
         ).fetchall()
         names = execute(
@@ -124,7 +124,7 @@ class PostgresCatalogView:
             (_kind(kind), code, country_id) for kind, code, country_id in history
         ]
         return CatalogState(
-            countries=tuple(CountryRecord(*row) for row in countries),
+            countries=tuple(_country(row) for row in countries),
             names=tuple(NameRecord(*row) for row in names),
             flags=tuple(FlagRecord(*row) for row in flags),
             historical_codes=tuple(historical),
@@ -171,6 +171,21 @@ _KINDS: dict[str, CodeKind] = {
 }
 
 
+def _country(row: tuple[Any, ...]) -> CountryRecord:
+    """La fila de `reference.country`; los reemplazos salen del arreglo ascendente (RF-52)."""
+    return CountryRecord(
+        country_id=row[0],
+        alpha2=row[1],
+        alpha3=row[2],
+        numeric_code=row[3],
+        region_id=row[4],
+        subregion_id=row[5],
+        calling_code=row[6],
+        status=row[7],
+        replacement_country_ids=tuple(sorted(row[8] or ())),
+    )
+
+
 def _kind(value: str) -> CodeKind:
     return _KINDS[value]
 
@@ -204,9 +219,9 @@ class PostgresCountryTransaction(PostgresCatalogView):
         with self._connection.cursor() as cursor:
             cursor.executemany(
                 "INSERT INTO reference.country (country_id, alpha2, alpha3, numeric_code, "
-                "region_id, subregion_id, calling_code, status, replacement_country_id, "
+                "region_id, subregion_id, calling_code, status, replacement_country_ids, "
                 "first_snapshot_version, codes_snapshot_version, last_changed_snapshot_version) "
-                "VALUES (%s::uuid, %s, %s, %s, %s::uuid, %s::uuid, %s, %s, %s::uuid, %s, %s, %s)",
+                "VALUES (%s::uuid, %s, %s, %s, %s::uuid, %s::uuid, %s, %s, %s::uuid[], %s, %s, %s)",
                 [
                     (
                         c.country_id,
@@ -217,7 +232,7 @@ class PostgresCountryTransaction(PostgresCatalogView):
                         c.subregion_id,
                         c.calling_code,
                         c.status,
-                        c.replacement_country_id,
+                        list(c.replacement_country_ids),
                         version,
                         version,
                         version,
@@ -238,7 +253,7 @@ class PostgresCountryTransaction(PostgresCatalogView):
                 "alpha2 = %(alpha2)s, alpha3 = %(alpha3)s, numeric_code = %(numeric_code)s, "
                 "region_id = %(region_id)s::uuid, subregion_id = %(subregion_id)s::uuid, "
                 "calling_code = %(calling_code)s, status = %(status)s, "
-                "replacement_country_id = %(replacement)s::uuid, "
+                "replacement_country_ids = %(replacement)s::uuid[], "
                 "last_changed_snapshot_version = %(version)s::bigint "
                 "WHERE country_id = %(id)s::uuid",
                 [
@@ -251,7 +266,7 @@ class PostgresCountryTransaction(PostgresCatalogView):
                         "subregion_id": c.subregion_id,
                         "calling_code": c.calling_code,
                         "status": c.status,
-                        "replacement": c.replacement_country_id,
+                        "replacement": list(c.replacement_country_ids),
                         "version": version,
                     }
                     for c in countries

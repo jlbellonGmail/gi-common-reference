@@ -18,7 +18,7 @@ from gi_common_reference.countries.infrastructure.conninfo import validate_conni
 
 COUNTRIES = (
     "SELECT c.country_id::text, c.alpha2, c.alpha3, c.numeric_code, c.region_id::text, "
-    "c.subregion_id::text, c.calling_code, c.status, c.replacement_country_id::text, "
+    "c.subregion_id::text, c.calling_code, c.status, c.replacement_country_ids::text[], "
     "n.name, n.official_name "
     "FROM reference.country c LEFT JOIN reference.country_locale n "
     "ON n.country_id = c.country_id AND n.locale_id = %(locale)s::uuid "
@@ -122,4 +122,15 @@ class PostgresCountrySession:
 
 
 def _view(row: tuple[Any, ...]) -> CountryView:
-    return CountryView(CountryRecord(*row[:9]), row[9], row[10])
+    record = CountryRecord(
+        country_id=row[0],
+        alpha2=row[1],
+        alpha3=row[2],
+        numeric_code=row[3],
+        region_id=row[4],
+        subregion_id=row[5],
+        calling_code=row[6],
+        status=row[7],
+        replacement_country_ids=tuple(sorted(row[8] or ())),
+    )
+    return CountryView(record, row[9], row[10])
