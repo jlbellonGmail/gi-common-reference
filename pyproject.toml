@@ -49,7 +49,7 @@ where = ["src"]
 ]
 
 [tool.pytest.ini_options]
-testpaths = ["tests/unit", "tests/integration", "tests/contract"]
+testpaths = ["tests/unit", "tests/integration", "tests/contract", "tests/acceptance"]
 pythonpath = ["src"]
 addopts = "--disable-socket --allow-hosts=127.0.0.1,localhost --allow-unix-socket"
 
