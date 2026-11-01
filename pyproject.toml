@@ -43,6 +43,10 @@ where = ["src"]
     "required-locales.v1.json",
 ]
 "gi_common_reference.countries.assets" = ["flags/*"]
+"gi_common_reference.currencies.infrastructure" = [
+    "currency-snapshot.v1.schema.json",
+    "required-locales.v1.json",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests/unit", "tests/integration", "tests/contract"]

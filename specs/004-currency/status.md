@@ -19,3 +19,8 @@ Estado vivo y verificable (AGENTS.md). Sin memoria conversacional: el estado sal
 - Hallazgo corregido durante T2: con inicio > fin la columna generada lanzaba `data_exception` antes del CHECK; ahora mapea a rango vacío y rechaza `country_currency_validity_ordered`.
 - Ajuste de prueba (no funcional) en `tests/integration/test_migration_0003.py::test_locale_and_regions_do_not_depend_on_countries`: admite como únicas dependencias nuevas hacia Countries las tablas `country_currency` y `currency_snapshot` (D-16); Locale y Regions siguen sin poder depender de Countries. 001–003 sin cambios en `src/`, `migrations/` ni `specs/`.
 - Regresión: `test_migration_0001/0002/0003/env` pasan sobre `head`=0004. `ruff format/check` y `mypy`: PASS.
+
+### T3 — contrato del snapshot, digest, lector y política (done)
+- Archivos: `contracts/currency-snapshot.v1.{schema,example}.json` (+ copia empaquetada equivalente), `currencies/infrastructure/{snapshot_reader,policy_reader}.py` + `required-locales.v1.json` (`en`/`es` por `locale_id`, versión 1), `currencies/domain/{digest,snapshot,policy,model,errors}.py`, `tests/fixtures/currencies.py` (sintético, no productivo, S-9), `pyproject.toml` (package-data).
+- `pytest tests/unit/currencies tests/contract/currencies tests/contract/test_layer_imports.py tests/contract/test_composition_root.py tests/contract/test_installed_package.py`: 188 passed (incluye paridad de digest con los vectores de 001, clasificación A/B/C/D, el wheel instalado con schema y política).
+- `ruff format --check`, `ruff check`, `mypy`: PASS.
