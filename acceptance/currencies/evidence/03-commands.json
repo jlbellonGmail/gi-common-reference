@@ -1,0 +1,104 @@
+[
+  {
+    "command": "python -m gi_common_reference.locales.interfaces.cli incorporate <work>\\prereq-locales.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=1 (3 nuevos, 0 actualizados)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.regions.interfaces.cli incorporate <work>\\prereq-regions.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=1 (locale_snapshot_version=1; 3 regiones nuevas, 4 subregiones nuevas, 0 actualizaciones, 0 reclasificaciones, 0 recodificaciones)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\currency-snapshot-1.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=1 (locale_snapshot_version=1; country_snapshot_version=1; 15 monedas nuevas, 0 actualizadas, 30 localizaciones, 15 asociaciones nuevas, 0 asociaciones actualizadas)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\currency-snapshot-1.json",
+    "exit_code": 0,
+    "stdout": "NO-OP snapshot_version=1 ya incorporado",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli diff <work>\\currency-snapshot-5-transition.json",
+    "exit_code": 0,
+    "stdout": "DIFF snapshot_version=5: 4 cambio(s)\n  estado       HRK (5e30a2b9-8f2a-54fe-970b-ba49a3a17d94): status active → inactive\n  reemplazos   HRK (5e30a2b9-8f2a-54fe-970b-ba49a3a17d94): agrega ['EUR'], quita —\n  asociación   9be0a896-519f-5055-adb3-c8aa843a6860→EUR (d66d953b-c176-5f20-9d9d-d52573b23d43): nueva, status active, vigencia [2023-01-01, +∞)\n  vigencia     9be0a896-519f-5055-adb3-c8aa843a6860→HRK (5cff71bf-05d3-5f2b-a986-f0d69f1970bc): [1994-05-30, +∞) → [1994-05-30, 2023-01-01)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\currency-snapshot-5-transition.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=5 (locale_snapshot_version=1; country_snapshot_version=1; 0 monedas nuevas, 1 actualizadas, 0 localizaciones, 1 asociaciones nuevas, 1 asociaciones actualizadas)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\reject-same-version-other-digest.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=5\n  - RF-39: la snapshot_version 5 ya existe con otro contenido"
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\reject-lower-version.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=3\n  - RF-39: la snapshot_version 3 es anterior a la última incorporada (5)"
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\reject-tampered-digest.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=7\n  - RF-41: el digest de contenido declarado no coincide con el recalculado"
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\reject-unknown-country.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=7\n  - RF-40: la asociación 18bee55d-e3d6-545c-a125-c0c2a9867362 referencia un country_id inexistente: 00000000-0000-4000-8000-000000000009"
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\reject-missing-required-name.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=7\n  - RF-37: el snapshot omite la localización publicada (499f86b1-0b36-594d-8536-95435b38eef1, 1d806402-a823-4580-9f4d-958c6e5a5354)"
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\reject-rewritten-closed-period.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=7\n  - RF-47: la asociación 5cff71bf-05d3-5f2b-a986-f0d69f1970bc modifica el fin de vigencia ya fijado (2023-01-01 → 2023-06-01)"
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\invalid-no-currency-id.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO: snapshot inválido\n  - /currencies/0: 'currency_id' is a required property"
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\invalid-numeric-as-number.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO: snapshot inválido\n  - /currencies/0/numeric_code: 32 is not of type 'string'"
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\currency-snapshot-6-list-three.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=6 (locale_snapshot_version=1; country_snapshot_version=1; 1 monedas nuevas, 0 actualizadas, 2 localizaciones, 0 asociaciones nuevas, 0 asociaciones actualizadas)",
+    "stderr": ""
+  },
+  {
+    "command": "python -c <canario: connect a 192.0.2.1 con el guard de red>",
+    "exit_code": 1,
+    "stdout": "BLOCKED connect 192.0.2.1",
+    "stderr": ""
+  },
+  {
+    "command": "git diff --stat origin/develop -- <rutas de 001-003>",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

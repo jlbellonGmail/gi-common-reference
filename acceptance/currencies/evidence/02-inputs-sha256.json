@@ -1,0 +1,15 @@
+{
+  "currency-snapshot-1.json": "sha256:f6e8e034006cf1d6b859da2679f20a8f250f36b5f87d5a81a1849dfe35f96e32",
+  "currency-snapshot-5-transition.json": "sha256:21823756dcf41c06a2c12d661e0f4bae14c419c87b73d303ab2c30b5fa0f0674",
+  "currency-snapshot-6-list-three.json": "sha256:2636d626fae9f1fb635884463a4768ecf971ad053d172421de660bd0c40f1758",
+  "invalid-no-currency-id.json": "sha256:0063d982def9fee44320c51aad3b1292017baa6be6182b0951265c75e29eac72",
+  "invalid-numeric-as-number.json": "sha256:eb173f0f6f15740415c87ea6467bd067ab776a76f40730117618ba4a9677588f",
+  "prereq-locales.json": "sha256:67b2008d461bfcdf9af0d19941cf53e48b5f71a28a3e26b6f0e6bf6a90dfa075",
+  "prereq-regions.json": "sha256:42b22bd3af48671932f5c8a6e1a03ccf3eb65ab1183c5e5506dfded5e4596295",
+  "reject-lower-version.json": "sha256:658b4d07fcf37423e9521c8224e70d3d2ada04e71bfc071b40c0ef741880ffac",
+  "reject-missing-required-name.json": "sha256:f773b6157c76f85853cd3a08e675f1b4444f0bbace0449e2f20142091159bb56",
+  "reject-rewritten-closed-period.json": "sha256:8eff91d486382b8e72a55efbb98f037316e982cd7514c68f088fd767c6548e8c",
+  "reject-same-version-other-digest.json": "sha256:a3a23233569abccdcc9eb26e6e248e9e84a49391aabc5385b197b3057da5acb4",
+  "reject-tampered-digest.json": "sha256:95e2b7297d17c5cd47d46b51c430de21081af2be1abbd590a0b17ac243ef62cd",
+  "reject-unknown-country.json": "sha256:6369f896a6686f089e8cbdea1f3a474af79c1d743317115c50b4c271c579d0fe"
+}

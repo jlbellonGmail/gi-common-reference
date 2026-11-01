@@ -1,0 +1,2026 @@
+[
+  {
+    "request": "GET /v1/currencies/version",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "snapshot_version": 1
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-code/ARS?locale_id=1d806402-a823-4580-9f4d-958c6e5a5354",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "currency_id": "499f86b1-0b36-594d-8536-95435b38eef1",
+        "alphabetic_code": "ARS",
+        "numeric_code": "032",
+        "minor_units": 2,
+        "fund_code": false,
+        "status": "active",
+        "replacement_currency_ids": [],
+        "name": "Argentine Peso"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-code/ars?locale_id=1d806402-a823-4580-9f4d-958c6e5a5354",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "currency_id": "499f86b1-0b36-594d-8536-95435b38eef1",
+        "alphabetic_code": "ARS",
+        "numeric_code": "032",
+        "minor_units": 2,
+        "fund_code": false,
+        "status": "active",
+        "replacement_currency_ids": [],
+        "name": "Argentine Peso"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/499f86b1-0b36-594d-8536-95435b38eef1?locale_id=7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "currency_id": "499f86b1-0b36-594d-8536-95435b38eef1",
+        "alphabetic_code": "ARS",
+        "numeric_code": "032",
+        "minor_units": 2,
+        "fund_code": false,
+        "status": "active",
+        "replacement_currency_ids": [],
+        "name": "peso argentino"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-code/USD?locale_id=1d806402-a823-4580-9f4d-958c6e5a5354",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+        "alphabetic_code": "USD",
+        "numeric_code": "840",
+        "minor_units": 2,
+        "fund_code": false,
+        "status": "active",
+        "replacement_currency_ids": [],
+        "name": "US Dollar"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-code/usd?locale_id=1d806402-a823-4580-9f4d-958c6e5a5354",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+        "alphabetic_code": "USD",
+        "numeric_code": "840",
+        "minor_units": 2,
+        "fund_code": false,
+        "status": "active",
+        "replacement_currency_ids": [],
+        "name": "US Dollar"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/12c3be84-c22e-5d01-adbf-f28c3aeb0807?locale_id=7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+        "alphabetic_code": "USD",
+        "numeric_code": "840",
+        "minor_units": 2,
+        "fund_code": false,
+        "status": "active",
+        "replacement_currency_ids": [],
+        "name": "dólar estadounidense"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-code/EUR?locale_id=1d806402-a823-4580-9f4d-958c6e5a5354",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "currency_id": "d18b9f80-2216-5eaa-a31a-dcf378ac0798",
+        "alphabetic_code": "EUR",
+        "numeric_code": "978",
+        "minor_units": 2,
+        "fund_code": false,
+        "status": "active",
+        "replacement_currency_ids": [],
+        "name": "Euro"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-code/eur?locale_id=1d806402-a823-4580-9f4d-958c6e5a5354",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "currency_id": "d18b9f80-2216-5eaa-a31a-dcf378ac0798",
+        "alphabetic_code": "EUR",
+        "numeric_code": "978",
+        "minor_units": 2,
+        "fund_code": false,
+        "status": "active",
+        "replacement_currency_ids": [],
+        "name": "Euro"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/d18b9f80-2216-5eaa-a31a-dcf378ac0798?locale_id=7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "currency_id": "d18b9f80-2216-5eaa-a31a-dcf378ac0798",
+        "alphabetic_code": "EUR",
+        "numeric_code": "978",
+        "minor_units": 2,
+        "fund_code": false,
+        "status": "active",
+        "replacement_currency_ids": [],
+        "name": "euro"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-code/ARS",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "currency_id": "499f86b1-0b36-594d-8536-95435b38eef1",
+        "alphabetic_code": "ARS",
+        "numeric_code": "032",
+        "minor_units": 2,
+        "fund_code": false,
+        "status": "active",
+        "replacement_currency_ids": [],
+        "name": null
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-code/XAU",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "currency_id": "e19de4c9-122f-5978-8146-3be569e15bc1",
+        "alphabetic_code": "XAU",
+        "numeric_code": "959",
+        "minor_units": null,
+        "fund_code": false,
+        "status": "active",
+        "replacement_currency_ids": [],
+        "name": null
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-country/34f204cb-6100-5b4f-838e-d26b164df4a5?as_of=2026-11-01",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": [
+        {
+          "country_currency_id": "fc7fa67b-b245-5141-9b90-4d038e7b9cd6",
+          "country_id": "34f204cb-6100-5b4f-838e-d26b164df4a5",
+          "currency": {
+            "currency_id": "499f86b1-0b36-594d-8536-95435b38eef1",
+            "alphabetic_code": "ARS",
+            "numeric_code": "032",
+            "minor_units": 2,
+            "fund_code": false,
+            "status": "active",
+            "replacement_currency_ids": [],
+            "name": null
+          },
+          "status": "active",
+          "valid_from": null,
+          "valid_to": null
+        }
+      ]
+    }
+  },
+  {
+    "request": "GET /v1/currencies/d18b9f80-2216-5eaa-a31a-dcf378ac0798/countries?as_of=2026-11-01",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": [
+        {
+          "country_currency_id": "d7ea61c3-c9ee-5bae-88f3-5c5318a7c23d",
+          "country_id": "11d080eb-fe97-580f-9c27-23614607a759",
+          "currency": {
+            "currency_id": "d18b9f80-2216-5eaa-a31a-dcf378ac0798",
+            "alphabetic_code": "EUR",
+            "numeric_code": "978",
+            "minor_units": 2,
+            "fund_code": false,
+            "status": "active",
+            "replacement_currency_ids": [],
+            "name": null
+          },
+          "status": "active",
+          "valid_from": "1999-01-01",
+          "valid_to": null
+        },
+        {
+          "country_currency_id": "2958a815-15da-5ed9-a97a-b32921f69e83",
+          "country_id": "d83f1f6a-4103-5fcf-bcda-6368cd7b302d",
+          "currency": {
+            "currency_id": "d18b9f80-2216-5eaa-a31a-dcf378ac0798",
+            "alphabetic_code": "EUR",
+            "numeric_code": "978",
+            "minor_units": 2,
+            "fund_code": false,
+            "status": "active",
+            "replacement_currency_ids": [],
+            "name": null
+          },
+          "status": "active",
+          "valid_from": "1999-01-01",
+          "valid_to": null
+        }
+      ]
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-country/6d9b2e80-7654-51fb-996a-6b31ecd6b188",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": []
+    }
+  },
+  {
+    "request": "GET /v1/currencies/4daf85cc-a295-517b-b645-e201101bc009/countries",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": []
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-country/1865d571-2bb9-5312-b679-10d64577673c?as_of=2026-11-01",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": [
+        {
+          "country_currency_id": "fecc1900-ef93-5d40-a087-5af934fc26c5",
+          "country_id": "1865d571-2bb9-5312-b679-10d64577673c",
+          "currency": {
+            "currency_id": "817ab824-0737-5fbb-b7c6-2752d247d2ee",
+            "alphabetic_code": "PAB",
+            "numeric_code": "590",
+            "minor_units": 2,
+            "fund_code": false,
+            "status": "active",
+            "replacement_currency_ids": [],
+            "name": null
+          },
+          "status": "active",
+          "valid_from": "1904-01-01",
+          "valid_to": null
+        },
+        {
+          "country_currency_id": "09d4f1f5-3f7b-5fb6-bf3d-14f2711e88d5",
+          "country_id": "1865d571-2bb9-5312-b679-10d64577673c",
+          "currency": {
+            "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+            "alphabetic_code": "USD",
+            "numeric_code": "840",
+            "minor_units": 2,
+            "fund_code": false,
+            "status": "active",
+            "replacement_currency_ids": [],
+            "name": null
+          },
+          "status": "active",
+          "valid_from": "1904-01-01",
+          "valid_to": null
+        }
+      ]
+    }
+  },
+  {
+    "request": "GET /v1/currencies/12c3be84-c22e-5d01-adbf-f28c3aeb0807/countries?as_of=2026-11-01",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": [
+        {
+          "country_currency_id": "09d4f1f5-3f7b-5fb6-bf3d-14f2711e88d5",
+          "country_id": "1865d571-2bb9-5312-b679-10d64577673c",
+          "currency": {
+            "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+            "alphabetic_code": "USD",
+            "numeric_code": "840",
+            "minor_units": 2,
+            "fund_code": false,
+            "status": "active",
+            "replacement_currency_ids": [],
+            "name": null
+          },
+          "status": "active",
+          "valid_from": "1904-01-01",
+          "valid_to": null
+        },
+        {
+          "country_currency_id": "01906231-bc73-58fb-b24d-ed37d2d8b6db",
+          "country_id": "29c0896c-a420-5ca4-ac01-1db86951552f",
+          "currency": {
+            "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+            "alphabetic_code": "USD",
+            "numeric_code": "840",
+            "minor_units": 2,
+            "fund_code": false,
+            "status": "active",
+            "replacement_currency_ids": [],
+            "name": null
+          },
+          "status": "active",
+          "valid_from": null,
+          "valid_to": null
+        }
+      ]
+    }
+  },
+  {
+    "request": "GET /v1/currencies/version",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "snapshot_version": 1
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-country/9be0a896-519f-5055-adb3-c8aa843a6860?as_of=1994-05-29",
+    "status": 200,
+    "body": {
+      "snapshot_version": 5,
+      "data": []
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-country/9be0a896-519f-5055-adb3-c8aa843a6860?as_of=2022-12-31",
+    "status": 200,
+    "body": {
+      "snapshot_version": 5,
+      "data": [
+        {
+          "country_currency_id": "5cff71bf-05d3-5f2b-a986-f0d69f1970bc",
+          "country_id": "9be0a896-519f-5055-adb3-c8aa843a6860",
+          "currency": {
+            "currency_id": "5e30a2b9-8f2a-54fe-970b-ba49a3a17d94",
+            "alphabetic_code": "HRK",
+            "numeric_code": "191",
+            "minor_units": 2,
+            "fund_code": false,
+            "status": "inactive",
+            "replacement_currency_ids": [
+              "d18b9f80-2216-5eaa-a31a-dcf378ac0798"
+            ],
+            "name": null
+          },
+          "status": "active",
+          "valid_from": "1994-05-30",
+          "valid_to": "2023-01-01"
+        }
+      ]
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-country/9be0a896-519f-5055-adb3-c8aa843a6860?as_of=2023-01-01",
+    "status": 200,
+    "body": {
+      "snapshot_version": 5,
+      "data": [
+        {
+          "country_currency_id": "d66d953b-c176-5f20-9d9d-d52573b23d43",
+          "country_id": "9be0a896-519f-5055-adb3-c8aa843a6860",
+          "currency": {
+            "currency_id": "d18b9f80-2216-5eaa-a31a-dcf378ac0798",
+            "alphabetic_code": "EUR",
+            "numeric_code": "978",
+            "minor_units": 2,
+            "fund_code": false,
+            "status": "active",
+            "replacement_currency_ids": [],
+            "name": null
+          },
+          "status": "active",
+          "valid_from": "2023-01-01",
+          "valid_to": null
+        }
+      ]
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-country/9be0a896-519f-5055-adb3-c8aa843a6860?as_of=2026-11-01",
+    "status": 200,
+    "body": {
+      "snapshot_version": 5,
+      "data": [
+        {
+          "country_currency_id": "d66d953b-c176-5f20-9d9d-d52573b23d43",
+          "country_id": "9be0a896-519f-5055-adb3-c8aa843a6860",
+          "currency": {
+            "currency_id": "d18b9f80-2216-5eaa-a31a-dcf378ac0798",
+            "alphabetic_code": "EUR",
+            "numeric_code": "978",
+            "minor_units": 2,
+            "fund_code": false,
+            "status": "active",
+            "replacement_currency_ids": [],
+            "name": null
+          },
+          "status": "active",
+          "valid_from": "2023-01-01",
+          "valid_to": null
+        }
+      ]
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-country/9be0a896-519f-5055-adb3-c8aa843a6860?as_of=2023-02-30",
+    "status": 422,
+    "body": {
+      "snapshot_version": 5,
+      "error": {
+        "code": "invalid_as_of_date",
+        "message": "as_of debe ser un día real con formato YYYY-MM-DD"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/5e30a2b9-8f2a-54fe-970b-ba49a3a17d94?locale_id=7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+    "status": 200,
+    "body": {
+      "snapshot_version": 5,
+      "data": {
+        "currency_id": "5e30a2b9-8f2a-54fe-970b-ba49a3a17d94",
+        "alphabetic_code": "HRK",
+        "numeric_code": "191",
+        "minor_units": 2,
+        "fund_code": false,
+        "status": "inactive",
+        "replacement_currency_ids": [
+          "d18b9f80-2216-5eaa-a31a-dcf378ac0798"
+        ],
+        "name": "kuna croata"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/5e30a2b9-8f2a-54fe-970b-ba49a3a17d94/validation",
+    "status": 200,
+    "body": {
+      "snapshot_version": 5,
+      "data": {
+        "result": "inactive"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/499f86b1-0b36-594d-8536-95435b38eef1/validation",
+    "status": 200,
+    "body": {
+      "snapshot_version": 5,
+      "data": {
+        "result": "active"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/00000000-0000-4000-8000-000000000000/validation",
+    "status": 200,
+    "body": {
+      "snapshot_version": 5,
+      "data": {
+        "result": "not_found"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies",
+    "status": 200,
+    "body": {
+      "snapshot_version": 5,
+      "data": [
+        {
+          "currency_id": "499f86b1-0b36-594d-8536-95435b38eef1",
+          "alphabetic_code": "ARS",
+          "numeric_code": "032",
+          "minor_units": 2,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "0f1efe82-eda9-5f18-9a01-42c1c2840309",
+          "alphabetic_code": "BOB",
+          "numeric_code": "068",
+          "minor_units": 2,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "d27a3fa6-65da-57fc-838a-16e0f10b4021",
+          "alphabetic_code": "BOV",
+          "numeric_code": "984",
+          "minor_units": 2,
+          "fund_code": true,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "c5be3dfa-27e9-5f49-9d6f-279a14f93756",
+          "alphabetic_code": "CHE",
+          "numeric_code": "947",
+          "minor_units": 2,
+          "fund_code": true,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "359df0bc-679f-54c7-8d2a-15126fe2dd15",
+          "alphabetic_code": "CHF",
+          "numeric_code": "756",
+          "minor_units": 2,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "1de4c96f-9e12-57c5-9fe4-91e988f1fc9a",
+          "alphabetic_code": "CHW",
+          "numeric_code": "948",
+          "minor_units": 2,
+          "fund_code": true,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "cfa0ae34-bee4-5c1c-bfba-0c76dc41cac4",
+          "alphabetic_code": "CLF",
+          "numeric_code": "990",
+          "minor_units": 4,
+          "fund_code": true,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "d18b9f80-2216-5eaa-a31a-dcf378ac0798",
+          "alphabetic_code": "EUR",
+          "numeric_code": "978",
+          "minor_units": 2,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "e6348816-740e-5a74-a4a6-838e6ba003b8",
+          "alphabetic_code": "JPY",
+          "numeric_code": "392",
+          "minor_units": 0,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "c0ab10db-714c-56fb-921a-1270c025835d",
+          "alphabetic_code": "KWD",
+          "numeric_code": "414",
+          "minor_units": 3,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "817ab824-0737-5fbb-b7c6-2752d247d2ee",
+          "alphabetic_code": "PAB",
+          "numeric_code": "590",
+          "minor_units": 2,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+          "alphabetic_code": "USD",
+          "numeric_code": "840",
+          "minor_units": 2,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "e19de4c9-122f-5978-8146-3be569e15bc1",
+          "alphabetic_code": "XAU",
+          "numeric_code": "959",
+          "minor_units": null,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "4daf85cc-a295-517b-b645-e201101bc009",
+          "alphabetic_code": "XDR",
+          "numeric_code": "960",
+          "minor_units": null,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        }
+      ]
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-country/9be0a896-519f-5055-adb3-c8aa843a6860/history",
+    "status": 200,
+    "body": {
+      "snapshot_version": 5,
+      "data": [
+        {
+          "country_currency_id": "5cff71bf-05d3-5f2b-a986-f0d69f1970bc",
+          "country_id": "9be0a896-519f-5055-adb3-c8aa843a6860",
+          "currency": {
+            "currency_id": "5e30a2b9-8f2a-54fe-970b-ba49a3a17d94",
+            "alphabetic_code": "HRK",
+            "numeric_code": "191",
+            "minor_units": 2,
+            "fund_code": false,
+            "status": "inactive",
+            "replacement_currency_ids": [
+              "d18b9f80-2216-5eaa-a31a-dcf378ac0798"
+            ],
+            "name": null
+          },
+          "status": "active",
+          "valid_from": "1994-05-30",
+          "valid_to": "2023-01-01"
+        },
+        {
+          "country_currency_id": "d66d953b-c176-5f20-9d9d-d52573b23d43",
+          "country_id": "9be0a896-519f-5055-adb3-c8aa843a6860",
+          "currency": {
+            "currency_id": "d18b9f80-2216-5eaa-a31a-dcf378ac0798",
+            "alphabetic_code": "EUR",
+            "numeric_code": "978",
+            "minor_units": 2,
+            "fund_code": false,
+            "status": "active",
+            "replacement_currency_ids": [],
+            "name": null
+          },
+          "status": "active",
+          "valid_from": "2023-01-01",
+          "valid_to": null
+        }
+      ]
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-code/YUM",
+    "status": 200,
+    "body": {
+      "snapshot_version": 6,
+      "data": {
+        "currency_id": "ebc1f80c-3949-5c01-8504-4aa5478696c0",
+        "alphabetic_code": "YUM",
+        "numeric_code": "891",
+        "minor_units": 2,
+        "fund_code": false,
+        "status": "inactive",
+        "replacement_currency_ids": [],
+        "name": null
+      }
+    }
+  },
+  {
+    "request": "POST /v1/currencies",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "POST /v1/currencies/499f86b1-0b36-594d-8536-95435b38eef1",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PUT /v1/currencies",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PUT /v1/currencies/499f86b1-0b36-594d-8536-95435b38eef1",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PATCH /v1/currencies",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PATCH /v1/currencies/499f86b1-0b36-594d-8536-95435b38eef1",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "DELETE /v1/currencies",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "DELETE /v1/currencies/499f86b1-0b36-594d-8536-95435b38eef1",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "GET /v1/openapi/currencies.json",
+    "status": 200,
+    "body": {
+      "openapi": "3.1.0",
+      "info": {
+        "title": "gi-common-reference: currencies",
+        "description": "Catálogo global de monedas ISO 4217, versionado y de solo lectura: identidad `currency_id`, código alfabético de resolución, nombres por `locale_id` y asociaciones Country–Currency con vigencia temporal. Sin cotizaciones, tipos de cambio, precios ni saldos.",
+        "version": "1.0.0"
+      },
+      "paths": {
+        "/v1/currencies/version": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "Versión aplicada del catálogo Currency",
+            "operationId": "getCurrencyCatalogVersion",
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/VersionEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/currencies/by-code/{code}": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "Obtener una moneda por su código alfabético ISO 4217",
+            "description": "Sin distinguir mayúsculas (`usd`). Un código mal formado (` USD`, `US`, vacío) es 422;\nuno bien formado que no existe, 404. Resuelve también las monedas `inactive`.",
+            "operationId": "getCurrencyByCode",
+            "parameters": [
+              {
+                "name": "code",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Code"
+                }
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/CurrencyEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/currencies/by-country/{country_id}/history": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "Historial completo de monedas de un país, sin filtrar por fecha",
+            "description": "Orden: inicio de vigencia (los ausentes primero), código alfabético e id.",
+            "operationId": "getCountryCurrencyHistory",
+            "parameters": [
+              {
+                "name": "country_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Country Id"
+                }
+              },
+              {
+                "name": "include_inactive",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "boolean",
+                  "description": "Incluye también los registros `inactive` (por defecto no).",
+                  "default": false,
+                  "title": "Include Inactive"
+                },
+                "description": "Incluye también los registros `inactive` (por defecto no)."
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/AssociationListEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/currencies/by-country/{country_id}": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "Monedas de un país en una fecha de referencia",
+            "description": "Un país existente sin monedas, o sin monedas en esa fecha, devuelve lista vacía; un\n`country_id` inexistente, 404.",
+            "operationId": "listCountryCurrencies",
+            "parameters": [
+              {
+                "name": "country_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Country Id"
+                }
+              },
+              {
+                "name": "as_of",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Fecha de referencia `YYYY-MM-DD` (día calendario). La vigencia `[valid_from, valid_to)` incluye el día de inicio y excluye el de fin. Por defecto, el día UTC de la consulta.",
+                  "title": "As Of"
+                },
+                "description": "Fecha de referencia `YYYY-MM-DD` (día calendario). La vigencia `[valid_from, valid_to)` incluye el día de inicio y excluye el de fin. Por defecto, el día UTC de la consulta."
+              },
+              {
+                "name": "include_inactive",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "boolean",
+                  "description": "Incluye también los registros `inactive` (por defecto no).",
+                  "default": false,
+                  "title": "Include Inactive"
+                },
+                "description": "Incluye también los registros `inactive` (por defecto no)."
+              },
+              {
+                "name": "exclude_funds",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "boolean",
+                  "description": "Excluye los códigos de fondos (BOV, CHE, CLF…).",
+                  "default": false,
+                  "title": "Exclude Funds"
+                },
+                "description": "Excluye los códigos de fondos (BOV, CHE, CLF…)."
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/AssociationListEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/currencies/{currency_id}/validation": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "Validar un currency_id: active, inactive o not_found",
+            "description": "No decide si el consumidor acepta monedas `inactive`.",
+            "operationId": "validateCurrency",
+            "parameters": [
+              {
+                "name": "currency_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Currency Id"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ValidationEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/currencies/{currency_id}/countries/history": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "Historial completo de países de una moneda, sin filtrar por fecha",
+            "operationId": "getCurrencyCountryHistory",
+            "parameters": [
+              {
+                "name": "currency_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Currency Id"
+                }
+              },
+              {
+                "name": "include_inactive",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "boolean",
+                  "description": "Incluye también los registros `inactive` (por defecto no).",
+                  "default": false,
+                  "title": "Include Inactive"
+                },
+                "description": "Incluye también los registros `inactive` (por defecto no)."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/AssociationListEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/currencies/{currency_id}/countries": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "Países de una moneda en una fecha de referencia",
+            "description": "Solo `country_id` y vigencia: los datos del país los resuelve el contrato de 003.",
+            "operationId": "listCurrencyCountries",
+            "parameters": [
+              {
+                "name": "currency_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Currency Id"
+                }
+              },
+              {
+                "name": "as_of",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Fecha de referencia `YYYY-MM-DD` (día calendario). La vigencia `[valid_from, valid_to)` incluye el día de inicio y excluye el de fin. Por defecto, el día UTC de la consulta.",
+                  "title": "As Of"
+                },
+                "description": "Fecha de referencia `YYYY-MM-DD` (día calendario). La vigencia `[valid_from, valid_to)` incluye el día de inicio y excluye el de fin. Por defecto, el día UTC de la consulta."
+              },
+              {
+                "name": "include_inactive",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "boolean",
+                  "description": "Incluye también los registros `inactive` (por defecto no).",
+                  "default": false,
+                  "title": "Include Inactive"
+                },
+                "description": "Incluye también los registros `inactive` (por defecto no)."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/AssociationListEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/currencies/{currency_id}": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "Obtener una moneda por su currency_id, cualquiera sea su status",
+            "description": "Un `currency_id` mal formado es 422; uno bien formado que no existe, 404.",
+            "operationId": "getCurrencyById",
+            "parameters": [
+              {
+                "name": "currency_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Currency Id"
+                }
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/CurrencyEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/currencies": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "Listar las monedas, ordenadas por código alfabético",
+            "operationId": "listCurrencies",
+            "parameters": [
+              {
+                "name": "include_inactive",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "boolean",
+                  "description": "Incluye también los registros `inactive` (por defecto no).",
+                  "default": false,
+                  "title": "Include Inactive"
+                },
+                "description": "Incluye también los registros `inactive` (por defecto no)."
+              },
+              {
+                "name": "exclude_funds",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "boolean",
+                  "description": "Excluye los códigos de fondos (BOV, CHE, CLF…).",
+                  "default": false,
+                  "title": "Exclude Funds"
+                },
+                "description": "Excluye los códigos de fondos (BOV, CHE, CLF…)."
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/CurrencyListEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "components": {
+        "schemas": {
+          "AssociationListEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version"
+              },
+              "data": {
+                "items": {
+                  "$ref": "#/components/schemas/CountryCurrency"
+                },
+                "type": "array",
+                "title": "Data"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "AssociationListEnvelope"
+          },
+          "CountryCurrency": {
+            "properties": {
+              "country_currency_id": {
+                "type": "string",
+                "title": "Country Currency Id",
+                "description": "Identidad de la asociación (UUID)."
+              },
+              "country_id": {
+                "type": "string",
+                "title": "Country Id",
+                "description": "UUID de un Country publicado por 003-countries."
+              },
+              "currency": {
+                "$ref": "#/components/schemas/Currency"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "inactive"
+                ],
+                "title": "Status",
+                "description": "Ciclo de vida del registro."
+              },
+              "valid_from": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Valid From",
+                "description": "Primer día en que corresponde (incluido); `null` si no está acotado."
+              },
+              "valid_to": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Valid To",
+                "description": "Primer día en que ya no corresponde (excluido); `null` sin fin declarado."
+              }
+            },
+            "type": "object",
+            "required": [
+              "country_currency_id",
+              "country_id",
+              "currency",
+              "status",
+              "valid_from",
+              "valid_to"
+            ],
+            "title": "CountryCurrency",
+            "description": "Asociación Country–Currency. `status` es el ciclo de vida del registro; la vigencia es el\nperíodo real `[valid_from, valid_to)` y no la sustituye."
+          },
+          "Currency": {
+            "properties": {
+              "currency_id": {
+                "type": "string",
+                "title": "Currency Id",
+                "description": "Identidad estable de la moneda (UUID de Reference)."
+              },
+              "alphabetic_code": {
+                "type": "string",
+                "title": "Alphabetic Code",
+                "description": "ISO 4217 alfabético (`USD`)."
+              },
+              "numeric_code": {
+                "type": "string",
+                "title": "Numeric Code",
+                "description": "ISO 4217 numérico, con ceros (`032`). Solo atributo."
+              },
+              "minor_units": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Minor Units",
+                "description": "Dígitos decimales estándar; `null` es «no aplicable» (distinto de 0)."
+              },
+              "fund_code": {
+                "type": "boolean",
+                "title": "Fund Code",
+                "description": "ISO la declara código de fondos."
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "inactive"
+                ],
+                "title": "Status",
+                "description": "`active`: apta para nuevas referencias; `inactive`: sigue resoluble."
+              },
+              "replacement_currency_ids": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "Replacement Currency Ids",
+                "description": "Monedas sucesoras (0..N), en orden ascendente de `currency_id`; vacío si no hay sucesión declarada o si la moneda es `active`."
+              },
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Name",
+                "description": "Nombre en el `locale_id` pedido, o `null`."
+              }
+            },
+            "type": "object",
+            "required": [
+              "currency_id",
+              "alphabetic_code",
+              "numeric_code",
+              "minor_units",
+              "fund_code",
+              "status",
+              "replacement_currency_ids",
+              "name"
+            ],
+            "title": "Currency",
+            "description": "Moneda ISO 4217. La identidad es `currency_id`; el código alfabético es clave de resolución.\n\nSin ningún texto propio (el nombre es de `CurrencyLocale`), ni símbolos, ni formato (D-11)."
+          },
+          "CurrencyEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version"
+              },
+              "data": {
+                "$ref": "#/components/schemas/Currency"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "CurrencyEnvelope"
+          },
+          "CurrencyListEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version",
+                "description": "Snapshot vigente; `null` si todavía no se incorporó ninguno."
+              },
+              "data": {
+                "items": {
+                  "$ref": "#/components/schemas/Currency"
+                },
+                "type": "array",
+                "title": "Data"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "CurrencyListEnvelope"
+          },
+          "ErrorBody": {
+            "properties": {
+              "code": {
+                "type": "string",
+                "title": "Code"
+              },
+              "message": {
+                "type": "string",
+                "title": "Message"
+              }
+            },
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "title": "ErrorBody"
+          },
+          "ErrorEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version",
+                "description": "Snapshot vigente, o `null` si no hay."
+              },
+              "error": {
+                "$ref": "#/components/schemas/ErrorBody"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "error"
+            ],
+            "title": "ErrorEnvelope"
+          },
+          "ValidationData": {
+            "properties": {
+              "result": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "inactive",
+                  "not_found"
+                ],
+                "title": "Result",
+                "description": "Resultado de la consulta; `not_found` nunca es un `status` persistido."
+              }
+            },
+            "type": "object",
+            "required": [
+              "result"
+            ],
+            "title": "ValidationData"
+          },
+          "ValidationEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version"
+              },
+              "data": {
+                "$ref": "#/components/schemas/ValidationData"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "ValidationEnvelope"
+          },
+          "VersionData": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version"
+            ],
+            "title": "VersionData"
+          },
+          "VersionEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version"
+              },
+              "data": {
+                "$ref": "#/components/schemas/VersionData"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "VersionEnvelope"
+          }
+        }
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies",
+    "status": 200,
+    "body": {
+      "snapshot_version": 6,
+      "data": [
+        {
+          "currency_id": "499f86b1-0b36-594d-8536-95435b38eef1",
+          "alphabetic_code": "ARS",
+          "numeric_code": "032",
+          "minor_units": 2,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "0f1efe82-eda9-5f18-9a01-42c1c2840309",
+          "alphabetic_code": "BOB",
+          "numeric_code": "068",
+          "minor_units": 2,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "d27a3fa6-65da-57fc-838a-16e0f10b4021",
+          "alphabetic_code": "BOV",
+          "numeric_code": "984",
+          "minor_units": 2,
+          "fund_code": true,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "c5be3dfa-27e9-5f49-9d6f-279a14f93756",
+          "alphabetic_code": "CHE",
+          "numeric_code": "947",
+          "minor_units": 2,
+          "fund_code": true,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "359df0bc-679f-54c7-8d2a-15126fe2dd15",
+          "alphabetic_code": "CHF",
+          "numeric_code": "756",
+          "minor_units": 2,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "1de4c96f-9e12-57c5-9fe4-91e988f1fc9a",
+          "alphabetic_code": "CHW",
+          "numeric_code": "948",
+          "minor_units": 2,
+          "fund_code": true,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "cfa0ae34-bee4-5c1c-bfba-0c76dc41cac4",
+          "alphabetic_code": "CLF",
+          "numeric_code": "990",
+          "minor_units": 4,
+          "fund_code": true,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "d18b9f80-2216-5eaa-a31a-dcf378ac0798",
+          "alphabetic_code": "EUR",
+          "numeric_code": "978",
+          "minor_units": 2,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "e6348816-740e-5a74-a4a6-838e6ba003b8",
+          "alphabetic_code": "JPY",
+          "numeric_code": "392",
+          "minor_units": 0,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "c0ab10db-714c-56fb-921a-1270c025835d",
+          "alphabetic_code": "KWD",
+          "numeric_code": "414",
+          "minor_units": 3,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "817ab824-0737-5fbb-b7c6-2752d247d2ee",
+          "alphabetic_code": "PAB",
+          "numeric_code": "590",
+          "minor_units": 2,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+          "alphabetic_code": "USD",
+          "numeric_code": "840",
+          "minor_units": 2,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "e19de4c9-122f-5978-8146-3be569e15bc1",
+          "alphabetic_code": "XAU",
+          "numeric_code": "959",
+          "minor_units": null,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        },
+        {
+          "currency_id": "4daf85cc-a295-517b-b645-e201101bc009",
+          "alphabetic_code": "XDR",
+          "numeric_code": "960",
+          "minor_units": null,
+          "fund_code": false,
+          "status": "active",
+          "replacement_currency_ids": [],
+          "name": null
+        }
+      ]
+    }
+  }
+]

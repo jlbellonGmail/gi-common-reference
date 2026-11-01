@@ -56,3 +56,9 @@ Estado vivo y verificable (AGENTS.md). Sin memoria conversacional: el estado sal
 - `pytest tests/contract` completo: 392 passed (incluye wheel instalado y fronteras de arquitectura). `ruff format/check`, `mypy`: PASS.
 - `git diff origin/develop` sobre `src/` de locales/regions/countries, sus contratos OpenAPI, migraciones 0001–0003 y sus specs: vacío (CA-24).
 - Compatibilidad: `create_catalog_app(...)` mantiene su firma para los 4 argumentos existentes; `currency_reader` y `clock` son opcionales (si faltan, `/v1/currencies*` no se sirve). Producción (`app_from_environment`) los pasa siempre.
+
+### T9 — aceptación caja negra con evidencia reproducible (done)
+- AI-NATIVE v3.4.3 no tiene comando de Native Acceptance (`ai-native help`): se ejecutaron los criterios de la spec como pruebas caja negra (D24). `tests/acceptance` (15 casos), `tools/acceptance/currency_acceptance.py`, `acceptance/currencies/README.md` y `acceptance/currencies/evidence/01`–`06`.
+- Comando: `python tools/acceptance/currency_acceptance.py --base origin/develop` → **15 passed**, `pytest exit code: 0`, sobre la revisión `2a3d701` (ver `01-environment.txt`). CLI como subproceso + API real por HTTP + Postgres 16 real, con guard de red en ambos procesos y un canario que demuestra que bloquea.
+- Cubre el mínimo del Goal: ARS/USD/EUR, nombres en/es, monedas actuales de un Country, Countries de una Currency, asociación histórica por fecha, múltiples monedas simultáneas, moneda retirada, preservación histórica, ausencia de dependencias runtime hacia ISO/CLDR, 001–003 sin cambios.
+- **Declarado como NO ejecutado:** (1) CA-1 contra el dataset real de PREP (S-9): se verificó con un snapshot sintético sellado y no productivo; (2) aceptación contra Supabase `gi-dev` (no hay credenciales ni autorización para escribir en un entorno compartido).
