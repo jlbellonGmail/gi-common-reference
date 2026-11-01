@@ -52,7 +52,9 @@ COMPOSITION_ROOT_MAY_IMPORT = {
     f"{COUNTRIES}.infrastructure.snapshot_reader",
     f"{CURRENCIES}.domain.policy",
     f"{CURRENCIES}.domain.ports",
+    f"{CURRENCIES}.infrastructure.clock",
     f"{CURRENCIES}.infrastructure.policy_reader",
+    f"{CURRENCIES}.infrastructure.postgres_reader",
     f"{CURRENCIES}.infrastructure.postgres_repository",
     f"{CURRENCIES}.infrastructure.snapshot_reader",
 }

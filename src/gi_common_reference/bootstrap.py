@@ -26,9 +26,17 @@ from gi_common_reference.countries.infrastructure.snapshot_reader import (
     read_snapshot_document as read_country_snapshot_document,
 )
 from gi_common_reference.currencies.domain.policy import RequiredLocales as CurrencyRequiredLocales
-from gi_common_reference.currencies.domain.ports import CurrencyRepository
+from gi_common_reference.currencies.domain.ports import (
+    Clock,
+    CurrencyReader,
+    CurrencyRepository,
+)
+from gi_common_reference.currencies.infrastructure.clock import SystemClock
 from gi_common_reference.currencies.infrastructure.policy_reader import (
     load_required_locales as load_currency_required_locales,
+)
+from gi_common_reference.currencies.infrastructure.postgres_reader import (
+    PostgresCurrencyReader,
 )
 from gi_common_reference.currencies.infrastructure.postgres_repository import (
     PostgresCurrencyRepository,
@@ -112,3 +120,11 @@ def read_currency_snapshot(path: Path) -> dict[str, Any]:
 
 def currency_required_locales() -> CurrencyRequiredLocales:
     return load_currency_required_locales()
+
+
+def postgres_currency_reader(conninfo: str) -> CurrencyReader:
+    return PostgresCurrencyReader(conninfo)
+
+
+def system_clock() -> Clock:
+    return SystemClock()
