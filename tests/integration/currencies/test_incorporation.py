@@ -50,6 +50,7 @@ from tests.fixtures.currencies import (
     currency_id,
     names,
     seal,
+    transition_snapshot,
 )
 from tests.fixtures.regions import locale_snapshot
 
@@ -138,20 +139,7 @@ def all_codes() -> tuple[str, ...]:
 
 
 def transition(version: int = 2) -> dict[str, Any]:
-    """HRK → EUR en HR: HRK inactive con reemplazo EUR, HR–HRK cerrada y HR–EUR abierta."""
-    retired = currency("HRK", status="inactive", replacement_currency_ids=[currency_id("EUR")])
-    return build_snapshot(
-        version,
-        currencies=[currency(c) for c in all_codes() if c != "HRK"] + [retired],
-        currency_names=[n for c in all_codes() for n in names(c)],
-        country_currencies=[
-            association(a, c, f, t) for a, c, f, t in DEFAULT_ASSOCIATIONS if c != "HRK"
-        ]
-        + [
-            association("HR", "HRK", D(1994, 5, 30), D(2023, 1, 1)),
-            association("HR", "EUR", D(2023, 1, 1), n=2),
-        ],
-    )
+    return transition_snapshot(version)
 
 
 # --- flujo básico ---------------------------------------------------------------------------------

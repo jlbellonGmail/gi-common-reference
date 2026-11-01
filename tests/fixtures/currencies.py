@@ -216,6 +216,24 @@ def build_snapshot(
     return seal(document)
 
 
+def transition_snapshot(version: int = 2) -> dict[str, Any]:
+    """HRK → EUR en HR (CL-8, CL-20): HRK inactive con reemplazo EUR, HR–HRK activa y cerrada el
+    2023-01-01 (excluido) y HR–EUR abierta desde esa fecha."""
+    retired = currency("HRK", status="inactive", replacement_currency_ids=[currency_id("EUR")])
+    return build_snapshot(
+        version,
+        currencies=[currency(c) for c in DEFAULT_CODES if c != "HRK"] + [retired],
+        currency_names=[n for c in DEFAULT_CODES for n in names(c)],
+        country_currencies=[
+            association(a, c, f, t) for a, c, f, t in DEFAULT_ASSOCIATIONS if c != "HRK"
+        ]
+        + [
+            association("HR", "HRK", date(1994, 5, 30), date(2023, 1, 1)),
+            association("HR", "EUR", date(2023, 1, 1), n=2),
+        ],
+    )
+
+
 def locale_catalog(
     *, snapshot_version: int | None = 1, inactive: Sequence[str] = (), missing: Sequence[str] = ()
 ) -> LocaleCatalog:

@@ -3,6 +3,7 @@
 from collections.abc import Callable, Mapping, Sequence
 from contextlib import AbstractContextManager
 from dataclasses import dataclass
+from datetime import date
 from pathlib import Path
 from typing import Any, Protocol
 
@@ -19,11 +20,17 @@ from gi_common_reference.currencies.domain.policy import RequiredLocales
 from gi_common_reference.currencies.domain.snapshot import HistoricalSnapshot
 
 __all__ = [
+    "AssociationView",
     "CatalogView",
+    "Clock",
+    "CurrencyReader",
     "CurrencyRepository",
+    "CurrencySession",
+    "CurrencyView",
     "IncorporationTransaction",
     "IntegrityViolation",
     "PolicyLoader",
+    "ReaderUnavailable",
     "SnapshotFormatError",
     "SnapshotReader",
 ]
@@ -106,4 +113,74 @@ class CurrencyRepository(Protocol):
 
     def inspect(self) -> AbstractContextManager[CatalogView]:
         """Una vista de solo lectura del catálogo: no toma el lock exclusivo ni escribe (D22)."""
+        ...
+
+
+class ReaderUnavailable(Exception):
+    """La fuente de lectura no responde (p. ej. la base está caída): error técnico (RF-26)."""
+
+
+class Clock(Protocol):
+    """Reloj inyectable: la única dependencia del tiempo es la fecha por defecto (RNF-7, D13)."""
+
+    def today(self) -> date:
+        """El día calendario UTC actual (D14)."""
+        ...
+
+
+@dataclass(frozen=True)
+class CurrencyView:
+    """Una Currency con su nombre en el locale pedido (`None` si no se pidió o no existe, RF-15)."""
+
+    record: CurrencyRecord
+    name: str | None
+
+
+@dataclass(frozen=True)
+class AssociationView:
+    """Una CountryCurrency con la Currency que referencia (RF-29, RF-50)."""
+
+    association: CountryCurrencyRecord
+    currency: CurrencyView
+
+
+class CurrencySession(Protocol):
+    """Lecturas de una sesión consistente: todas ven el mismo estado del catálogo."""
+
+    def snapshot_version(self) -> int | None: ...
+
+    def locale_exists(self, locale_id: str) -> bool: ...
+
+    def country_exists(self, country_id: str) -> bool:
+        """El Country existe en el catálogo publicado por 003 (de ninguna manera se redefine)."""
+        ...
+
+    def currencies(
+        self, include_inactive: bool, exclude_funds: bool, locale_id: str | None
+    ) -> Sequence[CurrencyView]:
+        """Orden determinista por código alfabético en orden binario y desempate por id."""
+        ...
+
+    def currency_by_id(self, currency_id: str, locale_id: str | None) -> CurrencyView | None: ...
+
+    def currency_by_code(self, code: str, locale_id: str | None) -> CurrencyView | None:
+        """`code` ya normalizado a mayúsculas."""
+        ...
+
+    def associations_of_country(
+        self, country_id: str, locale_id: str | None
+    ) -> Sequence[AssociationView]:
+        """Todas las asociaciones del país (cualquier `status` y vigencia), sin ordenar."""
+        ...
+
+    def associations_of_currency(
+        self, currency_id: str, locale_id: str | None
+    ) -> Sequence[AssociationView]:
+        """Todas las asociaciones de la moneda (cualquier `status` y vigencia), sin ordenar."""
+        ...
+
+
+class CurrencyReader(Protocol):
+    def session(self) -> AbstractContextManager[CurrencySession]:
+        """Una sesión de solo lectura; `snapshot_version` y los datos salen del mismo estado."""
         ...
