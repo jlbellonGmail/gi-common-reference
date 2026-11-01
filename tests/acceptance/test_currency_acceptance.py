@@ -1,8 +1,10 @@
 """Aceptación de 004-currency (caja negra). Cada caso nombra los criterios de la spec que verifica.
 
-CA-1 se verifica con un snapshot SINTÉTICO sellado y no productivo (S-9, CA-1): la verificación
-contra el dataset real de ISO 4217 List One que produce PREP queda PENDIENTE y se declara así en
-`acceptance/currencies/README.md`.
+CA-1 tiene dos partes. (a) MECANISMO: el catálogo cargado desde un snapshot respeta D-8 (todo
+`active`, sin `XTS` ni `XXX`); se ejecuta aquí con un snapshot SINTÉTICO sellado y no productivo.
+(b) CONTENIDO: que el catálogo sea exactamente ISO 4217 List One de la edición declarada; exige el
+dataset real que produce PREP (S-9) y está DIFERIDO: este módulo NO lo verifica ni lo cuenta como
+ejecutado. Ver `acceptance/currencies/README.md`.
 
 El orden de los casos importa: comparten el sistema (módulo): primero el snapshot 1, después la
 transición HRK → EUR (snapshot 2), después los rechazos.
@@ -64,7 +66,7 @@ def codes(body: dict[str, Any]) -> list[str]:
 
 
 def test_01_incorporate_the_first_snapshot_and_report_it(stack: Stack) -> None:
-    """CA-1, CA-2, CA-11 (D-8: todo `active`, sin `XTS` ni `XXX`)."""
+    """CA-1 (a, mecanismo; la parte b, contenido real, está DIFERIDA), CA-2, CA-11 (D-8)."""
     document = build_snapshot(1)
     path = stack.write_snapshot("currency-snapshot-1.json", document)
     done = stack.currency("incorporate", str(path))
@@ -407,6 +409,24 @@ def test_14_the_closed_dependencies_were_not_modified_by_004(stack: Stack) -> No
     for catalog in ("locales", "regions", "countries"):
         for path in (ROOT / "src" / "gi_common_reference" / catalog).rglob("*.py"):
             assert "currencies" not in path.read_text("utf-8"), path
+    # Ninguna prueba preexistente (001–003 incluidas) se modifica ni se borra: las únicas pruebas
+    # que 004 toca son las fronteras de arquitectura compartidas, que solo se amplían.
+    touched = subprocess.run(
+        ["git", "diff", "--name-only", "--diff-filter=MDR", BASE_REF, "--", "tests"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert touched.returncode == 0, touched.stderr
+    shared_boundaries = {
+        "tests/contract/test_architecture_contract.py",
+        "tests/contract/test_composition_root.py",
+        "tests/contract/test_layer_imports.py",
+        "tests/contract/test_module_contract.py",
+    }
+    assert set(touched.stdout.split()) <= shared_boundaries, touched.stdout
+    assert "tests/integration/test_migration_0003.py" not in touched.stdout
 
 
 def test_15_country_has_no_currency_attribute_and_currency_has_no_country_attribute(

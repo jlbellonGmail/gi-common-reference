@@ -15,7 +15,22 @@ AI-NATIVE v3.4.3 **no expone un comando de Native Acceptance** (`ai-native help`
 
 **No se ejecutó contra Supabase `gi-dev`** (como sí se hizo con 001): no hay credenciales ni se autorizó escribir en un entorno compartido durante este trabajo. Queda como verificación opcional del responsable (HITL).
 
-## Verificación pendiente y declarada (CA-1, S-9)
+## Estado de CA-1 (parcial) y aceptación diferida (S-9)
+
+**Resultado ejecutado:** 15 casos de caja negra, 15 en PASS. Eso **no** equivale a «todos los criterios de la spec aceptados»: CA-1 está cubierto solo en parte.
+
+| Parte de CA-1 | Qué exige | Estado |
+|---|---|---|
+| (a) Mecanismo | Una vez incorporado un snapshot válido, el catálogo contiene exactamente sus monedas, todas `active`, sin `XTS` ni `XXX` (D-8) | **PASS ejecutado** (caso 01, snapshot sintético) |
+| (b) Contenido real | Que esas monedas sean **exactamente** ISO 4217 List One de la edición declarada | **DIFERIDA — NO ejecutada.** Requiere el dataset real de PREP (S-9) |
+
+Por qué la prueba sintética es evidencia válida solo para (a): la spec (CA-1, S-9) define esta feature como el **contrato y el mecanismo** de incorporación y prevé expresamente verificar con un snapshot sintético mientras no exista el dataset de PREP; el contenido real se incorpora en un cambio posterior. Ningún fixture sintético puede demostrar (b), y no se cuenta como tal. El significado de CA-1 no se modificó.
+
+**Gate de publicación de datos (no es una aceptación de implementación):** antes de incorporar el primer snapshot real en un entorno compartido, quien lo publique debe verificar (b): las monedas del snapshot coinciden con ISO 4217 List One de la edición declarada salvo `XTS` y `XXX`, todas `active`. Hasta entonces CA-1(b) figura como pendiente.
+
+Resumen de lo no ejecutado: CA-1(b) con el dataset real de PREP y la aceptación contra Supabase `gi-dev`.
+
+### Detalle de lo pendiente
 
 El **dataset real** de ISO 4217 List One (nombres, entidades ISO → Country, historia territorio–moneda de CLDR) lo produce PREP y no está disponible en este entorno. CA-1 («el catálogo contiene exactamente las monedas de List One de la edición declarada, salvo `XTS` y `XXX`») se verificó contra un **snapshot sintético sellado y marcado como no productivo** (`contracts/currency-snapshot.v1.example.json`, 15 monedas). **La verificación contra el dataset real queda PENDIENTE.** Los códigos, nombres y fechas del snapshot sintético son ejemplos ilustrativos, no datos normativos.
 
@@ -55,5 +70,5 @@ Requiere Docker en ejecución y la rama `origin/develop` disponible. Escribe `ev
 | `02-inputs-sha256.json` | SHA-256 de cada snapshot que se envió a la CLI |
 | `03-commands.json` | cada comando ejecutado con código de salida, stdout y stderr (puertos, nombres de base y contraseñas normalizados) |
 | `04-http-transcripts.json` | cada petición HTTP con su estado y cuerpo |
-| `05-acceptance-results.txt` | salida de pytest (`-v`) de los 15 casos |
+| `05-acceptance-results.txt` | salida de pytest (`-v`) de los 15 casos (CA-1 solo la parte a) |
 | `06-manifest-sha256.txt` | SHA-256 de los archivos `01`–`05` |

@@ -1,6 +1,6 @@
 # 004-currency — Catálogo global de monedas
 
-- **Estado:** listo para Plan (clarify 2026-10-19; clarify 3 y 4 2026-10-31, reconciliado con 001, 002 y 003 aprobadas en `develop` e integradas las decisiones del responsable F1–F12)
+- **Estado:** aprobada y implementada; plan y tasks completos (clarify 2026-10-19; clarify 3 y 4 2026-10-31, reconciliado con 001, 002 y 003 aprobadas en `develop` e integradas las decisiones del responsable F1–F12)
 - **Tipo:** Feature (spec del dominio Reference)
 - **Depende de:** `001-locales` (identidad `locale_id`, convención común de `status`, regla de localización RF-23–RF-25 de 001), `003-countries` (identidad `country_id`, para la asociación CountryCurrency). Ambas están cerradas y aprobadas: 004 las consume y no las modifica.
 - **Habilita:** cualquier módulo que necesite referenciar una moneda (ERP, CRM, Tenants, verticales)
