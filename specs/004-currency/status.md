@@ -12,3 +12,10 @@ Estado vivo y verificable (AGENTS.md). Sin memoria conversacional: el estado sal
 - `pytest tests/contract/{test_architecture_contract,test_layer_imports,test_module_contract,test_composition_root}.py`: 92 passed (incluye el check `architecture` de AI-NATIVE sobre el repo y árboles sintéticos que prueban que `currencies` no puede importar 001–003 ni 001–003 importar `currencies`).
 - `ruff format --check .`, `ruff check .`, `mypy`: PASS.
 - `git diff origin/develop -- src/gi_common_reference/{locales,regions,countries} migrations specs/00[123]-*`: vacío.
+
+### T2 — migración 0004 (done)
+- `migrations/versions/0004_currencies.py`: `btree_gist`, `currency_snapshot`, `currency`, `currency_locale`, `country_currency` (`validity daterange` generada, exclusión GiST parcial diferible por par), triggers de reemplazo (existencia y ciclos), RF-19 (en `country_currency` y en `currency`), inmutabilidad de identidad/códigos/extremos de vigencia, sin `DELETE`/`TRUNCATE`, vista `country_currency_integrity_violation`, privilegios, `downgrade 0003`.
+- `pytest tests/integration/currencies/test_migration_0004.py`: 90 passed (Postgres 16 en testcontainers; incluye dos conexiones concurrentes con períodos solapados → exactamente un commit, y `upgrade`/`downgrade 0003`).
+- Hallazgo corregido durante T2: con inicio > fin la columna generada lanzaba `data_exception` antes del CHECK; ahora mapea a rango vacío y rechaza `country_currency_validity_ordered`.
+- Ajuste de prueba (no funcional) en `tests/integration/test_migration_0003.py::test_locale_and_regions_do_not_depend_on_countries`: admite como únicas dependencias nuevas hacia Countries las tablas `country_currency` y `currency_snapshot` (D-16); Locale y Regions siguen sin poder depender de Countries. 001–003 sin cambios en `src/`, `migrations/` ni `specs/`.
+- Regresión: `test_migration_0001/0002/0003/env` pasan sobre `head`=0004. `ruff format/check` y `mypy`: PASS.
