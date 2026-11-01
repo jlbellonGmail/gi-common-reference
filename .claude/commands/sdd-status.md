@@ -10,5 +10,6 @@ Target: specs/$ARGUMENTS (omit to list every folder under `specs/`)
 
 You are the Coordinator. Read-only: modify nothing. Derive state from the artifacts and Git, never from memory or chat.
 
-Answer with exactly five lines: STATE, PROGRESS, LAST COMPLETED, NEXT (the exact command to run) and BLOCKERS. Never write a status file.
+Answer with five lines: STATE, PROGRESS, LAST COMPLETED, NEXT (the exact command to run) and BLOCKERS, plus the review state when it applies (below). Never write a status file.
 Run `node .ai-native/ai-native.mjs sdd status <NNN-slug>` (without a slug it lists every folder under `specs/`) and report its five lines; it is the deterministic derivation.
+When every task is done and `specs/<NNN-slug>/reviews.jsonl` exists, add the review state below them: `node .ai-native/ai-native.mjs sdd review status <NNN-slug> --base <base-ref>` (a review of an older revision is reported as stale, never as approved).

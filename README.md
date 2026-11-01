@@ -8,11 +8,15 @@ Los datos de este módulo son globales: no dependen de un tenant ni incorporan l
 
 ## Catálogos
 
+### Regions y Subregions
+
+`regions` es el catálogo global de regiones y subregiones geográficas UN M49 (p. ej. `019` Americas → `419` Latin America and the Caribbean), con identidades estables (`region_id`, `subregion_id`) independientes de su código M49 y nombres por `locale_id` del catálogo de Locale. Se consulta en `GET /v1/regions` y `GET /v1/subregions` (contrato en `contracts/regions-api.v1.openapi.json`). Spec: [`specs/002-regions-subregions`](specs/002-regions-subregions/spec.md).
+
 ### Countries
 
 `countries` es el catálogo global de países de GI.
 
-Proporciona identidades estables y datos normalizados basados en estándares internacionales, incluyendo códigos como `alpha2`, `alpha3` y código numérico, además de información geográfica y otros datos de referencia aprobados para el catálogo.
+Proporciona identidades estables (`country_id`) y datos normalizados basados en estándares internacionales: códigos ISO 3166-1 (`alpha2`, `alpha3` y código numérico, que son claves de resolución y no la identidad), clasificación por `region_id` y `subregion_id` del catálogo Regions, código de llamada E.164, nombres por `locale_id` del catálogo de Locale, bandera SVG y, para un país retirado, sus sucesores (`replacement_country_ids`, 0..N). Se consulta en `GET /v1/countries` (contrato en `contracts/countries-api.v1.openapi.json`). Spec: [`specs/003-countries`](specs/003-countries/spec.md).
 
 Módulos como Persons, Tenants, CRM, ERP u otros pueden referenciar un país mediante `country_id`, pero la propiedad y mantenimiento del catálogo permanece en `gi-common-reference`.
 
@@ -71,3 +75,5 @@ El desarrollo normal se realiza sobre `develop`.
 Las nuevas funcionalidades y cambios relevantes se desarrollan mediante specs siguiendo el workflow definido por AI-NATIVE.
 
 Las reglas permanentes para agentes y colaboradores están definidas en [`AGENTS.md`](AGENTS.md).
+
+Requisitos del entorno (Docker, Node, release de AI-NATIVE), instalación reproducible y verificación: [`docs/desarrollo.md`](docs/desarrollo.md). Despliegue y operación (roles, migraciones, API, incorporación de snapshots): [`docs/operacion.md`](docs/operacion.md).

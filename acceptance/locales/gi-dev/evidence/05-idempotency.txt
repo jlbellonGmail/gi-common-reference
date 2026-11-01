@@ -1,0 +1,6 @@
+duración=3.1s
+exit=0
+  | NO-OP snapshot_version=2 ya incorporado
+antes:   {'locale_snapshot': (1, '31463009bc53fcd5e7730757837d3438'), 'locale': (8159, '4b9aeeb5d6aadb9566af320bc712f3bf'), 'locale_alias': (112, 'ef7e9a489891cb5a5db07649cd81a5fc')}
+después: {'locale_snapshot': (1, '31463009bc53fcd5e7730757837d3438'), 'locale': (8159, '4b9aeeb5d6aadb9566af320bc712f3bf'), 'locale_alias': (112, 'ef7e9a489891cb5a5db07649cd81a5fc')}
+base sin cambios: True

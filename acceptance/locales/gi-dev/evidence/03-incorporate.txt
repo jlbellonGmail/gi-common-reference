@@ -1,0 +1,6 @@
+duración=10.6s
+exit=0
+  | INCORPORADO snapshot_version=2 (8159 nuevos, 0 actualizados)
+antes:   {'locale_snapshot': (0, 'd41d8cd98f00b204e9800998ecf8427e'), 'locale': (0, 'd41d8cd98f00b204e9800998ecf8427e'), 'locale_alias': (0, 'd41d8cd98f00b204e9800998ecf8427e')}
+después: {'locale_snapshot': (1, '31463009bc53fcd5e7730757837d3438'), 'locale': (8159, '4b9aeeb5d6aadb9566af320bc712f3bf'), 'locale_alias': (112, 'ef7e9a489891cb5a5db07649cd81a5fc')}
+base sin cambios: False

@@ -1,0 +1,31 @@
+reference_reader  SELECT locale                                           permitido (rollback)
+reference_reader  SELECT alias                                            permitido (rollback)
+reference_reader  SELECT snapshot                                         permitido (rollback)
+reference_reader  INSERT alias                                            denegado (InsufficientPrivilege, SQLSTATE 42501)
+reference_reader  UPDATE locale.status                                    denegado (InsufficientPrivilege, SQLSTATE 42501)
+reference_reader  DELETE alias                                            denegado (InsufficientPrivilege, SQLSTATE 42501)
+reference_reader  CREATE TABLE en reference                               denegado (InsufficientPrivilege, SQLSTATE 42501)
+reference_loader  SELECT locale                                           permitido (rollback)
+reference_loader  UPDATE locale (status, iana_deprecated, replacement)    permitido (rollback)
+reference_loader  INSERT + DELETE alias                                   permitido (rollback)
+reference_loader  UPDATE locale.code                                      denegado (InsufficientPrivilege, SQLSTATE 42501)
+reference_loader  UPDATE locale.first_snapshot_version                    denegado (InsufficientPrivilege, SQLSTATE 42501)
+reference_loader  DELETE locale                                           denegado (InsufficientPrivilege, SQLSTATE 42501)
+reference_loader  UPDATE locale_snapshot                                  denegado (InsufficientPrivilege, SQLSTATE 42501)
+reference_loader  DELETE locale_snapshot                                  denegado (InsufficientPrivilege, SQLSTATE 42501)
+reference_loader  TRUNCATE locale                                         denegado (InsufficientPrivilege, SQLSTATE 42501)
+reference_loader  CREATE TABLE en reference                               denegado (InsufficientPrivilege, SQLSTATE 42501)
+reference_owner   DELETE locale (trigger)                                 denegado (RestrictViolation, SQLSTATE 23001)
+reference_owner   UPDATE locale.code (trigger)                            denegado (RestrictViolation, SQLSTATE 23001)
+reference_owner   UPDATE locale_snapshot (trigger)                        denegado (RestrictViolation, SQLSTATE 23001)
+reference_owner   TRUNCATE locale_snapshot (trigger)                      denegado (RestrictViolation, SQLSTATE 23001)
+reference_owner   code en mayúsculas (CHECK)                              denegado (CheckViolation, SQLSTATE 23514)
+reference_owner   deprecado active (CHECK)                                denegado (CheckViolation, SQLSTATE 23514)
+reference_owner   replacement inexistente (FK diferida)                   denegado (ForeignKeyViolation, SQLSTATE 23503)
+## privilegios de roles de la API de Supabase y PUBLIC sobre reference
+  anon            USAGE schema=False algún privilegio de tabla=False
+  authenticated   USAGE schema=False algún privilegio de tabla=False
+  authenticator   USAGE schema=False algún privilegio de tabla=False
+  service_role    USAGE schema=False algún privilegio de tabla=False
+  PUBLIC          USAGE schema=False grants de tabla=0
+base sin cambios tras las pruebas: True
