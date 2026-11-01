@@ -62,3 +62,11 @@ Estado vivo y verificable (AGENTS.md). Sin memoria conversacional: el estado sal
 - Comando: `python tools/acceptance/currency_acceptance.py --base origin/develop` → **15 passed**, `pytest exit code: 0`, sobre la revisión `2a3d701` (ver `01-environment.txt`). CLI como subproceso + API real por HTTP + Postgres 16 real, con guard de red en ambos procesos y un canario que demuestra que bloquea.
 - Cubre el mínimo del Goal: ARS/USD/EUR, nombres en/es, monedas actuales de un Country, Countries de una Currency, asociación histórica por fecha, múltiples monedas simultáneas, moneda retirada, preservación histórica, ausencia de dependencias runtime hacia ISO/CLDR, 001–003 sin cambios.
 - **Declarado como NO ejecutado:** (1) CA-1 contra el dataset real de PREP (S-9): se verificó con un snapshot sintético sellado y no productivo; (2) aceptación contra Supabase `gi-dev` (no hay credenciales ni autorización para escribir en un entorno compartido).
+
+### T10 — documentación, runbook y verificación global (done)
+- `docs/operacion.md` (migración 0004, `btree_gist`, grants de monedas, API `/v1/currencies*`, sección 9 de incorporación con `diff` y `check-integrity`, sección 10 de trazabilidad con 4 consultas SQL ejecutables), `docs/desarrollo.md` (schema de Currency, `sdd validate 004-currency`, aceptación), `README.md`. `tests/integration/currencies/test_runbook_currencies.py` ejecuta los bloques SQL documentados; `test_runbook.py` (grants) actualizado por el runbook.
+- **Suite global** (`pytest -q`, árbol limpio en `96085a2`): **2359 passed** (línea base de 001–003 = 1699) en 53 min 17 s, sin fallos ni omitidos.
+- `ruff format --check .`: PASS · `ruff check .`: PASS · `mypy` (strict, 203 archivos): PASS.
+- `node .ai-native/ai-native.mjs sdd validate 004-currency`: PASS · `sdd validate 003-countries`: PASS · `hitl --base develop`: PASS (riesgo high, `human_gate: required`).
+- 001–003 sin cambios: `git diff origin/develop` sobre sus `src/`, migraciones, contratos y specs vacío (verificado también por `tests/acceptance` caso 14).
+- No ejecutado / pendiente (declarado): CA-1 contra el dataset real de PREP (S-9); aceptación contra Supabase `gi-dev`; revisión independiente (siguiente etapa).
