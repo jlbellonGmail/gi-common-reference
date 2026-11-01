@@ -24,6 +24,8 @@ FR = str(uuid.uuid4())
 
 
 def only(*codes: str, version: int = 1, **kwargs: Any) -> dict[str, Any]:
+    """Monedas sin asociaciones: estas pruebas se ocupan de las reglas de Currency (T4)."""
+    kwargs.setdefault("country_currencies", [])
     return build_snapshot(version, codes=codes, **kwargs)
 
 
@@ -211,7 +213,7 @@ def test_reactivating_without_clearing_the_replacements_is_rejected() -> None:
 
 def test_changing_the_alphabetic_code_of_a_published_currency_is_rejected() -> None:
     before = only("ARS")
-    after = build_snapshot(2, codes=("ARS",), currencies=[currency("ARS", alphabetic_code="ARX")])
+    after = only("ARS", version=2, currencies=[currency("ARS", alphabetic_code="ARX")])
     result = plan(after, published(before))
     assert "RF-5" in rules(result)
     assert "moneda nueva" in messages(result)
@@ -219,7 +221,7 @@ def test_changing_the_alphabetic_code_of_a_published_currency_is_rejected() -> N
 
 def test_changing_the_numeric_code_of_a_published_currency_is_rejected() -> None:
     before = only("ARS")
-    after = build_snapshot(2, codes=("ARS",), currencies=[currency("ARS", numeric_code="999")])
+    after = only("ARS", version=2, currencies=[currency("ARS", numeric_code="999")])
     assert "RF-5" in rules(plan(after, published(before)))
 
 
@@ -262,7 +264,7 @@ def test_a_repeated_currency_id_is_rejected() -> None:
 
 def test_omitting_a_published_currency_is_rejected_and_retirement_is_status() -> None:
     before = only("ARS", "USD")
-    after = build_snapshot(2, codes=("ARS",))
+    after = only("ARS", version=2)
     result = plan(after, published(before))
     assert rules(result) == {"RF-37"}
     assert "inactive" in messages(result)
@@ -277,7 +279,7 @@ def test_omitting_a_published_currency_is_rejected_and_retirement_is_status() ->
 
 def test_omitting_a_published_localization_is_rejected() -> None:
     before = only("ARS")
-    after = build_snapshot(2, codes=("ARS",), currency_names=names("ARS")[:1])
+    after = only("ARS", version=2, currency_names=names("ARS")[:1])
     assert "RF-37" in rules(plan(after, published(before)))
 
 

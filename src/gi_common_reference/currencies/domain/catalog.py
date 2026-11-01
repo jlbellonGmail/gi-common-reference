@@ -34,6 +34,12 @@ from gi_common_reference.currencies.domain.model import (
     Violation,
 )
 from gi_common_reference.currencies.domain.policy import RequiredLocales
+from gi_common_reference.currencies.domain.temporal import (
+    Period,
+    history_violations,
+    overlapping_pairs,
+    period_of,
+)
 
 DAY_FORMAT = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
 SOURCE_FIELDS = ("name", "edition", "retrieved_at", "location", "checksum", "license")
@@ -63,6 +69,8 @@ class CatalogPlan:
     updated_currencies: tuple[CurrencyRecord, ...] = ()
     new_names: tuple[NameRecord, ...] = ()
     updated_names: tuple[NameRecord, ...] = ()
+    new_associations: tuple[CountryCurrencyRecord, ...] = ()
+    updated_associations: tuple[CountryCurrencyRecord, ...] = ()
 
     @property
     def ok(self) -> bool:
@@ -72,7 +80,14 @@ class CatalogPlan:
     def is_empty(self) -> bool:
         """El snapshot no cambia nada respecto del estado vigente (solo cambia la versión)."""
         return self.ok and not any(
-            (self.new_currencies, self.updated_currencies, self.new_names, self.updated_names)
+            (
+                self.new_currencies,
+                self.updated_currencies,
+                self.new_names,
+                self.updated_names,
+                self.new_associations,
+                self.updated_associations,
+            )
         )
 
 
@@ -252,6 +267,7 @@ def _check_identity(context: _Context) -> list[Violation]:
                     f"{name.locale_id})",
                 )
             )
+    found += _check_association_identity(context)
     return found
 
 
@@ -445,6 +461,108 @@ def _check_names(context: _Context) -> list[Violation]:
     return found
 
 
+def _check_association_identity(context: _Context) -> list[Violation]:
+    """Identidad y completitud de CountryCurrency (RF-7, RF-17, RF-37)."""
+    incoming, current = context.incoming, context.current
+    found: list[Violation] = []
+    seen: set[str] = set()
+    for item in incoming.associations:
+        if not is_uuid(item.country_currency_id):
+            found.append(
+                Violation("RF-17", f"country_currency_id inválido: «{item.country_currency_id}»")
+            )
+        elif item.country_currency_id in seen:
+            found.append(
+                Violation("RF-17", f"country_currency_id repetido: {item.country_currency_id}")
+            )
+        seen.add(item.country_currency_id)
+    for published in current.associations:
+        if published.country_currency_id not in seen:
+            found.append(
+                Violation(
+                    "RF-37",
+                    f"el snapshot omite la asociación publicada {published.country_currency_id}; "
+                    "un retiro es status = inactive o el cierre de su vigencia, nunca la ausencia",
+                )
+            )
+    return found
+
+
+# --- paso 8: CountryCurrency temporal (RF-17 a RF-19, RF-38, RF-40, RF-44 a RF-47, RF-52) ------
+
+
+def _check_associations(context: _Context) -> list[Violation]:
+    incoming, current = context.incoming, context.current
+    found: list[Violation] = []
+    currencies = {c.currency_id: c for c in incoming.currencies}
+    countries = {c.country_id: c for c in context.countries.countries}
+    published = {a.country_currency_id: a for a in current.associations}
+
+    for key, field, text in incoming.invalid_dates:
+        found.append(Violation("RF-44", f"{field} de {key} no es un día calendario real: «{text}»"))
+
+    for item in incoming.associations:
+        label = f"la asociación {item.country_currency_id}"
+        if item.status not in STATUSES:
+            found.append(Violation("RF-9", f"status inválido «{item.status}» en {label}"))
+        country = countries.get(item.country_id)
+        currency = currencies.get(item.currency_id)
+        if country is None:
+            found.append(
+                Violation(
+                    "RF-40", f"{label} referencia un country_id inexistente: {item.country_id}"
+                )
+            )
+        if currency is None:
+            found.append(
+                Violation("RF-17", f"{label} referencia una moneda inexistente: {item.currency_id}")
+            )
+        if not period_of(item).is_ordered:
+            found.append(
+                Violation(
+                    "RF-44",
+                    f"{label} tiene el inicio ({item.valid_from}) no anterior al fin "
+                    f"({item.valid_to})",
+                )
+            )
+        before = published.get(item.country_currency_id)
+        if before is not None:
+            for reason in history_violations(before, item):
+                found.append(Violation("RF-47", f"{label} {reason}"))
+        if item.status == "active" and item.valid_to is None:
+            if country is not None and country.status != "active":
+                found.append(
+                    Violation(
+                        "RF-19",
+                        f"{label} está active y abierta sobre un Country inactive; cierre su "
+                        "vigencia (RF-46)",
+                    )
+                )
+            if currency is not None and currency.status != "active":
+                found.append(
+                    Violation(
+                        "RF-19",
+                        f"{label} está active y abierta sobre la moneda inactive "
+                        f"{currency.alphabetic_code}; al retirarla cierre su vigencia (RF-38)",
+                    )
+                )
+
+    for first, second in overlapping_pairs(incoming.associations):
+        found.append(
+            Violation(
+                "RF-45",
+                f"las asociaciones activas {first.country_currency_id} y "
+                f"{second.country_currency_id} del mismo país y moneda se solapan: "
+                f"{_show(period_of(first))} y {_show(period_of(second))}",
+            )
+        )
+    return found
+
+
+def _show(period: Period) -> str:
+    return f"[{period.start or '-∞'}, {period.end or '+∞'})"
+
+
 # --- paso 9: procedencia (RF-41, D-20)
 
 
@@ -483,7 +601,15 @@ def _check_provenance(context: _Context) -> list[Violation]:
 
 
 def _required_roles(context: _Context) -> tuple[str, ...]:
-    return ("identity", "names")
+    """`identity` y `names` siempre; `country_currency` si hay asociaciones y `validity` si
+    alguna declara una fecha (D23 del plan)."""
+    associations = context.incoming.associations
+    roles = ["identity", "names"]
+    if associations:
+        roles.append("country_currency")
+    if any(a.valid_from or a.valid_to for a in associations):
+        roles.append("validity")
+    return tuple(roles)
 
 
 # --- plan de cambios ---------------------------------------------------------------------------
@@ -504,7 +630,24 @@ def _plan(incoming: IncomingCatalog, current: CatalogState) -> CatalogPlan:
         for n in incoming.names
         if (n.currency_id, n.locale_id) in names and names[(n.currency_id, n.locale_id)] != n
     )
-    return CatalogPlan((), new_currencies, updated_currencies, new_names, updated_names)
+    associations = {a.country_currency_id: a for a in current.associations}
+    new_associations = tuple(
+        a for a in incoming.associations if a.country_currency_id not in associations
+    )
+    updated_associations = tuple(
+        a
+        for a in incoming.associations
+        if a.country_currency_id in associations and associations[a.country_currency_id] != a
+    )
+    return CatalogPlan(
+        (),
+        new_currencies,
+        updated_currencies,
+        new_names,
+        updated_names,
+        new_associations,
+        updated_associations,
+    )
 
 
 _CHECKS: tuple[Check, ...] = (
@@ -513,6 +656,7 @@ _CHECKS: tuple[Check, ...] = (
     _check_codes,
     _check_lifecycle,
     _check_names,
+    _check_associations,
     _check_provenance,
 )
 

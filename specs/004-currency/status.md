@@ -29,3 +29,10 @@ Estado vivo y verificable (AGENTS.md). Sin memoria conversacional: el estado sal
 - `currencies/domain/{codes,catalog}.py`: pasos 3, 4, 5, 6, 7 y 9 del plan como función pura (`plan_catalog_changes`), parseo de asociaciones y fechas (la validación temporal es T5).
 - `pytest tests/unit/currencies/domain`: 104 passed. Cubre: ARS `032`/BOB `068`, unidades 0/2/3/4/N.A. (N.A. ≠ 0), fondos y unidades especiales, formatos inválidos, unicidad alfabética (incluye inactive) y numérica entre active (YUM→CSD), inmutabilidad de códigos publicados, VEF→VES, ISK 2→0 conserva id, reemplazo 0/1/N/repetido/nulo/propio/inexistente/ciclos de 2 y 3/romboide/en active, reactivación que limpia o no, omisiones RF-37, localizaciones en/es, locale inactive nuevo vs publicado, locales obligatorios, procedencia y conflictos sin resolver, orden de los pasos.
 - Verificación de que las pruebas pueden fallar: mutando la detección de ciclos y la unicidad del numérico, 3 pruebas fallan; restaurado, 104 passed.
+
+### T5 — dominio temporal de CountryCurrency (done)
+- `currencies/domain/temporal.py` (vigencia `[inicio, fin)`, solapamiento por par, inmutabilidad de extremos, selección por fecha e historial) y paso 8 en `catalog.py` (+ omisión RF-37, RF-19/RF-38, procedencia `country_currency`/`validity`).
+- `pytest tests/unit/currencies`: 302 passed. Vectores compartidos `tests/fixtures/temporal_vectors.py` comparados con el dominio y con PostgreSQL (`daterange(...,'[)')`, `&&`, `@>`): 23 passed en `tests/integration/currencies/test_temporal_parity.py`.
+- Cubre: transición HRK→EUR el mismo día (2022-12-31 → HRK, 2023-01-01 → EUR), monedas simultáneas (PAB+USD), una moneda en varios países, readopción, solapamiento rechazado solo en el mismo par, retirado no participa, fechas no calendario (`2023-02-30`, `2023-W01-1`), cierre/completado único de extremos, corrección por retiro+alta, `status` independiente de la vigencia, omisiones rechazadas, conflicto de vigencia sin resolver.
+- Mutación (`day <= end`): 4 pruebas fallan; restaurado, verde.
+- Nota de diseño: el orden de historial por código alfabético (RF-49) se compone en T7 (necesita la moneda).
