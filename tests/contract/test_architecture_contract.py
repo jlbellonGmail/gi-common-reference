@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 LOCALES = "src/gi_common_reference/locales"
 REGIONS = "src/gi_common_reference/regions"
 COUNTRIES = "src/gi_common_reference/countries"
+CURRENCIES = "src/gi_common_reference/currencies"
 LAYERS = ("domain", "application", "infrastructure", "interfaces")
 
 
@@ -36,6 +37,7 @@ def test_architecture_json_declares_the_regions_module_in_every_layer() -> None:
             f"{LOCALES}/{name}",
             f"{REGIONS}/{name}",
             f"{COUNTRIES}/{name}",
+            f"{CURRENCIES}/{name}",
         ]
         assert (ROOT / REGIONS / name / "__init__.py").is_file()
 
@@ -46,6 +48,14 @@ def test_architecture_json_declares_the_countries_module_in_every_layer() -> Non
     for name in LAYERS:
         assert f"{COUNTRIES}/{name}" in contract["layers"][name]["paths"]
         assert (ROOT / COUNTRIES / name / "__init__.py").is_file()
+
+
+def test_architecture_json_declares_the_currencies_module_in_every_layer() -> None:
+    contract = _contract()
+    assert contract["modules"]["currencies"]["path"] == CURRENCIES
+    for name in LAYERS:
+        assert f"{CURRENCIES}/{name}" in contract["layers"][name]["paths"]
+        assert (ROOT / CURRENCIES / name / "__init__.py").is_file()
 
 
 def test_domain_forbids_infrastructure_and_frameworks() -> None:
