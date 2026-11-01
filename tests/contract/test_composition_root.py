@@ -50,6 +50,11 @@ COMPOSITION_ROOT_MAY_IMPORT = {
     f"{COUNTRIES}.infrastructure.postgres_reader",
     f"{COUNTRIES}.infrastructure.postgres_repository",
     f"{COUNTRIES}.infrastructure.snapshot_reader",
+    f"{CURRENCIES}.domain.policy",
+    f"{CURRENCIES}.domain.ports",
+    f"{CURRENCIES}.infrastructure.policy_reader",
+    f"{CURRENCIES}.infrastructure.postgres_repository",
+    f"{CURRENCIES}.infrastructure.snapshot_reader",
 }
 SOURCE = ROOT / "src" / PACKAGE
 

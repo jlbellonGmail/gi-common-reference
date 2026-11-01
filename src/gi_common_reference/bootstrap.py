@@ -1,7 +1,7 @@
 """Raíz de composición: conecta las interfaces con los adaptadores concretos.
 
-Vive fuera de las capas de `locales`, `regions` y `countries` a propósito: las interfaces no
-dependen de infraestructura.
+Vive fuera de las capas de `locales`, `regions`, `countries` y `currencies` a propósito: las
+interfaces no dependen de infraestructura.
 
 Es el único módulo, fuera de cada catálogo, autorizado a importar sus internos (puertos del dominio
 y adaptadores de infraestructura), porque su función es cablearlos. Cualquier otro código externo
@@ -24,6 +24,17 @@ from gi_common_reference.countries.infrastructure.postgres_repository import (
 )
 from gi_common_reference.countries.infrastructure.snapshot_reader import (
     read_snapshot_document as read_country_snapshot_document,
+)
+from gi_common_reference.currencies.domain.policy import RequiredLocales as CurrencyRequiredLocales
+from gi_common_reference.currencies.domain.ports import CurrencyRepository
+from gi_common_reference.currencies.infrastructure.policy_reader import (
+    load_required_locales as load_currency_required_locales,
+)
+from gi_common_reference.currencies.infrastructure.postgres_repository import (
+    PostgresCurrencyRepository,
+)
+from gi_common_reference.currencies.infrastructure.snapshot_reader import (
+    read_snapshot_document as read_currency_snapshot_document,
 )
 from gi_common_reference.locales.domain.ports import LocaleReader, LocaleRepository
 from gi_common_reference.locales.infrastructure.postgres_reader import PostgresLocaleReader
@@ -89,3 +100,15 @@ def country_flag_store() -> FlagStore:
 
 def postgres_country_reader(conninfo: str) -> CountryReader:
     return PostgresCountryReader(conninfo)
+
+
+def postgres_currency_repository(conninfo: str) -> CurrencyRepository:
+    return PostgresCurrencyRepository(conninfo)
+
+
+def read_currency_snapshot(path: Path) -> dict[str, Any]:
+    return read_currency_snapshot_document(path)
+
+
+def currency_required_locales() -> CurrencyRequiredLocales:
+    return load_currency_required_locales()
