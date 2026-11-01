@@ -558,10 +558,11 @@ def test_a_missing_or_malformed_provenance_is_rejected() -> None:
     document = build_snapshot()
     document["provenance"] = None
     assert rules(plan(document)) == {"RF-41"}
-    for broken in (
+    broken_cases: list[dict[str, Any]] = [
         {"sources": [], "unresolved_conflicts": []},
         {"sources": "x", "unresolved_conflicts": []},
-    ):
+    ]
+    for broken in broken_cases:
         assert rules(plan(build_snapshot(catalog_provenance=broken))) == {"RF-41"}
     unknown = provenance()
     unknown["sources"].append({**unknown["sources"][0], "role": "fx"})
