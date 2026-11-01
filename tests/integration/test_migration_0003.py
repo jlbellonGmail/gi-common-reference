@@ -248,14 +248,11 @@ def test_locale_and_regions_do_not_depend_on_countries(conn: psycopg.Connection)
         "AND confrelid::regclass::text LIKE 'reference.country%%'"
     ).fetchall()
     sources = {source.removeprefix("reference.") for (source,) in rows}
-    # 004 (Currency) depende de Countries, nunca al revés (D-16, RNF-6): son las únicas tablas
-    # ajenas a Countries autorizadas a referenciarlo. Locale y Regions siguen sin hacerlo.
-    assert sources <= set(COLUMNS) | {"country_currency", "currency_snapshot"}
+    assert sources <= set(COLUMNS)
     dependent = conn.execute(
         "SELECT count(*) FROM pg_trigger t JOIN pg_class c ON c.oid = t.tgrelid "
         "WHERE NOT t.tgisinternal AND c.relnamespace = 'reference'::regnamespace "
-        "AND c.relname NOT LIKE 'country%%' AND c.relname NOT LIKE 'currency%%' "
-        "AND c.relname NOT LIKE 'test_%%' "
+        "AND c.relname NOT LIKE 'country%%' AND c.relname NOT LIKE 'test_%%' "
         "AND pg_get_functiondef(t.tgfoid) ILIKE '%%reference.country%%'"
     ).fetchone()
     assert dependent == (0,)
