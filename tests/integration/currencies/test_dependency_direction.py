@@ -24,6 +24,14 @@ REGIONS = {
 }
 COUNTRIES = {"country_snapshot", "country", "country_locale", "country_flag", "country_recoding"}
 CURRENCIES = {"currency_snapshot", "currency", "currency_locale", "country_currency"}
+UNITS = {
+    "unit_snapshot",
+    "quantity_kind",
+    "unit",
+    "quantity_kind_unit",
+    "quantity_kind_locale",
+    "unit_locale",
+}
 
 
 def edges(conn: psycopg.Connection) -> set[tuple[str, str]]:
@@ -46,9 +54,9 @@ def test_every_table_belongs_to_exactly_one_catalog(conn: psycopg.Connection) ->
             "AND relkind IN ('r', 'p') AND relname <> 'alembic_version'"
         ).fetchall()
     }
-    groups = (LOCALES, REGIONS, COUNTRIES, CURRENCIES)
+    groups = (LOCALES, REGIONS, COUNTRIES, CURRENCIES, UNITS)
     assert all(not (a & b) for i, a in enumerate(groups) for b in groups[i + 1 :])
-    assert found == LOCALES | REGIONS | COUNTRIES | CURRENCIES
+    assert found == LOCALES | REGIONS | COUNTRIES | CURRENCIES | UNITS
 
 
 def test_004_owns_country_currency_and_currency_snapshot() -> None:

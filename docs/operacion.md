@@ -96,6 +96,22 @@ GRANT UPDATE (minor_units, fund_code, status, replacement_currency_ids,
 GRANT UPDATE (name) ON reference.currency_locale TO reference_loader;
 GRANT UPDATE (status, valid_from, valid_to, last_changed_snapshot_version)
     ON reference.country_currency TO reference_loader;
+
+-- Unidades de medida (migración 0005).
+GRANT SELECT ON reference.unit_snapshot, reference.quantity_kind, reference.unit,
+    reference.quantity_kind_unit, reference.quantity_kind_locale, reference.unit_locale
+    TO reference_reader;
+GRANT SELECT, INSERT ON reference.unit_snapshot, reference.quantity_kind, reference.unit,
+    reference.quantity_kind_unit, reference.quantity_kind_locale, reference.unit_locale
+    TO reference_loader;
+GRANT UPDATE (status, last_changed_snapshot_version) ON reference.quantity_kind
+    TO reference_loader;
+GRANT UPDATE (ucum_code, unece_code, symbol, status, last_changed_snapshot_version)
+    ON reference.unit TO reference_loader;
+GRANT UPDATE (factor, "offset", status, last_changed_snapshot_version)
+    ON reference.quantity_kind_unit TO reference_loader;
+GRANT UPDATE (name) ON reference.quantity_kind_locale TO reference_loader;
+GRANT UPDATE (name, plural) ON reference.unit_locale TO reference_loader;
 ```
 
 ### Verificar los permisos
