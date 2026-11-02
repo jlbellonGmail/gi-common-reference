@@ -38,7 +38,7 @@ Si la conexión falla, el error muestra solo el tipo y, si el servidor lo inform
 
 La migración crea el schema `reference`, las tablas, los constraints y los triggers (incluida la protección contra `UPDATE`, `DELETE` y `TRUNCATE` del historial), y otorga los permisos a `reference_reader` y `reference_loader` **solo si esos roles existen en ese momento**.
 
-`alembic upgrade head` aplica también la migración 0002 (regiones y subregiones: tablas, constraints diferidas, triggers de inmutabilidad y los mismos permisos condicionales) y la migración 0003 (países: tablas `country_snapshot`, `country`, `country_locale`, `country_flag` y `country_recoding`, unicidad entre `active` diferida, FK compuesta hacia la Subregion de 002, trigger que exige la traza de recodificación y los mismos permisos condicionales).
+`alembic upgrade head` aplica también la migración 0002 (regiones y subregiones: tablas, constraints diferidas, triggers de inmutabilidad y los mismos permisos condicionales) y la migración 0003 (países: tablas `country_snapshot`, `country`, `country_locale`, `country_flag` y `country_recoding`, unicidad entre `active` diferida, FK compuesta hacia la Subregion de 002, trigger que exige la traza de recodificación y los mismos permisos condicionales) y la migración 0004 (monedas: tablas `currency_snapshot`, `currency`, `currency_locale` y `country_currency`, la extensión `btree_gist`, la exclusión temporal por par país–moneda, los triggers de reemplazo, de historia inmutable y de coherencia con Country/Currency `inactive`, la vista `country_currency_integrity_violation` y los mismos permisos condicionales).
 
 ### Si los roles se crearon después de migrar
 
@@ -83,6 +83,19 @@ GRANT UPDATE (alpha2, alpha3, numeric_code, codes_snapshot_version, region_id, s
 GRANT UPDATE (name, official_name) ON reference.country_locale TO reference_loader;
 GRANT UPDATE (asset_path, sha256, exception_reason, snapshot_version)
     ON reference.country_flag TO reference_loader;
+
+-- Monedas (migración 0004).
+GRANT SELECT ON reference.currency_snapshot, reference.currency, reference.currency_locale,
+    reference.country_currency, reference.country_currency_integrity_violation
+    TO reference_reader;
+GRANT SELECT, INSERT ON reference.currency_snapshot, reference.currency,
+    reference.currency_locale, reference.country_currency TO reference_loader;
+GRANT SELECT ON reference.country_currency_integrity_violation TO reference_loader;
+GRANT UPDATE (minor_units, fund_code, status, replacement_currency_ids,
+    last_changed_snapshot_version) ON reference.currency TO reference_loader;
+GRANT UPDATE (name) ON reference.currency_locale TO reference_loader;
+GRANT UPDATE (status, valid_from, valid_to, last_changed_snapshot_version)
+    ON reference.country_currency TO reference_loader;
 ```
 
 ### Verificar los permisos
@@ -105,7 +118,7 @@ El schema `reference` **no** debe figurar en los schemas expuestos por PostgREST
 
 ### Rollback
 
-Antes de que exista un consumidor: `REFERENCE_MIGRATION_DATABASE_URL=... alembic downgrade 0002` elimina solo las tablas y funciones de países (migración 0003); `alembic downgrade 0001` elimina además las de regiones y subregiones (migración 0002); `REFERENCE_MIGRATION_DATABASE_URL=... alembic downgrade base` elimina todas las tablas y funciones (el schema `reference` y su tabla `alembic_version` quedan). Con consumidores no hay rollback de datos: los snapshots son inmutables y se corrige hacia adelante con una `snapshot_version` nueva.
+Antes de que exista un consumidor: `REFERENCE_MIGRATION_DATABASE_URL=... alembic downgrade 0003` elimina solo las tablas, funciones y la vista de monedas (migración 0004; la extensión `btree_gist` no se elimina porque otros objetos pueden usarla); `REFERENCE_MIGRATION_DATABASE_URL=... alembic downgrade 0002` elimina solo las tablas y funciones de países (migración 0003); `alembic downgrade 0001` elimina además las de regiones y subregiones (migración 0002); `REFERENCE_MIGRATION_DATABASE_URL=... alembic downgrade base` elimina todas las tablas y funciones (el schema `reference` y su tabla `alembic_version` quedan). Con consumidores no hay rollback de datos: los snapshots son inmutables y se corrige hacia adelante con una `snapshot_version` nueva.
 
 ## 3. Arrancar la API
 
@@ -121,9 +134,11 @@ Sin `REFERENCE_READER_DATABASE_URL` el proceso no arranca; con una cadena de con
 
 - Países: `GET /v1/countries` (por defecto solo `active`; `status=all` incluye `inactive`; filtros `region_id` y `subregion_id`), `GET /v1/countries/{country_id}`, `GET /v1/countries/by-alpha2/{code}`, `GET /v1/countries/by-alpha3/{code}`, `GET /v1/countries/by-numeric/{code}` y `GET /v1/countries/{country_id}/flag` (SVG, `image/svg+xml`); `locale_id` opcional para `name` y `official_name` (sin fallback); contrato en `contracts/countries-api.v1.openapi.json` (servido en `/v1/openapi/countries.json`). Los consumidores persisten `country_id`; los códigos son claves de resolución.
 
-Un mismo proceso sirve las tres APIs con la misma URL de `reference_reader`.
+- Monedas: `GET /v1/currencies` (por defecto solo `active`; `include_inactive`, `exclude_funds`), `GET /v1/currencies/{currency_id}`, `GET /v1/currencies/by-code/{code}` (sin distinguir mayúsculas), `GET /v1/currencies/{currency_id}/validation` (`active`, `inactive` o `not_found`), `GET /v1/currencies/by-country/{country_id}` (monedas del país en `as_of`, por defecto el día UTC de la consulta; `GET /v1/currencies/by-country/{country_id}/history` sin filtrar por fecha), `GET /v1/currencies/{currency_id}/countries` y `GET /v1/currencies/{currency_id}/countries/history`, y `GET /v1/currencies/version`; `locale_id` opcional para `name` (sin fallback); contrato en `contracts/currencies-api.v1.openapi.json` (servido en `/v1/openapi/currencies.json`). Los consumidores persisten `currency_id`; el código alfabético es una clave de resolución y la búsqueda por código numérico no existe en v1. Los resultados se distinguen: 200 (`status` `active` o `inactive`), 404 no encontrado, 422 entrada inválida y 503 error técnico. `as_of` es la fecha de referencia `YYYY-MM-DD`; un consumidor sensible a la fecha debe indicarla.
 
-Respuestas de error: `503` si la base no responde y `500` ante un fallo inesperado. Al cliente solo llega un mensaje genérico; la causa queda en el log del proceso (loggers `gi_common_reference.locales.interfaces.http`, `gi_common_reference.regions.interfaces.http` y `gi_common_reference.countries.interfaces.http`, nivel `ERROR`). `uvicorn` solo configura sus propios loggers: si el proceso no configura logging, Python igual escribe estos errores por `stderr`, pero sin fecha ni formato; para un log estructurado hay que pasar `--log-config` a `uvicorn` o configurar `logging` en el despliegue. El 503 registra solo el tipo de error y su SQLSTATE; el 500, el traceback completo.
+Un mismo proceso sirve las cuatro APIs con la misma URL de `reference_reader`.
+
+Respuestas de error: `503` si la base no responde y `500` ante un fallo inesperado. Al cliente solo llega un mensaje genérico; la causa queda en el log del proceso (loggers `gi_common_reference.locales.interfaces.http`, `gi_common_reference.regions.interfaces.http` y `gi_common_reference.countries.interfaces.http` y `gi_common_reference.currencies.interfaces.http`, nivel `ERROR`). `uvicorn` solo configura sus propios loggers: si el proceso no configura logging, Python igual escribe estos errores por `stderr`, pero sin fecha ni formato; para un log estructurado hay que pasar `--log-config` a `uvicorn` o configurar `logging` en el despliegue. El 503 registra solo el tipo de error y su SQLSTATE; el 500, el traceback completo.
 
 ## 4. Incorporar un snapshot de locales
 
@@ -253,3 +268,91 @@ FROM reference.country ORDER BY alpha2, country_id;
 ```
 
 Estas tablas, como el resto del schema `reference`, no son un contrato para los consumidores: los módulos consumidores usan la API y persisten `country_id`.
+
+## 9. Incorporar un snapshot de monedas
+
+El snapshot lo produce PREP según `contracts/currency-snapshot.v1.schema.json` (ejemplo sintético y **no productivo** en `contracts/currency-snapshot.v1.example.json`). Requisitos:
+
+- la migración 0004 aplicada. Crea la extensión `btree_gist` (exclusión temporal por par país–moneda): si el rol dueño no puede crearla, un administrador debe ejecutar antes `CREATE EXTENSION IF NOT EXISTS btree_gist;`. Sin ella no existe la garantía persistente de que no se solapen dos períodos del mismo par;
+- un snapshot de Locale ya incorporado que contenga, `active`, los locales obligatorios de Currency v1 (`required-locales.v1.json` del paquete de `currencies`: `en` y `es`, por `locale_id`; es una regla de completitud propia de este catálogo, no una política de Locale);
+- un snapshot de Countries incorporado, igual o posterior a la versión que el snapshot declara en `country_snapshot_version`, y que contenga todos los `country_id` que referencia.
+
+Orden de despliegue: roles → `alembic upgrade head` (0004) → API → snapshot de Countries requerido → primer snapshot de Currency → `check-integrity`.
+
+Se incorpora con el rol `reference_loader`:
+
+```text
+REFERENCE_DATABASE_URL=postgresql://reference_loader:...@host/base \
+    python -m gi_common_reference.currencies.interfaces.cli incorporate ruta/al/currencies.json
+```
+
+Antes de aprobar un snapshot se revisa qué cambiaría. Solo lee: no escribe ni toma el lock exclusivo:
+
+```text
+REFERENCE_DATABASE_URL=postgresql://reference_loader:...@host/base \
+    python -m gi_common_reference.currencies.interfaces.cli diff ruta/al/currencies.json
+```
+
+Lista altas, cambios de atributos, de `status`, de reemplazos, de nombres y de asociaciones; **los cambios de estado y de vigencia salen por separado** porque son informaciones distintas. Si el snapshot sería rechazado, lista las violaciones.
+
+Los códigos de salida son los de la sección 4 (0 `INCORPORADO`, `NO-OP`, diff calculado o catálogo íntegro; 1 `RECHAZADO` o integridad violada; 2 error operativo). La incorporación es atómica y toma su propio lock exclusivo más locks compartidos sobre los de Locale y Countries. Reglas que conviene conocer:
+
+- El snapshot es el catálogo completo: omitir una moneda, un nombre o una asociación publicados se rechaza; un retiro es `status = inactive`, nunca la ausencia.
+- **`status` y vigencia son independientes.** `status` (`active` | `inactive`) es el ciclo de vida del registro; la vigencia `[valid_from, valid_to)` es el período real de la relación país–moneda (incluye el día de inicio, excluye el de fin; `null` es no acotado). Que una relación termine se expresa fijando `valid_to`, no cambiando `status` ni borrando: la asociación sigue `active` como historia y deja de aparecer en las consultas actuales por el solo efecto de la fecha. Nada cambia por el paso del tiempo: no hay tareas que cierren períodos.
+- **La historia no se reescribe.** Un `valid_from` o `valid_to` ya fijado no cambia ni se vacía; uno ausente se puede completar una única vez (p. ej. cerrar una vigencia abierta). Corregir un período publicado es dejar el registro erróneo `inactive` y publicar una asociación nueva (otro `country_currency_id`).
+- Dos asociaciones `active` del **mismo** par (país, moneda) no pueden solaparse; monedas distintas en un mismo país sí (PAB y USD en PA) y una moneda puede estar en varios países. Un par puede tener varios períodos no solapados (readopción).
+- Una asociación `active` **abierta** (sin `valid_to`) exige Country y Currency `active`. Al retirar una moneda hay que cerrar en el mismo snapshot la vigencia de sus asociaciones.
+- El reemplazo es **0..N** (`replacement_currency_ids`): una moneda `inactive` declara todas sus sucesoras (CSK → CZK y SKK) o ninguna. El orden no importa: se guarda y se devuelve ascendente por `currency_id`. Una moneda `active` no tiene reemplazos; reactivar una moneda los limpia en el mismo snapshot. Un repetido, un `null`, el propio id, un sucesor inexistente o un ciclo se rechazan (también en la base).
+- Los códigos publicados no cambian: un código alfabético nuevo es una moneda nueva (VEF → VES). El alfabético es único en todo el catálogo, incluidas las `inactive`; el numérico, solo entre las `active`.
+- `minor_units` `null` significa «no aplicable» (distinto de `0`).
+- Una constraint de la base violada al final de la transacción es un rechazo (salida 1) con el requisito afectado, no un error operativo.
+
+### Deriva entre catálogos y `check-integrity`
+
+Countries (003) no conoce Currency y puede retirar un país que todavía tiene asociaciones `active` abiertas. Eso no se puede impedir desde Currency sin crear una dependencia de Countries hacia Currency (prohibida), así que se detecta:
+
+```text
+REFERENCE_DATABASE_URL=postgresql://reference_reader:...@host/base \
+    python -m gi_common_reference.currencies.interfaces.cli check-integrity
+```
+
+Sale 0 (`INTEGRO`) o 1 (`INTEGRIDAD VIOLADA`, con cada asociación y el motivo). La siguiente incorporación de Currency exige corregirlo (cerrar esas vigencias). Conviene ejecutarlo después de cada incorporación de Countries.
+
+## 10. Consultar la trazabilidad de monedas
+
+Cada snapshot incorporado conserva su artefacto, la versión de Locale contra la que se validaron los nombres, la de Countries que declaró y la vigente al incorporarlo, y la versión de la política de locales obligatorios:
+
+```sql
+-- runbook:currencies_snapshots
+SELECT snapshot_version, content_digest, locale_snapshot_version, country_snapshot_version,
+    country_current_snapshot_version, required_locales_version, provenance, incorporated_at
+FROM reference.currency_snapshot ORDER BY snapshot_version;
+```
+
+Versiones por moneda: el snapshot que la introdujo y el último que cambió su contenido:
+
+```sql
+-- runbook:currencies_versions
+SELECT currency_id, alphabetic_code, status, first_snapshot_version, last_changed_snapshot_version
+FROM reference.currency ORDER BY alphabetic_code, currency_id;
+```
+
+Historial completo de monedas de un país (cambiar el código de país), con su `status` y su vigencia:
+
+```sql
+-- runbook:currencies_history
+SELECT c.alphabetic_code, a.status, a.valid_from, a.valid_to, a.first_snapshot_version
+FROM reference.country_currency a JOIN reference.currency c USING (currency_id)
+WHERE a.country_id = (SELECT country_id FROM reference.country WHERE alpha2 = 'HR')
+ORDER BY a.valid_from NULLS FIRST, c.alphabetic_code, a.country_currency_id;
+```
+
+Asociaciones abiertas sobre un Country o una Currency `inactive` (vacía en un catálogo íntegro):
+
+```sql
+-- runbook:currencies_integrity
+SELECT country_currency_id, country_id, currency_id, country_not_active, currency_not_active
+FROM reference.country_currency_integrity_violation ORDER BY country_currency_id;
+```
+
+Estas tablas, como el resto del schema `reference`, no son un contrato para los consumidores: los módulos consumidores usan la API y persisten `currency_id`.

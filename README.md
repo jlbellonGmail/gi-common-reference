@@ -28,6 +28,10 @@ Los consumidores pueden utilizar esta información, pero no modificar directamen
 
 `gi-common-reference` no expone un CRUD de mantenimiento para los catálogos globales.
 
+### Currency
+
+`currencies` es el catálogo global de monedas ISO 4217 de GI, con identidad estable `currency_id` (independiente de los códigos), nombres por `locale_id` (`en` y `es` obligatorios en v1) y la relación N:N con países (CountryCurrency) **con vigencia temporal**: `status` (`active` | `inactive`) es el ciclo de vida del registro y el período `[valid_from, valid_to)` es cuándo la relación corresponde, de modo que se conserva la historia (p. ej. HRK → EUR en HR) y un país puede tener varias monedas a la vez. Se consulta en `GET /v1/currencies*` (contrato en `contracts/currencies-api.v1.openapi.json`). No contiene tipos de cambio ni cotizaciones. Spec: [`specs/004-currency`](specs/004-currency/spec.md).
+
 ## Versionado y actualización
 
 La preparación de los catálogos se realiza fuera de este repositorio, mediante `gi-common-reference-prep`.

@@ -4,3 +4,6 @@ acceptance/locales/gi-dev/*.json -text
 # Assets de bandera: la suma de verificación se calcula sobre los bytes exactos (spec 003, RF-49).
 src/gi_common_reference/countries/assets/flags/*.svg -text
 tests/fixtures/flags/*.svg -text
+
+# Evidencia de la aceptación de 004-currency: bytes exactos (sumas de verificación del manifiesto).
+acceptance/currencies/evidence/* -text

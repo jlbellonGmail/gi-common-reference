@@ -22,7 +22,8 @@ PACKAGE = "gi_common_reference"
 LOCALES = f"{PACKAGE}.locales"
 REGIONS = f"{PACKAGE}.regions"
 COUNTRIES = f"{PACKAGE}.countries"
-CATALOGS = ("locales", "regions", "countries")
+CURRENCIES = f"{PACKAGE}.currencies"
+CATALOGS = ("locales", "regions", "countries", "currencies")
 PUBLIC = f"{LOCALES}.interfaces.http"
 PUBLIC_SURFACES = {f"{PACKAGE}.{catalog}.interfaces.http" for catalog in CATALOGS}
 ANCESTORS = {PACKAGE} | {
@@ -49,6 +50,13 @@ COMPOSITION_ROOT_MAY_IMPORT = {
     f"{COUNTRIES}.infrastructure.postgres_reader",
     f"{COUNTRIES}.infrastructure.postgres_repository",
     f"{COUNTRIES}.infrastructure.snapshot_reader",
+    f"{CURRENCIES}.domain.policy",
+    f"{CURRENCIES}.domain.ports",
+    f"{CURRENCIES}.infrastructure.clock",
+    f"{CURRENCIES}.infrastructure.policy_reader",
+    f"{CURRENCIES}.infrastructure.postgres_reader",
+    f"{CURRENCIES}.infrastructure.postgres_repository",
+    f"{CURRENCIES}.infrastructure.snapshot_reader",
 }
 SOURCE = ROOT / "src" / PACKAGE
 
@@ -262,3 +270,52 @@ def test_nothing_but_the_composition_root_imports_countries_internals_in_the_rep
         and any(_within(name, {COUNTRIES}) for name in internal_imports(path))
     ]
     assert set(importers) <= {COMPOSITION_ROOT}, importers
+
+
+def test_a_currencies_internal_imported_from_outside_is_detected(tmp_path: Path) -> None:
+    root = tree(tmp_path, {"app.py": f"from {CURRENCIES}.domain.ports import CurrencyReader\n"})
+    assert any("app.py" in item and "currencies.domain.ports" in item for item in violations(root))
+
+
+def test_catalogs_importing_currencies_internals_or_the_reverse_are_detected(
+    tmp_path: Path,
+) -> None:
+    """RNF-6: Country no depende de Currency, ni Currency de otros catálogos."""
+    root = tree(
+        tmp_path,
+        {
+            "currencies/domain/a.py": f"from {COUNTRIES}.domain.model import CountryRecord\n",
+            "countries/domain/b.py": f"from {CURRENCIES}.domain.model import CurrencyRecord\n",
+            "locales/domain/c.py": f"import {CURRENCIES}.infrastructure.postgres_reader\n",
+        },
+    )
+    found = violations(root)
+    assert any("currencies/domain/a.py" in item and "countries.domain" in item for item in found)
+    assert any("countries/domain/b.py" in item and "currencies.domain" in item for item in found)
+    assert any("locales/domain/c.py" in item for item in found)
+
+
+def test_the_currencies_public_surface_is_accepted_for_any_importer(tmp_path: Path) -> None:
+    root = tree(tmp_path, {"app.py": f"from {CURRENCIES}.interfaces.http import create_api\n"})
+    assert violations(root) == []
+
+
+def test_nothing_but_the_composition_root_imports_currencies_internals_in_the_repository() -> None:
+    importers = [
+        path.relative_to(SOURCE).as_posix()
+        for path in sorted(SOURCE.rglob("*.py"))
+        if path.relative_to(SOURCE).parts[0] != "currencies"
+        and any(_within(name, {CURRENCIES}) for name in internal_imports(path))
+    ]
+    assert set(importers) <= {COMPOSITION_ROOT}, importers
+
+
+def test_no_earlier_catalog_imports_currencies_at_all_in_the_repository() -> None:
+    """CA-24, RNF-6: ni siquiera su superficie pública; 001-003 no conocen Currency."""
+    importers = [
+        path.relative_to(SOURCE).as_posix()
+        for path in sorted(SOURCE.rglob("*.py"))
+        if path.relative_to(SOURCE).parts[0] in ("locales", "regions", "countries")
+        and any(_within(name, {CURRENCIES}) for name in internal_imports(path))
+    ]
+    assert importers == []

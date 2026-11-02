@@ -34,7 +34,7 @@ python -m venv .venv
 pip install -c constraints.txt -e ".[dev]"
 ```
 
-`pyproject.toml` declara qué se necesita; `constraints.txt` declara con qué versiones se validó. Para actualizar dependencias, instalar sin `-c` en un entorno limpio, correr la verificación completa y regenerar el archivo con el comando de su cabecera. Los OpenAPI publicados (`contracts/locales-api.v1.openapi.json`, `contracts/regions-api.v1.openapi.json` y `contracts/countries-api.v1.openapi.json`, generados con `python -m gi_common_reference.app`, `python -m gi_common_reference.app regions` y `python -m gi_common_reference.app countries`, con `PYTHONUTF8=1` en Windows) se comparan como JSON (igualdad semántica del documento parseado: el orden de las claves y el formato no importan) con los generados, así que una actualización de `fastapi` o `pydantic` puede exigir regenerarlos.
+`pyproject.toml` declara qué se necesita; `constraints.txt` declara con qué versiones se validó. Para actualizar dependencias, instalar sin `-c` en un entorno limpio, correr la verificación completa y regenerar el archivo con el comando de su cabecera. Los OpenAPI publicados (`contracts/locales-api.v1.openapi.json`, `contracts/regions-api.v1.openapi.json`, `contracts/countries-api.v1.openapi.json` y `contracts/currencies-api.v1.openapi.json`, generados con `python -m gi_common_reference.app`, `python -m gi_common_reference.app regions`, `python -m gi_common_reference.app countries` y `python -m gi_common_reference.app currencies`, con `PYTHONUTF8=1` en Windows) se comparan como JSON (igualdad semántica del documento parseado: el orden de las claves y el formato no importan) con los generados, así que una actualización de `fastapi` o `pydantic` puede exigir regenerarlos.
 
 ## Schemas de los snapshots: dos copias
 
@@ -44,6 +44,8 @@ Cada schema de snapshot existe en dos lugares, y deben ser equivalentes (`tests/
 - `contracts/locale-snapshot.v1.schema.json`: la copia publicada para PREP.
 - `src/gi_common_reference/regions/infrastructure/region-snapshot.v1.schema.json` y `contracts/region-snapshot.v1.schema.json`: lo mismo para regiones y subregiones (spec 002). La política de locales obligatorios (`required-locales.v1.json`) viaja solo en el paquete.
 - `src/gi_common_reference/countries/infrastructure/country-snapshot.v1.schema.json` y `contracts/country-snapshot.v1.schema.json`: lo mismo para países (spec 003; `tests/contract/test_country_snapshot_contract.py` lo verifica). Countries tiene su propia política de locales obligatorios y un directorio de assets de bandera (`src/gi_common_reference/countries/assets/flags/`, versionado como `-text` en `.gitattributes`) que viaja en el wheel.
+
+- `src/gi_common_reference/currencies/infrastructure/currency-snapshot.v1.schema.json` y `contracts/currency-snapshot.v1.schema.json`: lo mismo para monedas (spec 004; `tests/contract/currencies/test_currency_snapshot_contract.py` lo verifica). Currency tiene su propia política de locales obligatorios (`required-locales.v1.json`, `en` y `es`) y la migración 0004 exige la extensión `btree_gist`.
 
 Al cambiar el schema, editar una y copiarla sobre la otra.
 
@@ -56,9 +58,20 @@ mypy
 node .ai-native/ai-native.mjs sdd validate 001-locales
 node .ai-native/ai-native.mjs sdd validate 002-regions-subregions
 node .ai-native/ai-native.mjs sdd validate 003-countries
+node .ai-native/ai-native.mjs sdd validate 004-currency
 node .ai-native/ai-native.mjs hitl --base develop
 ```
 
 Para desplegar y operar el servicio (roles, migraciones, API, incorporación), ver [`operacion.md`](operacion.md).
 
 `pytest` ya incluye el guard de red (`--disable-socket`, solo `127.0.0.1`/`localhost`): ningún test sale a internet. Docker se usa por su socket local.
+
+## Aceptación de 004-currency
+
+AI-NATIVE v3.4.3 no expone un comando de Native Acceptance. Los criterios de la spec de Currency se ejecutan como pruebas de caja negra (CLI como subproceso, API real por HTTP y Postgres real, con un guard de red) y dejan evidencia reproducible:
+
+```text
+python tools/acceptance/currency_acceptance.py --base origin/develop
+```
+
+Requiere Docker y la rama base disponible. Detalle, alcance y lo que queda pendiente (el dataset real de PREP; `gi-dev`) en [`acceptance/currencies/README.md`](../acceptance/currencies/README.md). `pytest` incluye `tests/acceptance`.
