@@ -20,6 +20,7 @@ PACKAGE = "gi_common_reference"
 LOCALES = f"{PACKAGE}.locales"
 REGIONS = f"{PACKAGE}.regions"
 COUNTRIES = f"{PACKAGE}.countries"
+CURRENCIES = f"{PACKAGE}.currencies"
 COMPOSITION_ROOT = f"{PACKAGE}.bootstrap"
 
 
@@ -102,7 +103,8 @@ def layers_under(tmp_path: Path) -> dict[str, Any]:
     return {
         name: {
             "paths": [
-                f"src/{PACKAGE}/{catalog}/{name}" for catalog in ("locales", "regions", "countries")
+                f"src/{PACKAGE}/{catalog}/{name}"
+                for catalog in ("locales", "regions", "countries", "currencies")
             ],
             "mayDependOn": spec["mayDependOn"],
         }
@@ -230,5 +232,52 @@ def test_allowed_dependencies_inside_countries_are_accepted(tmp_path: Path) -> N
             "infrastructure/a.py": f"from {COUNTRIES}.domain.ports import P\n",
         },
         catalog="countries",
+    )
+    assert violations(root, layers_under(root)) == []
+
+
+@pytest.mark.parametrize(
+    ("file", "source"),
+    [
+        ("domain/a.py", f"from {LOCALES}.domain.model import Violation\n"),
+        ("domain/a.py", f"from {REGIONS}.domain.model import RegionRecord\n"),
+        ("domain/a.py", f"from {COUNTRIES}.domain.model import CountryRecord\n"),
+        ("infrastructure/a.py", f"import {COUNTRIES}.infrastructure.conninfo\n"),
+    ],
+)
+def test_currencies_importing_other_catalogs_is_detected(
+    tmp_path: Path, file: str, source: str
+) -> None:
+    root = tree_with(tmp_path, {file: source}, catalog="currencies")
+    found = violations(root, layers_under(root))
+    assert any("otro catálogo" in item for item in found), found
+
+
+@pytest.mark.parametrize("catalog", ["locales", "regions", "countries"])
+def test_other_catalogs_importing_currencies_are_detected(tmp_path: Path, catalog: str) -> None:
+    """RNF-6: Country (y Locale, Regions) no dependen de Currency."""
+    root = tree_with(
+        tmp_path, {"domain/a.py": f"from {CURRENCIES}.domain.model import C\n"}, catalog=catalog
+    )
+    found = violations(root, layers_under(root))
+    assert any("otro catálogo" in item for item in found), found
+
+
+def test_the_composition_root_is_still_forbidden_inside_currencies(tmp_path: Path) -> None:
+    root = tree_with(
+        tmp_path, {"interfaces/a.py": f"from {COMPOSITION_ROOT} import x\n"}, catalog="currencies"
+    )
+    assert any("fuera de __main__" in item for item in violations(root, layers_under(root)))
+
+
+def test_allowed_dependencies_inside_currencies_are_accepted(tmp_path: Path) -> None:
+    root = tree_with(
+        tmp_path,
+        {
+            "application/a.py": f"from {CURRENCIES}.domain.model import CurrencyRecord\n",
+            "interfaces/a.py": f"from {CURRENCIES}.application.queries import q\n",
+            "infrastructure/a.py": f"from {CURRENCIES}.domain.ports import P\n",
+        },
+        catalog="currencies",
     )
     assert violations(root, layers_under(root)) == []

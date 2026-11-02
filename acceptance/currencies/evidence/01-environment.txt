@@ -1,0 +1,16 @@
+# Entorno de la aceptación de 004-currency (sintético, no productivo; S-9)
+python: 3.12.10 (Windows)
+git HEAD: c84ea13eb7018b98a3bb69c6a54442f44444b5b2
+git base (origin/develop): eadad945a600f49945e7fd46d63d295aadd13259
+ai-native (launcher del repositorio): v3.4.3 7bfa2f063303ce48af90a024283625856d74e8cb
+base de datos: postgres:16-alpine (testcontainers, descartable)
+paquetes:
+  alembic==1.20.0
+  fastapi==0.150.0
+  psycopg==3.3.6
+  pydantic==2.14.1
+  pytest==9.1.1
+  testcontainers==4.15.0
+  uvicorn==0.54.0
+comando: python tools/acceptance/currency_acceptance.py
+pytest exit code: 0

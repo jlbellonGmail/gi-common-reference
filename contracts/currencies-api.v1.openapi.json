@@ -1,0 +1,1078 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "gi-common-reference: currencies",
+    "description": "Catálogo global de monedas ISO 4217, versionado y de solo lectura: identidad `currency_id`, código alfabético de resolución, nombres por `locale_id` y asociaciones Country–Currency con vigencia temporal. Sin cotizaciones, tipos de cambio, precios ni saldos.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/currencies/version": {
+      "get": {
+        "tags": [
+          "currencies"
+        ],
+        "summary": "Versión aplicada del catálogo Currency",
+        "operationId": "getCurrencyCatalogVersion",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VersionEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Falla técnica (distinta de 404 y 422).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/currencies/by-code/{code}": {
+      "get": {
+        "tags": [
+          "currencies"
+        ],
+        "summary": "Obtener una moneda por su código alfabético ISO 4217",
+        "description": "Sin distinguir mayúsculas (`usd`). Un código mal formado (` USD`, `US`, vacío) es 422;\nuno bien formado que no existe, 404. Resuelve también las monedas `inactive`.",
+        "operationId": "getCurrencyByCode",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code"
+            }
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrencyEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Falla técnica (distinta de 404 y 422).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/currencies/by-country/{country_id}/history": {
+      "get": {
+        "tags": [
+          "currencies"
+        ],
+        "summary": "Historial completo de monedas de un país, sin filtrar por fecha",
+        "description": "Orden: inicio de vigencia (los ausentes primero), código alfabético e id.",
+        "operationId": "getCountryCurrencyHistory",
+        "parameters": [
+          {
+            "name": "country_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Country Id"
+            }
+          },
+          {
+            "name": "include_inactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Incluye también los registros `inactive` (por defecto no).",
+              "default": false,
+              "title": "Include Inactive"
+            },
+            "description": "Incluye también los registros `inactive` (por defecto no)."
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssociationListEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Falla técnica (distinta de 404 y 422).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/currencies/by-country/{country_id}": {
+      "get": {
+        "tags": [
+          "currencies"
+        ],
+        "summary": "Monedas de un país en una fecha de referencia",
+        "description": "Un país existente sin monedas, o sin monedas en esa fecha, devuelve lista vacía; un\n`country_id` inexistente, 404.",
+        "operationId": "listCountryCurrencies",
+        "parameters": [
+          {
+            "name": "country_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Country Id"
+            }
+          },
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Fecha de referencia `YYYY-MM-DD` (día calendario). La vigencia `[valid_from, valid_to)` incluye el día de inicio y excluye el de fin. Por defecto, el día UTC de la consulta.",
+              "title": "As Of"
+            },
+            "description": "Fecha de referencia `YYYY-MM-DD` (día calendario). La vigencia `[valid_from, valid_to)` incluye el día de inicio y excluye el de fin. Por defecto, el día UTC de la consulta."
+          },
+          {
+            "name": "include_inactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Incluye también los registros `inactive` (por defecto no).",
+              "default": false,
+              "title": "Include Inactive"
+            },
+            "description": "Incluye también los registros `inactive` (por defecto no)."
+          },
+          {
+            "name": "exclude_funds",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Excluye los códigos de fondos (BOV, CHE, CLF…).",
+              "default": false,
+              "title": "Exclude Funds"
+            },
+            "description": "Excluye los códigos de fondos (BOV, CHE, CLF…)."
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssociationListEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Falla técnica (distinta de 404 y 422).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/currencies/{currency_id}/validation": {
+      "get": {
+        "tags": [
+          "currencies"
+        ],
+        "summary": "Validar un currency_id: active, inactive o not_found",
+        "description": "No decide si el consumidor acepta monedas `inactive`.",
+        "operationId": "validateCurrency",
+        "parameters": [
+          {
+            "name": "currency_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Currency Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Falla técnica (distinta de 404 y 422).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/currencies/{currency_id}/countries/history": {
+      "get": {
+        "tags": [
+          "currencies"
+        ],
+        "summary": "Historial completo de países de una moneda, sin filtrar por fecha",
+        "operationId": "getCurrencyCountryHistory",
+        "parameters": [
+          {
+            "name": "currency_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Currency Id"
+            }
+          },
+          {
+            "name": "include_inactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Incluye también los registros `inactive` (por defecto no).",
+              "default": false,
+              "title": "Include Inactive"
+            },
+            "description": "Incluye también los registros `inactive` (por defecto no)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssociationListEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Falla técnica (distinta de 404 y 422).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/currencies/{currency_id}/countries": {
+      "get": {
+        "tags": [
+          "currencies"
+        ],
+        "summary": "Países de una moneda en una fecha de referencia",
+        "description": "Solo `country_id` y vigencia: los datos del país los resuelve el contrato de 003.",
+        "operationId": "listCurrencyCountries",
+        "parameters": [
+          {
+            "name": "currency_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Currency Id"
+            }
+          },
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Fecha de referencia `YYYY-MM-DD` (día calendario). La vigencia `[valid_from, valid_to)` incluye el día de inicio y excluye el de fin. Por defecto, el día UTC de la consulta.",
+              "title": "As Of"
+            },
+            "description": "Fecha de referencia `YYYY-MM-DD` (día calendario). La vigencia `[valid_from, valid_to)` incluye el día de inicio y excluye el de fin. Por defecto, el día UTC de la consulta."
+          },
+          {
+            "name": "include_inactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Incluye también los registros `inactive` (por defecto no).",
+              "default": false,
+              "title": "Include Inactive"
+            },
+            "description": "Incluye también los registros `inactive` (por defecto no)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssociationListEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Falla técnica (distinta de 404 y 422).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/currencies/{currency_id}": {
+      "get": {
+        "tags": [
+          "currencies"
+        ],
+        "summary": "Obtener una moneda por su currency_id, cualquiera sea su status",
+        "description": "Un `currency_id` mal formado es 422; uno bien formado que no existe, 404.",
+        "operationId": "getCurrencyById",
+        "parameters": [
+          {
+            "name": "currency_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Currency Id"
+            }
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrencyEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Falla técnica (distinta de 404 y 422).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/currencies": {
+      "get": {
+        "tags": [
+          "currencies"
+        ],
+        "summary": "Listar las monedas, ordenadas por código alfabético",
+        "operationId": "listCurrencies",
+        "parameters": [
+          {
+            "name": "include_inactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Incluye también los registros `inactive` (por defecto no).",
+              "default": false,
+              "title": "Include Inactive"
+            },
+            "description": "Incluye también los registros `inactive` (por defecto no)."
+          },
+          {
+            "name": "exclude_funds",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Excluye los códigos de fondos (BOV, CHE, CLF…).",
+              "default": false,
+              "title": "Exclude Funds"
+            },
+            "description": "Excluye los códigos de fondos (BOV, CHE, CLF…)."
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrencyListEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Falla técnica (distinta de 404 y 422).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AssociationListEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version"
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/CountryCurrency"
+            },
+            "type": "array",
+            "title": "Data"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "AssociationListEnvelope"
+      },
+      "CountryCurrency": {
+        "properties": {
+          "country_currency_id": {
+            "type": "string",
+            "title": "Country Currency Id",
+            "description": "Identidad de la asociación (UUID)."
+          },
+          "country_id": {
+            "type": "string",
+            "title": "Country Id",
+            "description": "UUID de un Country publicado por 003-countries."
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive"
+            ],
+            "title": "Status",
+            "description": "Ciclo de vida del registro."
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid From",
+            "description": "Primer día en que corresponde (incluido); `null` si no está acotado."
+          },
+          "valid_to": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid To",
+            "description": "Primer día en que ya no corresponde (excluido); `null` sin fin declarado."
+          }
+        },
+        "type": "object",
+        "required": [
+          "country_currency_id",
+          "country_id",
+          "currency",
+          "status",
+          "valid_from",
+          "valid_to"
+        ],
+        "title": "CountryCurrency",
+        "description": "Asociación Country–Currency. `status` es el ciclo de vida del registro; la vigencia es el\nperíodo real `[valid_from, valid_to)` y no la sustituye."
+      },
+      "Currency": {
+        "properties": {
+          "currency_id": {
+            "type": "string",
+            "title": "Currency Id",
+            "description": "Identidad estable de la moneda (UUID de Reference)."
+          },
+          "alphabetic_code": {
+            "type": "string",
+            "title": "Alphabetic Code",
+            "description": "ISO 4217 alfabético (`USD`)."
+          },
+          "numeric_code": {
+            "type": "string",
+            "title": "Numeric Code",
+            "description": "ISO 4217 numérico, con ceros (`032`). Solo atributo."
+          },
+          "minor_units": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Minor Units",
+            "description": "Dígitos decimales estándar; `null` es «no aplicable» (distinto de 0)."
+          },
+          "fund_code": {
+            "type": "boolean",
+            "title": "Fund Code",
+            "description": "ISO la declara código de fondos."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive"
+            ],
+            "title": "Status",
+            "description": "`active`: apta para nuevas referencias; `inactive`: sigue resoluble."
+          },
+          "replacement_currency_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Replacement Currency Ids",
+            "description": "Monedas sucesoras (0..N), en orden ascendente de `currency_id`; vacío si no hay sucesión declarada o si la moneda es `active`."
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "Nombre en el `locale_id` pedido, o `null`."
+          }
+        },
+        "type": "object",
+        "required": [
+          "currency_id",
+          "alphabetic_code",
+          "numeric_code",
+          "minor_units",
+          "fund_code",
+          "status",
+          "replacement_currency_ids",
+          "name"
+        ],
+        "title": "Currency",
+        "description": "Moneda ISO 4217. La identidad es `currency_id`; el código alfabético es clave de resolución.\n\nSin ningún texto propio (el nombre es de `CurrencyLocale`), ni símbolos, ni formato (D-11)."
+      },
+      "CurrencyEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Currency"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "CurrencyEnvelope"
+      },
+      "CurrencyListEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version",
+            "description": "Snapshot vigente; `null` si todavía no se incorporó ninguno."
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/Currency"
+            },
+            "type": "array",
+            "title": "Data"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "CurrencyListEnvelope"
+      },
+      "ErrorBody": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorBody"
+      },
+      "ErrorEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version",
+            "description": "Snapshot vigente, o `null` si no hay."
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorBody"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "error"
+        ],
+        "title": "ErrorEnvelope"
+      },
+      "ValidationData": {
+        "properties": {
+          "result": {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive",
+              "not_found"
+            ],
+            "title": "Result",
+            "description": "Resultado de la consulta; `not_found` nunca es un `status` persistido."
+          }
+        },
+        "type": "object",
+        "required": [
+          "result"
+        ],
+        "title": "ValidationData"
+      },
+      "ValidationEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ValidationData"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "ValidationEnvelope"
+      },
+      "VersionData": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version"
+        ],
+        "title": "VersionData"
+      },
+      "VersionEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version"
+          },
+          "data": {
+            "$ref": "#/components/schemas/VersionData"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "VersionEnvelope"
+      }
+    }
+  }
+}

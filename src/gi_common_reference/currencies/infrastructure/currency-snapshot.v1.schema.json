@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:gi:common-reference:currency-snapshot:v1",
+  "title": "Currency snapshot v1",
+  "description": "Contrato entre gi-common-reference-prep y gi-common-reference (spec 004, RF-41). Catálogo completo de monedas ISO 4217 List One con su nombre por locale_id (CurrencyLocale) y las asociaciones CountryCurrency con su vigencia temporal. Los códigos son siempre strings (`032` conserva sus ceros). `minor_units` null significa «no aplicable» (ISO N.A.), distinto de 0. Las fechas de vigencia son días calendario `YYYY-MM-DD`; la vigencia es el período semiabierto [valid_from, valid_to) y null es un extremo no acotado. `status` (ciclo de vida del registro) y la vigencia son independientes. El schema valida estructura, tipos y formato; identidad, ciclo de vida, reemplazos, localización, temporalidad, referencias a Country y procedencia los valida el dominio. El content_digest sigue las reglas y vectores de locale-snapshot.v1.vectors.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "snapshot_version",
+    "content_digest",
+    "country_snapshot_version",
+    "provenance",
+    "currencies",
+    "currency_names",
+    "country_currencies"
+  ],
+  "properties": {
+    "snapshot_version": {
+      "description": "Versión del snapshot del catálogo Currency, propia e independiente de Locale y de Countries (D-13): entero positivo, estrictamente creciente entre snapshots nuevos; se admiten saltos.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "content_digest": {
+      "description": "SHA-256 del JSON canónico del documento sin este campo.",
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "country_snapshot_version": {
+      "description": "Versión del catálogo Countries con la que se construyó este snapshot (RF-41). Debe estar incorporada y no ser posterior a la vigente.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "provenance": { "$ref": "#/$defs/catalogProvenance" },
+    "currencies": {
+      "description": "Todas las monedas publicadas y las nuevas (no un delta).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "currency_id",
+          "alphabetic_code",
+          "numeric_code",
+          "minor_units",
+          "fund_code",
+          "status",
+          "replacement_currency_ids"
+        ],
+        "properties": {
+          "currency_id": { "description": "UUID asignado por Reference; el sistema no lo genera.", "type": "string" },
+          "alphabetic_code": { "description": "ISO 4217 alfabético: 3 letras A-Z mayúsculas, sin normalizar.", "type": "string", "pattern": "^[A-Z]{3}$" },
+          "numeric_code": { "description": "ISO 4217 numérico: 3 dígitos como texto, con ceros a la izquierda.", "type": "string", "pattern": "^[0-9]{3}$" },
+          "minor_units": { "description": "Dígitos decimales estándar (entero no negativo) o null para «no aplicable».", "type": ["integer", "null"], "minimum": 0 },
+          "fund_code": { "description": "ISO declara la moneda como código de fondos.", "type": "boolean" },
+          "status": { "enum": ["active", "inactive"] },
+          "replacement_currency_ids": {
+            "description": "Monedas sucesoras (0..N) de una moneda inactive: vacío si no hay sucesión declarada o si es active. Sin null ni repetidos; el orden no tiene significado (se persiste ascendente).",
+            "type": "array",
+            "items": { "type": "string" },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "currency_names": {
+      "description": "Nombres de monedas por locale_id (CurrencyLocale). Debe haber un name por cada locale obligatorio (en, es). Solo el nombre: sin símbolos ni formato.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["currency_id", "locale_id", "name"],
+        "properties": {
+          "currency_id": { "type": "string" },
+          "locale_id": { "type": "string" },
+          "name": { "description": "Nombre de la moneda. Sin vacío ni espacios al inicio o al final.", "type": "string" }
+        }
+      }
+    },
+    "country_currencies": {
+      "description": "Asociaciones Country–Currency con vigencia temporal (D-18). Todas las publicadas y las nuevas, también las históricas y las inactive.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "country_currency_id",
+          "country_id",
+          "currency_id",
+          "status",
+          "valid_from",
+          "valid_to"
+        ],
+        "properties": {
+          "country_currency_id": { "description": "UUID de la asociación asignado por Reference; distingue períodos distintos del mismo par.", "type": "string" },
+          "country_id": { "description": "UUID de un Country publicado por 003.", "type": "string" },
+          "currency_id": { "type": "string" },
+          "status": { "enum": ["active", "inactive"] },
+          "valid_from": { "description": "Primer día en que la relación corresponde (incluido), o null si no está acotado.", "type": ["string", "null"], "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+          "valid_to": { "description": "Primer día en que la relación ya no corresponde (excluido), o null si no tiene fin declarado.", "type": ["string", "null"], "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "catalogProvenance": {
+      "description": "Procedencia del catálogo (RF-41, D-20). Cada fuente declara rol, nombre, edición, fecha de obtención, ubicación, suma de verificación del artefacto de origen y licencia; el dominio exige los campos, los roles requeridos y que no queden conflictos sin resolver.",
+      "type": "object",
+      "required": ["sources", "unresolved_conflicts"],
+      "properties": {
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role": { "enum": ["identity", "names", "country_currency", "validity"] },
+              "name": { "type": "string" },
+              "edition": { "type": "string" },
+              "retrieved_at": { "type": "string" },
+              "location": { "type": "string" },
+              "checksum": { "type": "string" },
+              "license": { "type": "string" }
+            }
+          }
+        },
+        "unresolved_conflicts": {
+          "description": "Conflictos entre fuentes sin resolver (p. ej. nombre ISO distinto de CLDR, entidad ISO sin Country inequívoco, vigencia en conflicto). Debe estar vacío para que el snapshot se acepte.",
+          "type": "array"
+        }
+      }
+    }
+  }
+}

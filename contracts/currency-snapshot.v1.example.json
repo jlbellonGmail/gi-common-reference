@@ -1,0 +1,457 @@
+{
+  "snapshot_version": 1,
+  "content_digest": "sha256:8546efbbe0f643b9f22a4e2de3767408d55a2c5d6f0d7b0a8ca31803a4409305",
+  "country_snapshot_version": 1,
+  "provenance": {
+    "sources": [
+      {
+        "role": "identity",
+        "name": "ISO 4217 List One (sintético)",
+        "edition": "synthetic-1",
+        "retrieved_at": "2026-11-01",
+        "location": "tests/fixtures (sintético, no productivo)",
+        "checksum": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "license": "CC0-1.0 (fixture sintético)"
+      },
+      {
+        "role": "names",
+        "name": "CLDR (sintético)",
+        "edition": "synthetic-1",
+        "retrieved_at": "2026-11-01",
+        "location": "tests/fixtures (sintético, no productivo)",
+        "checksum": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "license": "CC0-1.0 (fixture sintético)"
+      },
+      {
+        "role": "country_currency",
+        "name": "ISO 4217 entidades (sintético)",
+        "edition": "synthetic-1",
+        "retrieved_at": "2026-11-01",
+        "location": "tests/fixtures (sintético, no productivo)",
+        "checksum": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "license": "CC0-1.0 (fixture sintético)"
+      },
+      {
+        "role": "validity",
+        "name": "CLDR territorio-moneda (sintético)",
+        "edition": "synthetic-1",
+        "retrieved_at": "2026-11-01",
+        "location": "tests/fixtures (sintético, no productivo)",
+        "checksum": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "license": "CC0-1.0 (fixture sintético)"
+      }
+    ],
+    "unresolved_conflicts": []
+  },
+  "currencies": [
+    {
+      "currency_id": "499f86b1-0b36-594d-8536-95435b38eef1",
+      "alphabetic_code": "ARS",
+      "numeric_code": "032",
+      "minor_units": 2,
+      "fund_code": false,
+      "status": "active",
+      "replacement_currency_ids": []
+    },
+    {
+      "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+      "alphabetic_code": "USD",
+      "numeric_code": "840",
+      "minor_units": 2,
+      "fund_code": false,
+      "status": "active",
+      "replacement_currency_ids": []
+    },
+    {
+      "currency_id": "d18b9f80-2216-5eaa-a31a-dcf378ac0798",
+      "alphabetic_code": "EUR",
+      "numeric_code": "978",
+      "minor_units": 2,
+      "fund_code": false,
+      "status": "active",
+      "replacement_currency_ids": []
+    },
+    {
+      "currency_id": "817ab824-0737-5fbb-b7c6-2752d247d2ee",
+      "alphabetic_code": "PAB",
+      "numeric_code": "590",
+      "minor_units": 2,
+      "fund_code": false,
+      "status": "active",
+      "replacement_currency_ids": []
+    },
+    {
+      "currency_id": "e6348816-740e-5a74-a4a6-838e6ba003b8",
+      "alphabetic_code": "JPY",
+      "numeric_code": "392",
+      "minor_units": 0,
+      "fund_code": false,
+      "status": "active",
+      "replacement_currency_ids": []
+    },
+    {
+      "currency_id": "c0ab10db-714c-56fb-921a-1270c025835d",
+      "alphabetic_code": "KWD",
+      "numeric_code": "414",
+      "minor_units": 3,
+      "fund_code": false,
+      "status": "active",
+      "replacement_currency_ids": []
+    },
+    {
+      "currency_id": "cfa0ae34-bee4-5c1c-bfba-0c76dc41cac4",
+      "alphabetic_code": "CLF",
+      "numeric_code": "990",
+      "minor_units": 4,
+      "fund_code": true,
+      "status": "active",
+      "replacement_currency_ids": []
+    },
+    {
+      "currency_id": "e19de4c9-122f-5978-8146-3be569e15bc1",
+      "alphabetic_code": "XAU",
+      "numeric_code": "959",
+      "minor_units": null,
+      "fund_code": false,
+      "status": "active",
+      "replacement_currency_ids": []
+    },
+    {
+      "currency_id": "4daf85cc-a295-517b-b645-e201101bc009",
+      "alphabetic_code": "XDR",
+      "numeric_code": "960",
+      "minor_units": null,
+      "fund_code": false,
+      "status": "active",
+      "replacement_currency_ids": []
+    },
+    {
+      "currency_id": "0f1efe82-eda9-5f18-9a01-42c1c2840309",
+      "alphabetic_code": "BOB",
+      "numeric_code": "068",
+      "minor_units": 2,
+      "fund_code": false,
+      "status": "active",
+      "replacement_currency_ids": []
+    },
+    {
+      "currency_id": "d27a3fa6-65da-57fc-838a-16e0f10b4021",
+      "alphabetic_code": "BOV",
+      "numeric_code": "984",
+      "minor_units": 2,
+      "fund_code": true,
+      "status": "active",
+      "replacement_currency_ids": []
+    },
+    {
+      "currency_id": "359df0bc-679f-54c7-8d2a-15126fe2dd15",
+      "alphabetic_code": "CHF",
+      "numeric_code": "756",
+      "minor_units": 2,
+      "fund_code": false,
+      "status": "active",
+      "replacement_currency_ids": []
+    },
+    {
+      "currency_id": "c5be3dfa-27e9-5f49-9d6f-279a14f93756",
+      "alphabetic_code": "CHE",
+      "numeric_code": "947",
+      "minor_units": 2,
+      "fund_code": true,
+      "status": "active",
+      "replacement_currency_ids": []
+    },
+    {
+      "currency_id": "1de4c96f-9e12-57c5-9fe4-91e988f1fc9a",
+      "alphabetic_code": "CHW",
+      "numeric_code": "948",
+      "minor_units": 2,
+      "fund_code": true,
+      "status": "active",
+      "replacement_currency_ids": []
+    },
+    {
+      "currency_id": "5e30a2b9-8f2a-54fe-970b-ba49a3a17d94",
+      "alphabetic_code": "HRK",
+      "numeric_code": "191",
+      "minor_units": 2,
+      "fund_code": false,
+      "status": "active",
+      "replacement_currency_ids": []
+    }
+  ],
+  "currency_names": [
+    {
+      "currency_id": "499f86b1-0b36-594d-8536-95435b38eef1",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Argentine Peso"
+    },
+    {
+      "currency_id": "499f86b1-0b36-594d-8536-95435b38eef1",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "peso argentino"
+    },
+    {
+      "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "US Dollar"
+    },
+    {
+      "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "dólar estadounidense"
+    },
+    {
+      "currency_id": "d18b9f80-2216-5eaa-a31a-dcf378ac0798",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Euro"
+    },
+    {
+      "currency_id": "d18b9f80-2216-5eaa-a31a-dcf378ac0798",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "euro"
+    },
+    {
+      "currency_id": "817ab824-0737-5fbb-b7c6-2752d247d2ee",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Panamanian Balboa"
+    },
+    {
+      "currency_id": "817ab824-0737-5fbb-b7c6-2752d247d2ee",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "balboa panameño"
+    },
+    {
+      "currency_id": "e6348816-740e-5a74-a4a6-838e6ba003b8",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Japanese Yen"
+    },
+    {
+      "currency_id": "e6348816-740e-5a74-a4a6-838e6ba003b8",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "yen"
+    },
+    {
+      "currency_id": "c0ab10db-714c-56fb-921a-1270c025835d",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Kuwaiti Dinar"
+    },
+    {
+      "currency_id": "c0ab10db-714c-56fb-921a-1270c025835d",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "dinar kuwaití"
+    },
+    {
+      "currency_id": "cfa0ae34-bee4-5c1c-bfba-0c76dc41cac4",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Unidad de Fomento"
+    },
+    {
+      "currency_id": "cfa0ae34-bee4-5c1c-bfba-0c76dc41cac4",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "unidad de fomento"
+    },
+    {
+      "currency_id": "e19de4c9-122f-5978-8146-3be569e15bc1",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Gold"
+    },
+    {
+      "currency_id": "e19de4c9-122f-5978-8146-3be569e15bc1",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "oro"
+    },
+    {
+      "currency_id": "4daf85cc-a295-517b-b645-e201101bc009",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "SDR (Special Drawing Right)"
+    },
+    {
+      "currency_id": "4daf85cc-a295-517b-b645-e201101bc009",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "derechos especiales de giro"
+    },
+    {
+      "currency_id": "0f1efe82-eda9-5f18-9a01-42c1c2840309",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Boliviano"
+    },
+    {
+      "currency_id": "0f1efe82-eda9-5f18-9a01-42c1c2840309",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "boliviano"
+    },
+    {
+      "currency_id": "d27a3fa6-65da-57fc-838a-16e0f10b4021",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Bolivian Mvdol"
+    },
+    {
+      "currency_id": "d27a3fa6-65da-57fc-838a-16e0f10b4021",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "mvdol boliviano"
+    },
+    {
+      "currency_id": "359df0bc-679f-54c7-8d2a-15126fe2dd15",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Swiss Franc"
+    },
+    {
+      "currency_id": "359df0bc-679f-54c7-8d2a-15126fe2dd15",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "franco suizo"
+    },
+    {
+      "currency_id": "c5be3dfa-27e9-5f49-9d6f-279a14f93756",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "WIR Euro"
+    },
+    {
+      "currency_id": "c5be3dfa-27e9-5f49-9d6f-279a14f93756",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "euro WIR"
+    },
+    {
+      "currency_id": "1de4c96f-9e12-57c5-9fe4-91e988f1fc9a",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "WIR Franc"
+    },
+    {
+      "currency_id": "1de4c96f-9e12-57c5-9fe4-91e988f1fc9a",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "franco WIR"
+    },
+    {
+      "currency_id": "5e30a2b9-8f2a-54fe-970b-ba49a3a17d94",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Croatian Kuna"
+    },
+    {
+      "currency_id": "5e30a2b9-8f2a-54fe-970b-ba49a3a17d94",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "kuna croata"
+    }
+  ],
+  "country_currencies": [
+    {
+      "country_currency_id": "fc7fa67b-b245-5141-9b90-4d038e7b9cd6",
+      "country_id": "34f204cb-6100-5b4f-838e-d26b164df4a5",
+      "currency_id": "499f86b1-0b36-594d-8536-95435b38eef1",
+      "status": "active",
+      "valid_from": null,
+      "valid_to": null
+    },
+    {
+      "country_currency_id": "01906231-bc73-58fb-b24d-ed37d2d8b6db",
+      "country_id": "29c0896c-a420-5ca4-ac01-1db86951552f",
+      "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+      "status": "active",
+      "valid_from": null,
+      "valid_to": null
+    },
+    {
+      "country_currency_id": "09d4f1f5-3f7b-5fb6-bf3d-14f2711e88d5",
+      "country_id": "1865d571-2bb9-5312-b679-10d64577673c",
+      "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+      "status": "active",
+      "valid_from": "1904-01-01",
+      "valid_to": null
+    },
+    {
+      "country_currency_id": "fecc1900-ef93-5d40-a087-5af934fc26c5",
+      "country_id": "1865d571-2bb9-5312-b679-10d64577673c",
+      "currency_id": "817ab824-0737-5fbb-b7c6-2752d247d2ee",
+      "status": "active",
+      "valid_from": "1904-01-01",
+      "valid_to": null
+    },
+    {
+      "country_currency_id": "2958a815-15da-5ed9-a97a-b32921f69e83",
+      "country_id": "d83f1f6a-4103-5fcf-bcda-6368cd7b302d",
+      "currency_id": "d18b9f80-2216-5eaa-a31a-dcf378ac0798",
+      "status": "active",
+      "valid_from": "1999-01-01",
+      "valid_to": null
+    },
+    {
+      "country_currency_id": "d7ea61c3-c9ee-5bae-88f3-5c5318a7c23d",
+      "country_id": "11d080eb-fe97-580f-9c27-23614607a759",
+      "currency_id": "d18b9f80-2216-5eaa-a31a-dcf378ac0798",
+      "status": "active",
+      "valid_from": "1999-01-01",
+      "valid_to": null
+    },
+    {
+      "country_currency_id": "6514c8e9-bc28-53eb-b4d0-af9cd8192753",
+      "country_id": "47f5a28f-7bed-53fd-8c9a-bf5c3202b2b7",
+      "currency_id": "e6348816-740e-5a74-a4a6-838e6ba003b8",
+      "status": "active",
+      "valid_from": null,
+      "valid_to": null
+    },
+    {
+      "country_currency_id": "b84b8d60-d697-5834-9df5-f18520970074",
+      "country_id": "3883f279-3d05-5def-b07d-84582253e8f0",
+      "currency_id": "c0ab10db-714c-56fb-921a-1270c025835d",
+      "status": "active",
+      "valid_from": null,
+      "valid_to": null
+    },
+    {
+      "country_currency_id": "aafb2987-b1e1-5f9e-8624-e7238f31f831",
+      "country_id": "77f23ef5-b131-5ede-89a9-9445ffc4105b",
+      "currency_id": "cfa0ae34-bee4-5c1c-bfba-0c76dc41cac4",
+      "status": "active",
+      "valid_from": null,
+      "valid_to": null
+    },
+    {
+      "country_currency_id": "0bfdd9a3-fb62-5546-a801-7755cce25bca",
+      "country_id": "af9a7cb6-444f-53a6-a0fc-1c61afefc4be",
+      "currency_id": "0f1efe82-eda9-5f18-9a01-42c1c2840309",
+      "status": "active",
+      "valid_from": null,
+      "valid_to": null
+    },
+    {
+      "country_currency_id": "842e482c-739f-550c-b232-41a084a0a11d",
+      "country_id": "af9a7cb6-444f-53a6-a0fc-1c61afefc4be",
+      "currency_id": "d27a3fa6-65da-57fc-838a-16e0f10b4021",
+      "status": "active",
+      "valid_from": null,
+      "valid_to": null
+    },
+    {
+      "country_currency_id": "4413cfe8-57de-52aa-bb95-350a0079e781",
+      "country_id": "9c231be6-6dc9-5208-b711-f867678f3455",
+      "currency_id": "359df0bc-679f-54c7-8d2a-15126fe2dd15",
+      "status": "active",
+      "valid_from": null,
+      "valid_to": null
+    },
+    {
+      "country_currency_id": "9cc95dfe-82b4-51c0-bfb2-73f843cb6c49",
+      "country_id": "9c231be6-6dc9-5208-b711-f867678f3455",
+      "currency_id": "c5be3dfa-27e9-5f49-9d6f-279a14f93756",
+      "status": "active",
+      "valid_from": null,
+      "valid_to": null
+    },
+    {
+      "country_currency_id": "43733252-d891-5df9-b535-0869e5f3c250",
+      "country_id": "9c231be6-6dc9-5208-b711-f867678f3455",
+      "currency_id": "1de4c96f-9e12-57c5-9fe4-91e988f1fc9a",
+      "status": "active",
+      "valid_from": null,
+      "valid_to": null
+    },
+    {
+      "country_currency_id": "5cff71bf-05d3-5f2b-a986-f0d69f1970bc",
+      "country_id": "9be0a896-519f-5055-adb3-c8aa843a6860",
+      "currency_id": "5e30a2b9-8f2a-54fe-970b-ba49a3a17d94",
+      "status": "active",
+      "valid_from": "1994-05-30",
+      "valid_to": null
+    }
+  ]
+}

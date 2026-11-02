@@ -5,7 +5,8 @@
       "paths": [
         "src/gi_common_reference/locales/domain",
         "src/gi_common_reference/regions/domain",
-        "src/gi_common_reference/countries/domain"
+        "src/gi_common_reference/countries/domain",
+        "src/gi_common_reference/currencies/domain"
       ],
       "mayDependOn": [],
       "forbiddenImports": [
@@ -24,7 +25,8 @@
       "paths": [
         "src/gi_common_reference/locales/application",
         "src/gi_common_reference/regions/application",
-        "src/gi_common_reference/countries/application"
+        "src/gi_common_reference/countries/application",
+        "src/gi_common_reference/currencies/application"
       ],
       "mayDependOn": [
         "domain"
@@ -45,7 +47,8 @@
       "paths": [
         "src/gi_common_reference/locales/infrastructure",
         "src/gi_common_reference/regions/infrastructure",
-        "src/gi_common_reference/countries/infrastructure"
+        "src/gi_common_reference/countries/infrastructure",
+        "src/gi_common_reference/currencies/infrastructure"
       ],
       "mayDependOn": [
         "application",
@@ -56,7 +59,8 @@
       "paths": [
         "src/gi_common_reference/locales/interfaces",
         "src/gi_common_reference/regions/interfaces",
-        "src/gi_common_reference/countries/interfaces"
+        "src/gi_common_reference/countries/interfaces",
+        "src/gi_common_reference/currencies/interfaces"
       ],
       "mayDependOn": [
         "application",
@@ -81,6 +85,12 @@
       "path": "src/gi_common_reference/countries",
       "public": [
         "src/gi_common_reference/countries/interfaces/http"
+      ]
+    },
+    "currencies": {
+      "path": "src/gi_common_reference/currencies",
+      "public": [
+        "src/gi_common_reference/currencies/interfaces/http"
       ]
     }
   }

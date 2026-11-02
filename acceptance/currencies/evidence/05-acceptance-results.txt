@@ -1,0 +1,24 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-9.1.1, pluggy-1.7.0 -- <repo>\.venv\Scripts\python.exe
+rootdir: <repo>
+configfile: pyproject.toml
+plugins: anyio-4.15.1, socket-0.8.1
+collecting ... collected 15 items
+
+tests/acceptance/test_currency_acceptance.py::test_01_incorporate_the_first_snapshot_and_report_it PASSED 
+tests/acceptance/test_currency_acceptance.py::test_02_resolve_ars_usd_and_eur_by_code_and_by_id_with_names_in_en_and_es PASSED 
+tests/acceptance/test_currency_acceptance.py::test_03_current_currencies_of_a_country_and_countries_of_a_currency PASSED 
+tests/acceptance/test_currency_acceptance.py::test_04_several_simultaneous_currencies_in_one_country PASSED 
+tests/acceptance/test_currency_acceptance.py::test_05_the_croatia_transition_is_incorporated_and_the_history_is_resolved_by_date PASSED 
+tests/acceptance/test_currency_acceptance.py::test_06_a_retired_currency_keeps_resolving_and_validates_as_inactive PASSED 
+tests/acceptance/test_currency_acceptance.py::test_07_the_history_is_preserved_after_the_transition PASSED 
+tests/acceptance/test_currency_acceptance.py::test_08_rewriting_history_and_other_invalid_snapshots_are_rejected_with_the_database_unchanged PASSED 
+tests/acceptance/test_currency_acceptance.py::test_09_a_missing_currency_id_and_a_numeric_code_as_a_number_are_invalid_snapshots PASSED 
+tests/acceptance/test_currency_acceptance.py::test_10_a_later_list_three_currency_is_additive PASSED 
+tests/acceptance/test_currency_acceptance.py::test_11_consumers_have_no_write_path PASSED 
+tests/acceptance/test_currency_acceptance.py::test_12_the_persistence_rejects_invalid_state_even_for_the_loader PASSED 
+tests/acceptance/test_currency_acceptance.py::test_13_no_runtime_dependency_on_iso_cldr_or_any_external_host PASSED 
+tests/acceptance/test_currency_acceptance.py::test_14_the_closed_dependencies_were_not_modified_by_004 PASSED 
+tests/acceptance/test_currency_acceptance.py::test_15_country_has_no_currency_attribute_and_currency_has_no_country_attribute PASSED 
+
+======================= 15 passed ========================
