@@ -1,6 +1,6 @@
 # Entorno de la aceptación de 004-currency (sintético, no productivo; S-9)
 python: 3.12.10 (Windows)
-git HEAD: 81cd054e6c7ec5cec245b7168ca4a619e7340110
+git HEAD: c84ea13eb7018b98a3bb69c6a54442f44444b5b2
 git base (origin/develop): eadad945a600f49945e7fd46d63d295aadd13259
 ai-native (launcher del repositorio): v3.4.3 7bfa2f063303ce48af90a024283625856d74e8cb
 base de datos: postgres:16-alpine (testcontainers, descartable)
