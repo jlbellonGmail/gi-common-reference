@@ -104,7 +104,7 @@ def layers_under(tmp_path: Path) -> dict[str, Any]:
         name: {
             "paths": [
                 f"src/{PACKAGE}/{catalog}/{name}"
-                for catalog in ("locales", "regions", "countries", "currencies")
+                for catalog in ("locales", "regions", "countries", "currencies", "units")
             ],
             "mayDependOn": spec["mayDependOn"],
         }
@@ -281,3 +281,47 @@ def test_allowed_dependencies_inside_currencies_are_accepted(tmp_path: Path) -> 
         catalog="currencies",
     )
     assert violations(root, layers_under(root)) == []
+
+
+UNITS = f"{PACKAGE}.units"
+
+
+@pytest.mark.parametrize("other", ["locales", "regions", "countries", "currencies"])
+def test_units_importing_other_catalogs_is_detected(tmp_path: Path, other: str) -> None:
+    root = tree_with(
+        tmp_path,
+        {"domain/a.py": f"from {PACKAGE}.{other}.domain.model import C\n"},
+        catalog="units",
+    )
+    found = violations(root, layers_under(root))
+    assert any("otro catálogo" in item for item in found), found
+
+
+@pytest.mark.parametrize("catalog", ["locales", "regions", "countries", "currencies"])
+def test_other_catalogs_importing_units_are_detected(tmp_path: Path, catalog: str) -> None:
+    """RNF-5: ningún catálogo anterior depende de Units."""
+    root = tree_with(
+        tmp_path, {"domain/a.py": f"from {UNITS}.domain.model import C\n"}, catalog=catalog
+    )
+    found = violations(root, layers_under(root))
+    assert any("otro catálogo" in item for item in found), found
+
+
+def test_allowed_dependencies_inside_units_are_accepted(tmp_path: Path) -> None:
+    root = tree_with(
+        tmp_path,
+        {
+            "application/a.py": f"from {UNITS}.domain.model import Unit\n",
+            "interfaces/a.py": f"from {UNITS}.application.queries import q\n",
+            "infrastructure/a.py": f"from {UNITS}.domain.ports import P\n",
+        },
+        catalog="units",
+    )
+    assert violations(root, layers_under(root)) == []
+
+
+def test_the_composition_root_is_still_forbidden_inside_units(tmp_path: Path) -> None:
+    root = tree_with(
+        tmp_path, {"interfaces/a.py": f"from {COMPOSITION_ROOT} import x\n"}, catalog="units"
+    )
+    assert any("fuera de __main__" in item for item in violations(root, layers_under(root)))

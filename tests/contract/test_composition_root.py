@@ -23,7 +23,8 @@ LOCALES = f"{PACKAGE}.locales"
 REGIONS = f"{PACKAGE}.regions"
 COUNTRIES = f"{PACKAGE}.countries"
 CURRENCIES = f"{PACKAGE}.currencies"
-CATALOGS = ("locales", "regions", "countries", "currencies")
+UNITS = f"{PACKAGE}.units"
+CATALOGS = ("locales", "regions", "countries", "currencies", "units")
 PUBLIC = f"{LOCALES}.interfaces.http"
 PUBLIC_SURFACES = {f"{PACKAGE}.{catalog}.interfaces.http" for catalog in CATALOGS}
 ANCESTORS = {PACKAGE} | {
@@ -317,5 +318,42 @@ def test_no_earlier_catalog_imports_currencies_at_all_in_the_repository() -> Non
         for path in sorted(SOURCE.rglob("*.py"))
         if path.relative_to(SOURCE).parts[0] in ("locales", "regions", "countries")
         and any(_within(name, {CURRENCIES}) for name in internal_imports(path))
+    ]
+    assert importers == []
+
+
+def test_a_units_internal_imported_from_outside_is_detected(tmp_path: Path) -> None:
+    root = tree(tmp_path, {"app.py": f"from {UNITS}.domain.ports import UnitReader\n"})
+    assert any("app.py" in item and "units.domain.ports" in item for item in violations(root))
+
+
+def test_catalogs_importing_units_internals_or_the_reverse_are_detected(tmp_path: Path) -> None:
+    """RNF-5: Units no depende de otros catálogos ni al revés."""
+    root = tree(
+        tmp_path,
+        {
+            "units/domain/a.py": f"from {CURRENCIES}.domain.model import CurrencyRecord\n",
+            "currencies/domain/b.py": f"from {UNITS}.domain.model import Unit\n",
+            "locales/domain/c.py": f"import {UNITS}.infrastructure.postgres_reader\n",
+        },
+    )
+    found = violations(root)
+    assert any("units/domain/a.py" in item and "currencies.domain" in item for item in found)
+    assert any("currencies/domain/b.py" in item and "units.domain" in item for item in found)
+    assert any("locales/domain/c.py" in item for item in found)
+
+
+def test_the_units_public_surface_is_accepted_for_any_importer(tmp_path: Path) -> None:
+    root = tree(tmp_path, {"app.py": f"from {UNITS}.interfaces.http import create_api\n"})
+    assert violations(root) == []
+
+
+def test_no_other_catalog_imports_units_at_all_in_the_repository() -> None:
+    """RNF-5: ni siquiera su superficie pública; 001-004 no conocen Units."""
+    importers = [
+        path.relative_to(SOURCE).as_posix()
+        for path in sorted(SOURCE.rglob("*.py"))
+        if path.relative_to(SOURCE).parts[0] in ("locales", "regions", "countries", "currencies")
+        and any(_within(name, {UNITS}) for name in internal_imports(path))
     ]
     assert importers == []

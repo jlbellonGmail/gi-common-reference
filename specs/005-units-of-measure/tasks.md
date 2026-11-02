@@ -1,6 +1,6 @@
 # Tasks 005 — Units of Measure
 
-- [ ] **T1. Esqueleto del módulo `units`, fronteras de arquitectura y tabla UCUM empaquetada.** RNF-5, RNF-7, CA-17
+- [x] **T1. Esqueleto del módulo `units`, fronteras de arquitectura y tabla UCUM empaquetada.** RNF-5, RNF-7, CA-17
   - Done when: (sin dependencias; archivos permitidos: `src/gi_common_reference/units/**/__init__.py`, `src/gi_common_reference/units/infrastructure/ucum/{ucum-essence.xml,NOTICE.md}`, `architecture.json`, `pyproject.toml` (package-data), pruebas de frontera y de raíz de composición) existe `units/{domain,application,infrastructure,interfaces}`; `architecture.json` agrega `units` a las cuatro capas y el módulo público solo en `interfaces/http`; las pruebas de frontera fallan si `units` importa `locales`/`regions`/`countries`/`currencies` o al revés; `ucum-essence.xml` es byte a byte el oficial (sha256 `dfccea1b5dc284245ebae97edd1dc03c45864da4e87df55bc9851797b4fd0b61`) con aviso de licencia. Pruebas: `pytest tests/contract -k "architecture or boundary or composition or layer or module"`. Evidencia en `status.md`; diff de 001–004 vacío.
 
 - [ ] **T2. Migración 0005: tablas, constraints, triggers y privilegios.** RF-1, RF-2, RF-3, RF-4, RF-5, RF-6, RF-7, RF-8, RF-10, RF-11, RF-12, RF-13, RF-14, RF-18, RF-46, RNF-3, RNF-4, CA-9

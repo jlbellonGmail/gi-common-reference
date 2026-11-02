@@ -12,3 +12,11 @@ Estado vivo y verificable (AGENTS.md). El estado sale de este archivo, `tasks.md
 - Revisión independiente: AVAILABLE (agente `reviewer` en contexto aislado mediante `sdd review begin/record`).
 
 ## Evidencia por task
+
+### T1 — esqueleto, fronteras y tabla UCUM (done)
+- RED (antes de implementar): `pytest tests/contract -k "architecture or boundary or composition or layer or module or ucum"` → `14 failed, 109 passed` (units ausente de `architecture.json`, sin `__init__.py`, sin XML/NOTICE/package-data/`-text`).
+- GREEN: mismo comando → `123 passed, 300 deselected`; `pytest tests/contract/test_layer_imports.py` → `47 passed` tras `ruff format`.
+- `ruff format --check .` (287 archivos) y `ruff check .`: PASS; `mypy` (strict): `Success: no issues found in 213 source files`.
+- `ucum-essence.xml` copiado con `cp` (sha256 `dfccea1b…0b61` verificado con `sha256sum` y por prueba), marcado `-text` en `.gitattributes`, `NOTICE.md` con licencia UCUM v1.1 y origen. package-data de `units.infrastructure` declarado (schema, política, `ucum/*`).
+- `git diff` sobre `src/gi_common_reference/{locales,regions,countries,currencies}` y `migrations`: vacío. Solo se agregaron `units` a las enumeraciones de módulos de las pruebas de frontera/composición.
+- Pendiente declarado: la superficie pública `units/interfaces/http` aún no existe (T8); el check de AI-NATIVE pasa igualmente.
