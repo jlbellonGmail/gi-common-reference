@@ -17,7 +17,7 @@ Estado vivo y verificable (AGENTS.md). Sin memoria conversacional: el estado sal
 - `migrations/versions/0004_currencies.py`: `btree_gist`, `currency_snapshot`, `currency`, `currency_locale`, `country_currency` (`validity daterange` generada, exclusión GiST parcial diferible por par), triggers de reemplazo (existencia y ciclos), RF-19 (en `country_currency` y en `currency`), inmutabilidad de identidad/códigos/extremos de vigencia, sin `DELETE`/`TRUNCATE`, vista `country_currency_integrity_violation`, privilegios, `downgrade 0003`.
 - `pytest tests/integration/currencies/test_migration_0004.py`: 90 passed (Postgres 16 en testcontainers; incluye dos conexiones concurrentes con períodos solapados → exactamente un commit, y `upgrade`/`downgrade 0003`).
 - Hallazgo corregido durante T2: con inicio > fin la columna generada lanzaba `data_exception` antes del CHECK; ahora mapea a rango vacío y rechaza `country_currency_validity_ordered`.
-- Ajuste de prueba (no funcional) en `tests/integration/test_migration_0003.py::test_locale_and_regions_do_not_depend_on_countries`: admite como únicas dependencias nuevas hacia Countries las tablas `country_currency` y `currency_snapshot` (D-16); Locale y Regions siguen sin poder depender de Countries. 001–003 sin cambios en `src/`, `migrations/` ni `specs/`.
+- (Superado en el cierre, ver abajo) Durante T2 se había relajado `tests/integration/test_migration_0003.py::test_locale_and_regions_do_not_depend_on_countries`; en `8666b45` se restauró idéntico a `origin/develop` y la garantía pasó a pruebas propias de 004. 001–003 sin cambios en `src/`, `migrations/`, `specs/` ni en sus pruebas.
 - Regresión: `test_migration_0001/0002/0003/env` pasan sobre `head`=0004. `ruff format/check` y `mypy`: PASS.
 
 ### T3 — contrato del snapshot, digest, lector y política (done)
@@ -69,4 +69,23 @@ Estado vivo y verificable (AGENTS.md). Sin memoria conversacional: el estado sal
 - `ruff format --check .`: PASS · `ruff check .`: PASS · `mypy` (strict, 203 archivos): PASS.
 - `node .ai-native/ai-native.mjs sdd validate 004-currency`: PASS · `sdd validate 003-countries`: PASS · `hitl --base develop`: PASS (riesgo high, `human_gate: required`).
 - 001–003 sin cambios: `git diff origin/develop` sobre sus `src/`, migraciones, contratos y specs vacío (verificado también por `tests/acceptance` caso 14).
-- No ejecutado / pendiente (declarado): CA-1 contra el dataset real de PREP (S-9); aceptación contra Supabase `gi-dev`; revisión independiente (siguiente etapa).
+- No ejecutado / pendiente (declarado): CA-1 contra el dataset real de PREP (S-9); aceptación contra Supabase `gi-dev`. La revisión independiente y la verificación global vigentes están en «Cierre».
+
+## Cierre (posterior a la revisión independiente de `b405527`)
+
+### Cambios
+- `8666b45`: `tests/integration/test_migration_0003.py` restaurado idéntico a `origin/develop`; nuevas pruebas propias de 004: `tests/integration/currencies/test_dependency_direction.py` (Locale/Regions/Countries no dependen de Currency; Currency y CountryCurrency consumen `country_id`; ninguna FK, trigger, vista ni import de 001–003 menciona Currency) y `test_btree_gist_precondition.py`.
+- **Hallazgo:** la prueba de 003 restaurada **falla sobre `head`** (Docker no estaba disponible al restaurarla): exige que ninguna tabla ajena a Countries lo referencie, y `country_currency`/`currency_snapshot` lo hacen por diseño aprobado (D-16). Corrección (sin tocar archivos de 003 ni el diseño): `tests/conftest.py` fija esa única prueba a la revisión `0003` (`PINNED_REVISIONS`), el esquema que valida; las otras 117 pruebas de 003 siguen sobre `head`. La garantía sobre `head` la da `test_dependency_direction.py` (004). `pytest tests/integration/test_migration_0003.py tests/integration/currencies/test_dependency_direction.py tests/integration/currencies/test_btree_gist_precondition.py`: 130 passed.
+- Documentación: encabezado de `spec.md` actualizado («aprobada y implementada»); T10 ya no atribuye a `test_runbook.py` el bloque de grants (está en `docs/operacion.md`); T2 ya no afirma una modificación vigente de la prueba de 003.
+
+### `btree_gist` (D10, RF-45)
+`0004` ejecuta `CREATE EXTENSION IF NOT EXISTS btree_gist;` sin bloque de captura ni alternativa; si no puede habilitarse, `alembic upgrade` aborta y la base queda en `0003` sin tablas de 004 (probado con un event trigger que rechaza `CREATE EXTENSION`). Con la extensión, `country_currency_active_no_overlap` es `EXCLUDE USING gist`. Precondición documentada en `docs/operacion.md` §2 y §9.
+
+### Clasificación de CA-1
+CA-1 dice: «Mientras no exista el dataset real de PREP (S-9), se verifica contra un snapshot sintético sellado…; la verificación contra el dataset real queda pendiente y debe declararse», y S-9: «Esta spec define el contrato y el mecanismo; el contenido real se incorpora en un cambio posterior».
+- CA-1(a) mecanismo: **PASS ejecutado** (caso 01, snapshot sintético sellado).
+- CA-1(b) contenido real ISO 4217 List One: **DEFERRED_TO_PREP_DATASET**, no ejecutado. Gate de publicación de datos; propietario: quien publique el primer snapshot real de PREP (mantenedor de `gi-common-reference`); momento: antes de incorporarlo en un entorno compartido. No bloquea el merge de la implementación porque la spec (CA-1, S-9) excluye el contenido real de esta feature y prevé expresamente la verificación sintética.
+
+### Deuda menor no bloqueante
+- Un error del driver distinto de `psycopg.OperationalError` durante una lectura sale como 500, no como 503 `technical_error`; es el mismo patrón de 001–003 (`*/infrastructure/postgres_reader.py`). Corregirlo es transversal a los cuatro catálogos.
+- Aceptación contra Supabase `gi-dev` no ejecutada (sin credenciales ni autorización).

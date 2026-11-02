@@ -48,10 +48,24 @@ def postgres_with_roles(postgres_url: str) -> str:
     return postgres_url
 
 
+# Pruebas que verifican el esquema tal como lo dejó una migración concreta, no el de head.
+# `test_locale_and_regions_do_not_depend_on_countries` (003, cerrada) exige que ninguna tabla
+# ajena a Countries lo referencie; 004 agrega consumidores legítimos de `country_id` (D-16), así
+# que esa prueba se ejecuta sobre `0003` sin modificar su archivo. La garantía equivalente sobre
+# head es de 004: `tests/integration/currencies/test_dependency_direction.py`.
+PINNED_REVISIONS = {
+    "tests/integration/test_migration_0003.py"
+    "::test_locale_and_regions_do_not_depend_on_countries": "0003",
+}
+
+
 @pytest.fixture
-def database_factory(postgres_with_roles: str) -> Iterator[Callable[[], str]]:
+def database_factory(
+    postgres_with_roles: str, request: pytest.FixtureRequest
+) -> Iterator[Callable[[], str]]:
     """Crea bases nuevas con la migración aplicada hasta head; las elimina al terminar."""
     created: list[str] = []
+    revision = PINNED_REVISIONS.get(request.node.nodeid, "head")
 
     def create() -> str:
         name = f"t_{uuid.uuid4().hex[:12]}"
@@ -59,7 +73,7 @@ def database_factory(postgres_with_roles: str) -> Iterator[Callable[[], str]]:
             admin.execute(sql.SQL("CREATE DATABASE {}").format(sql.Identifier(name)))
         created.append(name)
         url = with_database(postgres_with_roles, name)
-        command.upgrade(alembic_config(url), "head")
+        command.upgrade(alembic_config(url), revision)
         return url
 
     yield create
