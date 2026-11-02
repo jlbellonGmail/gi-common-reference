@@ -15,6 +15,28 @@ AI-NATIVE v3.4.3 **no expone un comando de Native Acceptance** (`ai-native help`
 
 **No se ejecutó contra Supabase `gi-dev`** (como sí se hizo con 001): no hay credenciales ni se autorizó escribir en un entorno compartido durante este trabajo. Queda como verificación opcional del responsable (HITL).
 
+## Resultado por criterio de la spec
+
+Los 15 casos de caja negra son **casos**, no criterios. Estado de los 24 criterios (CA-1…CA-24):
+
+| Estado | Cantidad | Criterios |
+|---|---|---|
+| PASS ejecutado | 23 | CA-2…CA-24 |
+| DEFERRED_TO_PREP_DATASET | 1 | CA-1 (solo su parte b; ver abajo) |
+| NOT_APPLICABLE | 0 | — |
+| FAIL | 0 | — |
+
+Evidencia de los PASS: los casos caja negra de la tabla «Casos y criterios»; CA-5, CA-12, CA-20, CA-21 y CA-23 se verifican además (o solo) en las pruebas de contrato e integración contra Postgres real (`tests/contract/currencies/test_currencies_api.py`, `tests/integration/currencies/test_migration_0004.py`, `tests/unit/currencies/domain/test_currency_catalog.py`), que corren en la suite global.
+
+CA-1 no se cuenta como PASS: su parte (a) se ejecutó y pasó, su parte (b) no se ejecutó.
+
+| CA-1(b) diferida | |
+|---|---|
+| Motivo | El dataset real ISO 4217 List One lo produce PREP y no existe en este entorno (S-9). |
+| Propietario del gate | Quien publique el primer snapshot real de PREP (mantenedor de `gi-common-reference`). |
+| Momento | Antes de incorporar ese snapshot en un entorno compartido (`gi-dev` o superior). |
+| Bloquea el merge | No: la spec define esta feature como contrato y mecanismo; CA-1 y S-9 prevén expresamente la verificación sintética y que el contenido real se incorpore en un cambio posterior. |
+
 ## Estado de CA-1 (parcial) y aceptación diferida (S-9)
 
 **Resultado ejecutado:** 15 casos de caja negra, 15 en PASS. Eso **no** equivale a «todos los criterios de la spec aceptados»: CA-1 está cubierto solo en parte.
