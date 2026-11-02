@@ -71,6 +71,17 @@ def test_regions_depend_on_locale_and_regions_only(conn: psycopg.Connection) -> 
     assert targets(conn, REGIONS) <= LOCALES | REGIONS
 
 
+def test_no_trigger_on_locale_or_regions_reaches_countries(conn: psycopg.Connection) -> None:
+    """La segunda garantía de la prueba de 003 (que corre sobre `0003`), verificada en `head`."""
+    rows = conn.execute(
+        "SELECT c.relname, pg_get_functiondef(t.tgfoid) FROM pg_trigger t "
+        "JOIN pg_class c ON c.oid = t.tgrelid "
+        "WHERE NOT t.tgisinternal AND c.relnamespace = 'reference'::regnamespace"
+    ).fetchall()
+    leaking = [t for t, body in rows if t in LOCALES | REGIONS and "reference.country" in body]
+    assert leaking == []
+
+
 def test_countries_do_not_depend_on_currency(conn: psycopg.Connection) -> None:
     assert targets(conn, COUNTRIES) <= LOCALES | REGIONS | COUNTRIES
     assert not targets(conn, COUNTRIES) & CURRENCIES
