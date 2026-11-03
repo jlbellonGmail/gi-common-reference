@@ -60,6 +60,17 @@ from gi_common_reference.regions.infrastructure.postgres_repository import (
 from gi_common_reference.regions.infrastructure.snapshot_reader import (
     read_snapshot_document as read_region_snapshot_document,
 )
+from gi_common_reference.units.domain.model import UcumTable
+from gi_common_reference.units.domain.policy import RequiredLocales as UnitRequiredLocales
+from gi_common_reference.units.domain.ports import UnitsRepository
+from gi_common_reference.units.infrastructure.policy_reader import (
+    load_required_locales as load_unit_required_locales,
+)
+from gi_common_reference.units.infrastructure.postgres_repository import PostgresUnitsRepository
+from gi_common_reference.units.infrastructure.snapshot_reader import (
+    read_snapshot_document as read_units_snapshot_document,
+)
+from gi_common_reference.units.infrastructure.ucum_reader import load_ucum_table
 
 
 def postgres_repository(conninfo: str) -> LocaleRepository:
@@ -128,3 +139,19 @@ def postgres_currency_reader(conninfo: str) -> CurrencyReader:
 
 def system_clock() -> Clock:
     return SystemClock()
+
+
+def postgres_units_repository(conninfo: str) -> UnitsRepository:
+    return PostgresUnitsRepository(conninfo)
+
+
+def read_units_snapshot(path: Path) -> dict[str, Any]:
+    return read_units_snapshot_document(path)
+
+
+def units_required_locales() -> UnitRequiredLocales:
+    return load_unit_required_locales()
+
+
+def units_ucum_table() -> UcumTable:
+    return load_ucum_table()
