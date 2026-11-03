@@ -38,7 +38,7 @@ Si la conexión falla, el error muestra solo el tipo y, si el servidor lo inform
 
 La migración crea el schema `reference`, las tablas, los constraints y los triggers (incluida la protección contra `UPDATE`, `DELETE` y `TRUNCATE` del historial), y otorga los permisos a `reference_reader` y `reference_loader` **solo si esos roles existen en ese momento**.
 
-`alembic upgrade head` aplica también la migración 0002 (regiones y subregiones: tablas, constraints diferidas, triggers de inmutabilidad y los mismos permisos condicionales) y la migración 0003 (países: tablas `country_snapshot`, `country`, `country_locale`, `country_flag` y `country_recoding`, unicidad entre `active` diferida, FK compuesta hacia la Subregion de 002, trigger que exige la traza de recodificación y los mismos permisos condicionales) y la migración 0004 (monedas: tablas `currency_snapshot`, `currency`, `currency_locale` y `country_currency`, la extensión `btree_gist`, la exclusión temporal por par país–moneda, los triggers de reemplazo, de historia inmutable y de coherencia con Country/Currency `inactive`, la vista `country_currency_integrity_violation` y los mismos permisos condicionales).
+`alembic upgrade head` aplica también la migración 0002 (regiones y subregiones: tablas, constraints diferidas, triggers de inmutabilidad y los mismos permisos condicionales) y la migración 0003 (países: tablas `country_snapshot`, `country`, `country_locale`, `country_flag` y `country_recoding`, unicidad entre `active` diferida, FK compuesta hacia la Subregion de 002, trigger que exige la traza de recodificación y los mismos permisos condicionales) y la migración 0004 (monedas: tablas `currency_snapshot`, `currency`, `currency_locale` y `country_currency`, la extensión `btree_gist`, la exclusión temporal por par país–moneda, los triggers de reemplazo, de historia inmutable y de coherencia con Country/Currency `inactive`, la vista `country_currency_integrity_violation` y los mismos permisos condicionales) y la migración 0005 (unidades de medida: tablas `unit_snapshot`, `quantity_kind`, `unit`, `quantity_kind_unit`, `quantity_kind_locale` y `unit_locale`, las funciones de forma canónica de factores y desplazamientos, la FK compuesta diferida hacia la unidad de referencia de cada magnitud, el constraint trigger diferido `uom_check_kind`, el trigger de desplazamiento nulo en magnitudes `linear`, la inmutabilidad de identidades y códigos y los mismos permisos condicionales; no requiere extensiones).
 
 ### Si los roles se crearon después de migrar
 
@@ -152,9 +152,11 @@ Sin `REFERENCE_READER_DATABASE_URL` el proceso no arranca; con una cadena de con
 
 - Monedas: `GET /v1/currencies` (por defecto solo `active`; `include_inactive`, `exclude_funds`), `GET /v1/currencies/{currency_id}`, `GET /v1/currencies/by-code/{code}` (sin distinguir mayúsculas), `GET /v1/currencies/{currency_id}/validation` (`active`, `inactive` o `not_found`), `GET /v1/currencies/by-country/{country_id}` (monedas del país en `as_of`, por defecto el día UTC de la consulta; `GET /v1/currencies/by-country/{country_id}/history` sin filtrar por fecha), `GET /v1/currencies/{currency_id}/countries` y `GET /v1/currencies/{currency_id}/countries/history`, y `GET /v1/currencies/version`; `locale_id` opcional para `name` (sin fallback); contrato en `contracts/currencies-api.v1.openapi.json` (servido en `/v1/openapi/currencies.json`). Los consumidores persisten `currency_id`; el código alfabético es una clave de resolución y la búsqueda por código numérico no existe en v1. Los resultados se distinguen: 200 (`status` `active` o `inactive`), 404 no encontrado, 422 entrada inválida y 503 error técnico. `as_of` es la fecha de referencia `YYYY-MM-DD`; un consumidor sensible a la fecha debe indicarla.
 
-Un mismo proceso sirve las cuatro APIs con la misma URL de `reference_reader`.
+- Unidades de medida: `GET /v1/quantity-kinds` (por defecto solo `active`; `include_inactive`, `code`), `GET /v1/quantity-kinds/{quantity_kind_id}`, `GET /v1/units` (por defecto solo `active`; filtros `quantity_kind_id`, `ucum_code` exacto y sensible a mayúsculas, `unece_code`, `include_inactive`), `GET /v1/units/{unit_id}`, `GET /v1/units/version` y `POST /v1/conversions` (cálculo sin efectos persistentes: `{quantity_kind_id, value, from_unit_id, to_unit_id, catalog_version?}`, `value` como texto decimal; responde `{result, exact, unit_id, quantity_kind_id, catalog_version}`); `locale_id` opcional para `name`/`plural` (sin fallback); contrato en `contracts/units-api.v1.openapi.json` (servido en `/v1/openapi/units.json`). Los rechazos de conversión son 422 con un código estable (`quantity_kind_required`, `incompatible_units`, `inactive_unit`, `catalog_version_not_available`, `result_not_representable`…); 503 es error técnico. Sin `catalog_version` la conversión usa la versión vigente; con ella, las definiciones conservadas de esa versión (reproducible).
 
-Respuestas de error: `503` si la base no responde y `500` ante un fallo inesperado. Al cliente solo llega un mensaje genérico; la causa queda en el log del proceso (loggers `gi_common_reference.locales.interfaces.http`, `gi_common_reference.regions.interfaces.http` y `gi_common_reference.countries.interfaces.http` y `gi_common_reference.currencies.interfaces.http`, nivel `ERROR`). `uvicorn` solo configura sus propios loggers: si el proceso no configura logging, Python igual escribe estos errores por `stderr`, pero sin fecha ni formato; para un log estructurado hay que pasar `--log-config` a `uvicorn` o configurar `logging` en el despliegue. El 503 registra solo el tipo de error y su SQLSTATE; el 500, el traceback completo.
+Un mismo proceso sirve las cinco APIs con la misma URL de `reference_reader`.
+
+Respuestas de error: `503` si la base no responde y `500` ante un fallo inesperado. Al cliente solo llega un mensaje genérico; la causa queda en el log del proceso (loggers `gi_common_reference.locales.interfaces.http`, `gi_common_reference.regions.interfaces.http` y `gi_common_reference.countries.interfaces.http`, `gi_common_reference.currencies.interfaces.http` y `gi_common_reference.units.interfaces.http`, nivel `ERROR`). `uvicorn` solo configura sus propios loggers: si el proceso no configura logging, Python igual escribe estos errores por `stderr`, pero sin fecha ni formato; para un log estructurado hay que pasar `--log-config` a `uvicorn` o configurar `logging` en el despliegue. El 503 registra solo el tipo de error y su SQLSTATE; el 500, el traceback completo.
 
 ## 4. Incorporar un snapshot de locales
 
@@ -372,3 +374,48 @@ FROM reference.country_currency_integrity_violation ORDER BY country_currency_id
 ```
 
 Estas tablas, como el resto del schema `reference`, no son un contrato para los consumidores: los módulos consumidores usan la API y persisten `currency_id`.
+
+## 11. Incorporar un snapshot de unidades de medida
+
+El snapshot lo produce PREP según `contracts/units-snapshot.v1.schema.json` (ejemplo sintético y **no productivo** en `contracts/units-snapshot.v1.example.json`). Requisitos: la migración 0005 aplicada y un snapshot de Locale incorporado con `en` y `es` `active` (política `required-locales.v1.json` del paquete de `units`, propia de este catálogo). Units no depende de Regions, Countries ni Currency.
+
+Orden de despliegue: roles → `alembic upgrade head` (0005) → API → primer snapshot de Units.
+
+```text
+REFERENCE_DATABASE_URL=postgresql://reference_loader:...@host/base \
+    python -m gi_common_reference.units.interfaces.cli diff ruta/al/units.json
+REFERENCE_DATABASE_URL=postgresql://reference_loader:...@host/base \
+    python -m gi_common_reference.units.interfaces.cli incorporate ruta/al/units.json
+```
+
+`diff` solo lee (sin lock exclusivo ni escrituras) y lista altas, cambios de `status`, de símbolo, códigos completados, factores y desplazamientos (anterior → nuevo) y nombres, o las violaciones si el snapshot sería rechazado. Códigos de salida como en la sección 4. Reglas que conviene conocer:
+
+- El snapshot es el catálogo completo: omitir una magnitud, unidad, asociación o nombre publicados se rechaza; un retiro es `status = inactive`.
+- Factores y desplazamientos viajan como texto en forma canónica (`0.45359237`, `5/9`, `273.15`); un factor que no es decimal finito se escribe como fracción irreducible. La transformación es `ref = (valor + offset) × factor`; en una magnitud `linear` el desplazamiento es `0` (por eso °C como diferencia de temperatura no lleva 273.15).
+- Cada código UCUM se valida contra la tabla oficial empaquetada (`units/infrastructure/ucum/ucum-essence.xml`, UCUM 2.2, sin modificar; ver su `NOTICE.md`) y su escala, dimensión y desplazamiento deben coincidir con el factor declarado respecto de la unidad de referencia. Actualizar esa tabla es un cambio revisado del repositorio.
+- Los códigos UCUM, UNECE y de magnitud quedan ligados a una sola identidad, incluidas las inactivas, y no cambian una vez publicados (un código ausente se puede completar una vez). La unidad de referencia y el tipo de conversión de una magnitud no cambian.
+- Una magnitud `active` exige su asociación de referencia (factor `1`, desplazamiento `0`) y su unidad de referencia `active`.
+- Cada snapshot se conserva íntegro en `unit_snapshot.artifact`: las conversiones con `catalog_version` usan esas definiciones, así que incorporar una versión nueva nunca altera un resultado histórico.
+
+## 12. Consultar la trazabilidad de unidades de medida
+
+Cada snapshot incorporado conserva su digest, la versión de Locale contra la que se validó, la de la política de locales, la de la tabla UCUM y su procedencia:
+
+```sql
+-- runbook:units_snapshots
+SELECT snapshot_version, content_digest, locale_snapshot_version, required_locales_version,
+    ucum_table_version, provenance, incorporated_at
+FROM reference.unit_snapshot ORDER BY snapshot_version;
+```
+
+Versiones por unidad y por asociación (el snapshot que la introdujo y el último que la cambió):
+
+```sql
+-- runbook:units_versions
+SELECT u.unit_id, u.symbol, u.ucum_code, u.status, k.code AS quantity_kind, a.factor, a."offset",
+    a.status AS association_status, a.first_snapshot_version, a.last_changed_snapshot_version
+FROM reference.quantity_kind_unit a
+JOIN reference.unit u ON u.unit_id = a.unit_id
+JOIN reference.quantity_kind k ON k.quantity_kind_id = a.quantity_kind_id
+ORDER BY k.code, u.symbol COLLATE "C", u.unit_id;
+```

@@ -34,7 +34,7 @@ python -m venv .venv
 pip install -c constraints.txt -e ".[dev]"
 ```
 
-`pyproject.toml` declara qué se necesita; `constraints.txt` declara con qué versiones se validó. Para actualizar dependencias, instalar sin `-c` en un entorno limpio, correr la verificación completa y regenerar el archivo con el comando de su cabecera. Los OpenAPI publicados (`contracts/locales-api.v1.openapi.json`, `contracts/regions-api.v1.openapi.json`, `contracts/countries-api.v1.openapi.json` y `contracts/currencies-api.v1.openapi.json`, generados con `python -m gi_common_reference.app`, `python -m gi_common_reference.app regions`, `python -m gi_common_reference.app countries` y `python -m gi_common_reference.app currencies`, con `PYTHONUTF8=1` en Windows) se comparan como JSON (igualdad semántica del documento parseado: el orden de las claves y el formato no importan) con los generados, así que una actualización de `fastapi` o `pydantic` puede exigir regenerarlos.
+`pyproject.toml` declara qué se necesita; `constraints.txt` declara con qué versiones se validó. Para actualizar dependencias, instalar sin `-c` en un entorno limpio, correr la verificación completa y regenerar el archivo con el comando de su cabecera. Los OpenAPI publicados (`contracts/locales-api.v1.openapi.json`, `contracts/regions-api.v1.openapi.json`, `contracts/countries-api.v1.openapi.json`, `contracts/currencies-api.v1.openapi.json` y `contracts/units-api.v1.openapi.json`, generados con `python -m gi_common_reference.app`, `python -m gi_common_reference.app regions`, `python -m gi_common_reference.app countries`, `python -m gi_common_reference.app currencies` y `python -m gi_common_reference.app units`, con `PYTHONUTF8=1` en Windows) se comparan como JSON (igualdad semántica del documento parseado: el orden de las claves y el formato no importan) con los generados, así que una actualización de `fastapi` o `pydantic` puede exigir regenerarlos.
 
 ## Schemas de los snapshots: dos copias
 
@@ -46,6 +46,8 @@ Cada schema de snapshot existe en dos lugares, y deben ser equivalentes (`tests/
 - `src/gi_common_reference/countries/infrastructure/country-snapshot.v1.schema.json` y `contracts/country-snapshot.v1.schema.json`: lo mismo para países (spec 003; `tests/contract/test_country_snapshot_contract.py` lo verifica). Countries tiene su propia política de locales obligatorios y un directorio de assets de bandera (`src/gi_common_reference/countries/assets/flags/`, versionado como `-text` en `.gitattributes`) que viaja en el wheel.
 
 - `src/gi_common_reference/currencies/infrastructure/currency-snapshot.v1.schema.json` y `contracts/currency-snapshot.v1.schema.json`: lo mismo para monedas (spec 004; `tests/contract/currencies/test_currency_snapshot_contract.py` lo verifica). Currency tiene su propia política de locales obligatorios (`required-locales.v1.json`, `en` y `es`) y la migración 0004 exige la extensión `btree_gist`.
+
+- `src/gi_common_reference/units/infrastructure/units-snapshot.v1.schema.json` y `contracts/units-snapshot.v1.schema.json`: lo mismo para unidades de medida (spec 005; `tests/contract/units/test_units_snapshot_contract.py` lo verifica). Units tiene su propia política de locales obligatorios (`required-locales.v1.json`, `en` y `es`) y empaqueta la tabla oficial UCUM (`ucum/ucum-essence.xml`, v2.2, **sin modificar**, UCUM License v1.1, `-text` en `.gitattributes`; la carga verifica su sha256). El ejemplo `contracts/units-snapshot.v1.example.json` se regenera desde `tests/fixtures/units.py` con `python -m tests.fixtures.units`.
 
 Al cambiar el schema, editar una y copiarla sobre la otra.
 
@@ -59,6 +61,7 @@ node .ai-native/ai-native.mjs sdd validate 001-locales
 node .ai-native/ai-native.mjs sdd validate 002-regions-subregions
 node .ai-native/ai-native.mjs sdd validate 003-countries
 node .ai-native/ai-native.mjs sdd validate 004-currency
+node .ai-native/ai-native.mjs sdd validate 005-units-of-measure
 node .ai-native/ai-native.mjs hitl --base develop
 ```
 
@@ -75,3 +78,13 @@ python tools/acceptance/currency_acceptance.py --base origin/develop
 ```
 
 Requiere Docker y la rama base disponible. Detalle, alcance y lo que queda pendiente (el dataset real de PREP; `gi-dev`) en [`acceptance/currencies/README.md`](../acceptance/currencies/README.md). `pytest` incluye `tests/acceptance`.
+
+## Aceptación de 005-units-of-measure
+
+Igual que en 004 (sin comando de Native Acceptance en AI-NATIVE v3.4.3), los criterios de la spec se ejecutan como pruebas de caja negra (CLI como subproceso, API real por HTTP, Postgres real, guard de red) con evidencia reproducible:
+
+```text
+python tools/acceptance/units_acceptance.py --base origin/develop
+```
+
+Estado por criterio, lo diferido (dataset real de PREP) y lo pendiente para AI-NATIVE v4 en [`acceptance/units/README.md`](../acceptance/units/README.md).

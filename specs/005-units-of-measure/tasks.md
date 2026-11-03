@@ -27,5 +27,5 @@
 - [x] **T9. Aceptación caja negra con evidencia reproducible.** CA-1, CA-2, CA-3, CA-4, CA-5, CA-6, CA-7, CA-8, CA-10, CA-11, CA-12, CA-14, CA-15, CA-16, CA-17, CA-18
   - Done when: (depende de T6, T8; archivos permitidos: `tests/acceptance/**`, `tools/acceptance/units_acceptance.py`, `acceptance/units/**`) runner que crea una base temporal, incorpora Locale sintético y el ejemplo de Units por la CLI, levanta la app y ejecuta por HTTP los criterios; incorpora una v2 (retiro + cambio de factor) y verifica la reproducibilidad histórica; rechaza un snapshot con UCUM incorrecto; verifica diff vacío de 001–004. Evidencia `acceptance/units/evidence/*` y `acceptance/units/README.md` con estado por criterio, CA-18 parte real DIFERIDA y pendientes de AI-NATIVE v4.
 
-- [ ] **T10. Documentación y verificación global.** RF-39, RNF-2, CA-17
+- [x] **T10. Documentación y verificación global.** RF-39, RNF-2, CA-17
   - Done when: (depende de T1–T9; archivos permitidos: `docs/operacion.md`, `docs/desarrollo.md`, `README.md`, `specs/005-units-of-measure/{plan,status}.md`) docs de migración 0005, CLI, API y aceptación; `README.md` lista el catálogo; `status.md` con evidencia por task. Verificación: `pytest -q` completo (con `PYTHONUTF8=1`), `ruff format --check . && ruff check .`, `mypy`, `sdd validate 005-units-of-measure`, `hitl --base develop`.

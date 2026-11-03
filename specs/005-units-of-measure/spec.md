@@ -1,6 +1,6 @@
 # 005-units-of-measure — Catálogo global de unidades de medida y servicio de conversión
 
-- **Estado:** aprobada para planificación (spec + clarify autónomo 2026-11-02; ver «Registro de clarificación»)
+- **Estado:** aprobada e implementada; plan y tasks completos (spec + clarify autónomo 2026-11-02; ver «Registro de clarificación»). Merge pendiente de decisión humana.
 - **Tipo:** Feature (spec del dominio Reference)
 - **Depende de:** `001-locales` (identidad `locale_id`, convención de `status`, regla de localización RF-23–RF-25 de 001). Cerrada y aprobada: 005 la consume y no la modifica.
 - **No depende de:** `002-regions-subregions`, `003-countries`, `004-currency` (sin dependencia funcional ni de datos).
