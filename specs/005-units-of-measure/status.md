@@ -87,3 +87,16 @@ Estado vivo y verificable (AGENTS.md). El estado sale de este archivo, `tasks.md
 - Plan: se documentan las decisiones de códigos de error de T8 (`invalid_value`, `invalid_catalog_version`, validación de formato antes de resolver la versión).
 - `ruff format --check .` (343 archivos), `ruff check .`, `mypy` strict (266 archivos): PASS.
 - Validación global: la corre la plataforma (`sdd review validate`, `PYTHONUTF8=1`) sobre la revisión final y queda registrada con su código de salida; ver «Cierre».
+
+## Cierre (validación global, revisión independiente y PR)
+
+### Suite completa
+- Primer intento (después de T10): Claude Code lo detuvo por presión de memoria con la sesión inactiva (`killed`, log vacío). No es un fallo de pruebas. Diagnóstico (HITL autorizó un reintento): 31,7 GB de RAM física y 8,4 GB libres, pero 34,6 de 42 GB de commit en uso (VirtualBox ~4 GB, WSL/Docker ~1,1 GB). No quedaban procesos de prueba huérfanos ni contenedores. No se desactivó ninguna protección.
+- Reintento único y controlado sobre `7b4d38c`: `sdd review validate … --command "python -m pytest -q -p no:cacheprovider --junitxml=…"` con `PYTHONUTF8=1`, ejecución secuencial, log persistente y monitor de memoria. Corrió completa sin presión (commit libre estable en ~7 GB): **1 failed, 3494 passed** en 49 min 54 s. La plataforma lo registró como FAIL.
+- Fallo real: `tests/acceptance/test_currency_acceptance.py::test_14` (CA-24 de 004) exige que ninguna prueba preexistente se modifique, y en T2 se había editado `tests/integration/currencies/test_dependency_direction.py` (004). Corrección `3648393`:
+  - ese archivo se restauró idéntico a `develop`;
+  - un `conftest.py` nuevo en `tests/integration/currencies/` ejecuta esa única prueba sobre `0004`, el esquema que valida (mismo mecanismo que 004 usó para 003);
+  - la partición de tablas en `head` con Units pasó a `tests/integration/units/test_dependency_direction.py`;
+  - la aceptación de Units ya no admite esa excepción.
+- Reverificación solo de lo afectado: dependencias de 004 y 005, la prueba fijada de 003 y la aceptación completa de 004 → 29 passed. Aceptación de Units regenerada sobre `3648393` → 16 passed (evidencia `acceptance/units/evidence/*`).
+- Suite completa registrada sobre la revisión final: ver más abajo.

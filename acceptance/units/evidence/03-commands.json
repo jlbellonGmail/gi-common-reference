@@ -177,7 +177,7 @@
     "command": "python -m gi_common_reference.units.interfaces.cli incorporate <work>\\no-existe.json",
     "exit_code": 2,
     "stdout": "",
-    "stderr": "error: no se pudo leer C:\\Users\\jlbel\\AppData\\Local\\Temp\\pytest-of-jlbellon\\pytest-90\\acceptance0\\no-existe.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\jlbel\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-jlbellon\\\\pytest-90\\\\acceptance0\\\\no-existe.json'"
+    "stderr": "error: no se pudo leer C:\\Users\\jlbel\\AppData\\Local\\Temp\\pytest-of-jlbellon\\pytest-94\\acceptance0\\no-existe.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\jlbel\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-jlbellon\\\\pytest-94\\\\acceptance0\\\\no-existe.json'"
   },
   {
     "command": "git diff --stat origin/develop -- <rutas de 001-004>",
@@ -188,7 +188,7 @@
   {
     "command": "git diff --name-only --diff-filter=MDR origin/develop -- tests",
     "exit_code": 0,
-    "stdout": "tests/contract/test_architecture_contract.py\ntests/contract/test_composition_root.py\ntests/contract/test_layer_imports.py\ntests/contract/test_module_contract.py\ntests/integration/currencies/test_dependency_direction.py",
+    "stdout": "tests/contract/test_architecture_contract.py\ntests/contract/test_composition_root.py\ntests/contract/test_layer_imports.py\ntests/contract/test_module_contract.py",
     "stderr": ""
   },
   {

@@ -1,6 +1,6 @@
 # Entorno de la aceptación de 005-units-of-measure (sintético, no productivo; S-3)
 python: 3.14.10 (Windows)
-git HEAD: 5988121e4860658f7eb1eb077c74a9fb4f2353e3
+git HEAD: 364839310b13e95bd49fb260d1cd6791357bc437
 git base (origin/develop): 0be253db0d79b3db77e11e94d3abde73c64f533a
 ai-native (launcher del repositorio): v3.4.3 7bfa2f063303ce48af90a024283625856d74e8cb
 base de datos: postgres:16-alpine (testcontainers, descartable)
