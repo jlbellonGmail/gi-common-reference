@@ -11,10 +11,32 @@ from tests.integration.currencies.test_dependency_direction import (
     CURRENCIES,
     LOCALES,
     REGIONS,
-    UNITS,
     edges,
     targets,
 )
+
+UNITS = {
+    "unit_snapshot",
+    "quantity_kind",
+    "unit",
+    "quantity_kind_unit",
+    "quantity_kind_locale",
+    "unit_locale",
+}
+
+
+def test_every_table_belongs_to_exactly_one_catalog_at_head(conn: psycopg.Connection) -> None:
+    """Partición completa del schema en `head` (0005); la de 004 valida `0004`."""
+    found = {
+        row[0]
+        for row in conn.execute(
+            "SELECT relname FROM pg_class WHERE relnamespace = 'reference'::regnamespace "
+            "AND relkind IN ('r', 'p') AND relname <> 'alembic_version'"
+        ).fetchall()
+    }
+    groups = (LOCALES, REGIONS, COUNTRIES, CURRENCIES, UNITS)
+    assert all(not (a & b) for i, a in enumerate(groups) for b in groups[i + 1 :])
+    assert found == LOCALES | REGIONS | COUNTRIES | CURRENCIES | UNITS
 
 
 def test_units_depend_on_locale_and_units_only(conn: psycopg.Connection) -> None:

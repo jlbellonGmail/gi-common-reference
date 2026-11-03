@@ -592,7 +592,6 @@ def test_14_the_closed_modules_were_not_modified_by_005_ca17(units_stack: UnitsS
         "tests/contract/test_composition_root.py",
         "tests/contract/test_layer_imports.py",
         "tests/contract/test_module_contract.py",
-        "tests/integration/currencies/test_dependency_direction.py",
     }
     assert set(touched.stdout.split()) <= shared, touched.stdout
     stack.evidence.commands.append(
