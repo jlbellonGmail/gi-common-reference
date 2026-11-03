@@ -24,7 +24,7 @@
 - [x] **T8. API pública, OpenAPI y composición.** RF-26, RF-32, RF-33, RF-34, RF-35, RF-36, RF-37, RF-38, RF-39, RF-40, RNF-3, CA-15
   - Done when: (depende de T7; archivos permitidos: `units/interfaces/http.py`, `bootstrap.py`, `app.py`, `contracts/units-api.v1.openapi.json`, `tests/contract/units/**`, pruebas de composición) endpoints del plan con despacho por prefijo; OpenAPI publicado = generado = servido; los cuatro OpenAPI existentes sin cambios. Pruebas contra Postgres real con `reference_reader`: todos los endpoints, cada código de error, 405, rutas fijas vs `{id}`, sin `tenant_id`, catálogo vacío, base inalcanzable → 503.
 
-- [ ] **T9. Aceptación caja negra con evidencia reproducible.** CA-1, CA-2, CA-3, CA-4, CA-5, CA-6, CA-7, CA-8, CA-10, CA-11, CA-12, CA-14, CA-15, CA-16, CA-17, CA-18
+- [x] **T9. Aceptación caja negra con evidencia reproducible.** CA-1, CA-2, CA-3, CA-4, CA-5, CA-6, CA-7, CA-8, CA-10, CA-11, CA-12, CA-14, CA-15, CA-16, CA-17, CA-18
   - Done when: (depende de T6, T8; archivos permitidos: `tests/acceptance/**`, `tools/acceptance/units_acceptance.py`, `acceptance/units/**`) runner que crea una base temporal, incorpora Locale sintético y el ejemplo de Units por la CLI, levanta la app y ejecuta por HTTP los criterios; incorpora una v2 (retiro + cambio de factor) y verifica la reproducibilidad histórica; rechaza un snapshot con UCUM incorrecto; verifica diff vacío de 001–004. Evidencia `acceptance/units/evidence/*` y `acceptance/units/README.md` con estado por criterio, CA-18 parte real DIFERIDA y pendientes de AI-NATIVE v4.
 
 - [ ] **T10. Documentación y verificación global.** RF-39, RNF-2, CA-17

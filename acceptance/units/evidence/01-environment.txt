@@ -1,0 +1,16 @@
+# Entorno de la aceptación de 005-units-of-measure (sintético, no productivo; S-3)
+python: 3.14.10 (Windows)
+git HEAD: 5988121e4860658f7eb1eb077c74a9fb4f2353e3
+git base (origin/develop): 0be253db0d79b3db77e11e94d3abde73c64f533a
+ai-native (launcher del repositorio): v3.4.3 7bfa2f063303ce48af90a024283625856d74e8cb
+base de datos: postgres:16-alpine (testcontainers, descartable)
+paquetes:
+  alembic==1.20.0
+  fastapi==0.150.0
+  psycopg==3.3.6
+  pydantic==2.14.1
+  pytest==9.1.1
+  testcontainers==4.15.0
+  uvicorn==0.54.0
+comando: python tools/acceptance/units_acceptance.py --base origin/develop
+pytest exit code: 0

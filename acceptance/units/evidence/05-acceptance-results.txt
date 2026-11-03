@@ -1,0 +1,31 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.10, pytest-9.1.1, pluggy-1.7.0 -- <repo>\.venv\Scripts\python.exe
+rootdir: <repo>
+configfile: pyproject.toml
+plugins: anyio-4.15.1, socket-0.8.1
+collecting ... collected 16 items
+
+tests/acceptance/test_units_acceptance.py::test_01_incorporate_the_sealed_example_and_report_it PASSED 
+tests/acceptance/test_units_acceptance.py::test_02_basic_conversions_ca1_ca2_ca3 PASSED 
+tests/acceptance/test_units_acceptance.py::test_03_incompatible_and_insufficient_context_are_rejected_ca4 PASSED 
+tests/acceptance/test_units_acceptance.py::test_04_value_forms_ca16 PASSED 
+tests/acceptance/test_units_acceptance.py::test_05_localization_ca11 PASSED 
+tests/acceptance/test_units_acceptance.py::test_06_celsius_is_one_identity_in_two_kinds_ca12 PASSED 
+tests/acceptance/test_units_acceptance.py::test_07_round_trips_over_every_pair_ca8 PASSED 
+tests/acceptance/test_units_acceptance.py::test_08_the_new_version_retires_a_unit_and_history_is_reproducible_ca5_ca7 PASSED 
+tests/acceptance/test_units_acceptance.py::test_09_a_factor_change_does_not_alter_the_historical_result_ca7 PASSED 
+tests/acceptance/test_units_acceptance.py::test_10_invalid_snapshots_are_rejected_without_partial_changes_ca6_ca14 PASSED 
+tests/acceptance/test_units_acceptance.py::test_11_the_published_contract_and_error_shapes_ca15 PASSED 
+tests/acceptance/test_units_acceptance.py::test_12_the_privileged_role_boundaries_hold_for_the_reader PASSED 
+tests/acceptance/test_units_acceptance.py::test_13_units_depends_on_no_other_catalog_and_uses_no_network_client PASSED 
+tests/acceptance/test_units_acceptance.py::test_14_the_closed_modules_were_not_modified_by_005_ca17 PASSED 
+tests/acceptance/test_units_acceptance.py::test_15_no_process_reached_outside_localhost PASSED 
+tests/acceptance/test_units_acceptance.py::test_16_the_packaged_ucum_table_is_the_official_one PASSED 
+
+============================== warnings summary ===============================
+.venv\Lib\site-packages\_pytest\config\__init__.py:885
+  <repo>\.venv\Lib\site-packages\_pytest\config\__init__.py:885: PytestAssertRewriteWarning: Module already imported so cannot be rewritten; tests.acceptance.units_support
+    self.import_plugin(import_spec)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================== 16 passed, 1 warning ==================
