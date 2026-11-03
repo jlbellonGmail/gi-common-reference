@@ -62,6 +62,7 @@ COMPOSITION_ROOT_MAY_IMPORT = {
     f"{UNITS}.domain.policy",
     f"{UNITS}.domain.ports",
     f"{UNITS}.infrastructure.policy_reader",
+    f"{UNITS}.infrastructure.postgres_reader",
     f"{UNITS}.infrastructure.postgres_repository",
     f"{UNITS}.infrastructure.snapshot_reader",
     f"{UNITS}.infrastructure.ucum_reader",

@@ -64,8 +64,10 @@ class ConversionService:
     ) -> ConversionResponse:
         """Convierte contra `catalog_version` o, sin ella, la vigente.
 
-        La versión se resuelve antes de validar el contenido de la solicitud: con un catálogo vacío
-        o una versión inexistente la respuesta es `catalog_version_not_available`.
+        El formato de la solicitud (identidades, valor, magnitud obligatoria) se valida antes de
+        resolver la versión: una solicitud mal formada siempre recibe su código de validación,
+        incluso con el catálogo vacío. Después, con un catálogo vacío o una versión inexistente la
+        respuesta es `catalog_version_not_available`.
         """
         with self._reader.session() as session:
             current = session.snapshot_version()
@@ -80,6 +82,9 @@ class ConversionService:
                         INVALID_CATALOG_VERSION, "catalog_version debe ser un entero positivo"
                     ),
                 )
+            malformed = _format_rejection(request)
+            if malformed is not None:
+                return ConversionResponse(current, malformed)
             version = current if catalog_version is None else catalog_version
             catalog = None
             if version is not None and current is not None and version <= current:
@@ -95,6 +100,21 @@ class ConversionService:
                 ),
             )
         return ConversionResponse(current, convert(catalog, request))
+
+
+_FORMAT_CODES = frozenset(
+    {"quantity_kind_required", "invalid_quantity_kind_id", "invalid_unit_id", "invalid_value"}
+)
+_EMPTY = ConversionCatalog.from_content(1, quantity_kinds=(), units=(), quantity_kind_units=())
+
+
+def _format_rejection(request: ConversionRequest) -> ConversionRejection | None:
+    """El rechazo de formato de la solicitud, o `None`. Contra un catálogo sin contenido el
+    dominio solo puede rechazar por formato o por inexistencia; esta última no cuenta."""
+    outcome = convert(_EMPTY, request)
+    if isinstance(outcome, ConversionRejection) and outcome.code in _FORMAT_CODES:
+        return outcome
+    return None
 
 
 def _load(session: UnitsSession, version: int) -> ConversionCatalog | None:

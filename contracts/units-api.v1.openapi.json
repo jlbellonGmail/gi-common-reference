@@ -1,0 +1,969 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "gi-common-reference: units",
+    "description": "Catálogo global de magnitudes y unidades de medida, versionado y de solo lectura: identidades estables, códigos UCUM/UNECE, nombres por `locale_id` y conversión exacta entre unidades de una magnitud. Sin cantidades, precios, productos ni unidades específicas de un tenant.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/quantity-kinds/{quantity_kind_id}": {
+      "get": {
+        "tags": [
+          "quantity-kinds"
+        ],
+        "summary": "Obtener una magnitud por su quantity_kind_id, cualquiera sea su status",
+        "description": "Un id mal formado es 422; uno bien formado que no existe, 404.",
+        "operationId": "getQuantityKind",
+        "parameters": [
+          {
+            "name": "quantity_kind_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Quantity Kind Id"
+            }
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve `name` (y `plural`) en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve `name` (y `plural`) en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuantityKindEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Falla técnica (distinta de 404 y 422).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/quantity-kinds": {
+      "get": {
+        "tags": [
+          "quantity-kinds"
+        ],
+        "summary": "Listar las magnitudes, ordenadas por código",
+        "operationId": "listQuantityKinds",
+        "parameters": [
+          {
+            "name": "include_inactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Incluye también los registros `inactive` (por defecto no).",
+              "default": false,
+              "title": "Include Inactive"
+            },
+            "description": "Incluye también los registros `inactive` (por defecto no)."
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Igualdad exacta.",
+              "title": "Code"
+            },
+            "description": "Igualdad exacta."
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve `name` (y `plural`) en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve `name` (y `plural`) en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuantityKindListEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Falla técnica (distinta de 404 y 422).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/units/version": {
+      "get": {
+        "tags": [
+          "units"
+        ],
+        "summary": "Versión aplicada del catálogo Units",
+        "operationId": "getUnitsCatalogVersion",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VersionEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Falla técnica (distinta de 404 y 422).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/units/{unit_id}": {
+      "get": {
+        "tags": [
+          "units"
+        ],
+        "summary": "Obtener una unidad por su unit_id, cualquiera sea su status",
+        "description": "Un `unit_id` mal formado es 422; uno bien formado que no existe, 404.",
+        "operationId": "getUnit",
+        "parameters": [
+          {
+            "name": "unit_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Unit Id"
+            }
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve `name` (y `plural`) en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve `name` (y `plural`) en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnitEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Falla técnica (distinta de 404 y 422).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/units": {
+      "get": {
+        "tags": [
+          "units"
+        ],
+        "summary": "Listar las unidades, ordenadas por símbolo (orden binario) e id",
+        "operationId": "listUnits",
+        "parameters": [
+          {
+            "name": "quantity_kind_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Unidades asociadas (activas) a esa magnitud; 404 si no existe.",
+              "title": "Quantity Kind Id"
+            },
+            "description": "Unidades asociadas (activas) a esa magnitud; 404 si no existe."
+          },
+          {
+            "name": "ucum_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Igualdad exacta.",
+              "title": "Ucum Code"
+            },
+            "description": "Igualdad exacta."
+          },
+          {
+            "name": "unece_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Igualdad exacta.",
+              "title": "Unece Code"
+            },
+            "description": "Igualdad exacta."
+          },
+          {
+            "name": "include_inactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Incluye también los registros `inactive` (por defecto no).",
+              "default": false,
+              "title": "Include Inactive"
+            },
+            "description": "Incluye también los registros `inactive` (por defecto no)."
+          },
+          {
+            "name": "locale_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Devuelve `name` (y `plural`) en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+              "title": "Locale Id"
+            },
+            "description": "Devuelve `name` (y `plural`) en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnitListEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Parámetro inválido (distinto de 404).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Falla técnica (distinta de 404 y 422).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/conversions": {
+      "post": {
+        "tags": [
+          "conversions"
+        ],
+        "summary": "Convertir un valor entre dos unidades de una magnitud",
+        "description": "Conversión exacta (`Fraction`) con un único redondeo half-even a 34 dígitos. No se\ninfiere la magnitud. Sin `catalog_version` usa la vigente; con ella reproduce la\nconversión de esa versión. No escribe.",
+        "operationId": "convertQuantity",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConversionBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversionEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Solicitud rechazada; `error.code` es uno de: invalid_request, invalid_value, invalid_quantity_kind_id, invalid_unit_id, invalid_catalog_version, quantity_kind_required, quantity_kind_not_found, unit_not_found, inactive_quantity_kind, inactive_unit, incompatible_units, catalog_version_not_available, result_not_representable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Falla técnica (distinta de 404 y 422).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ConversionData": {
+        "properties": {
+          "result": {
+            "type": "string",
+            "title": "Result",
+            "description": "Decimal sin exponente ni ceros finales; redondeo half-even a 34 dígitos."
+          },
+          "exact": {
+            "type": "boolean",
+            "title": "Exact",
+            "description": "`false` si el resultado se redondeó."
+          },
+          "unit_id": {
+            "type": "string",
+            "title": "Unit Id",
+            "description": "La unidad destino."
+          },
+          "quantity_kind_id": {
+            "type": "string",
+            "title": "Quantity Kind Id"
+          },
+          "catalog_version": {
+            "type": "integer",
+            "title": "Catalog Version",
+            "description": "Versión del catálogo usada para convertir."
+          }
+        },
+        "type": "object",
+        "required": [
+          "result",
+          "exact",
+          "unit_id",
+          "quantity_kind_id",
+          "catalog_version"
+        ],
+        "title": "ConversionData"
+      },
+      "ConversionEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version",
+            "description": "Versión vigente (no la usada)."
+          },
+          "data": {
+            "$ref": "#/components/schemas/ConversionData"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "ConversionEnvelope"
+      },
+      "ErrorBody": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorBody"
+      },
+      "ErrorEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version",
+            "description": "Snapshot vigente, o `null` si no hay."
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorBody"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "error"
+        ],
+        "title": "ErrorEnvelope"
+      },
+      "QuantityKind": {
+        "properties": {
+          "quantity_kind_id": {
+            "type": "string",
+            "title": "Quantity Kind Id",
+            "description": "Identidad estable de la magnitud (UUID)."
+          },
+          "code": {
+            "type": "string",
+            "title": "Code",
+            "description": "Código estable en minúsculas (`mass`)."
+          },
+          "conversion_type": {
+            "type": "string",
+            "enum": [
+              "linear",
+              "affine"
+            ],
+            "title": "Conversion Type",
+            "description": "`linear`: solo factor; `affine`: factor y desplazamiento."
+          },
+          "reference_unit_id": {
+            "type": "string",
+            "title": "Reference Unit Id",
+            "description": "Unidad de referencia de la magnitud (UUID)."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive"
+            ],
+            "title": "Status"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "Nombre en el `locale_id` pedido, o `null`."
+          }
+        },
+        "type": "object",
+        "required": [
+          "quantity_kind_id",
+          "code",
+          "conversion_type",
+          "reference_unit_id",
+          "status",
+          "name"
+        ],
+        "title": "QuantityKind",
+        "description": "Magnitud física. La identidad es `quantity_kind_id`; `code` es clave de resolución."
+      },
+      "QuantityKindEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version"
+          },
+          "data": {
+            "$ref": "#/components/schemas/QuantityKind"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "QuantityKindEnvelope"
+      },
+      "QuantityKindListEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version",
+            "description": "Snapshot vigente; `null` si todavía no se incorporó ninguno."
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/QuantityKind"
+            },
+            "type": "array",
+            "title": "Data"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "QuantityKindListEnvelope"
+      },
+      "Unit": {
+        "properties": {
+          "unit_id": {
+            "type": "string",
+            "title": "Unit Id",
+            "description": "Identidad estable de la unidad (UUID)."
+          },
+          "ucum_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ucum Code"
+          },
+          "unece_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unece Code"
+          },
+          "symbol": {
+            "type": "string",
+            "title": "Symbol"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive"
+            ],
+            "title": "Status"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "Nombre en el `locale_id` pedido, o `null`."
+          },
+          "plural": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plural",
+            "description": "Plural en el `locale_id` pedido, o `null`."
+          },
+          "quantity_kinds": {
+            "items": {
+              "$ref": "#/components/schemas/UnitQuantityKind"
+            },
+            "type": "array",
+            "title": "Quantity Kinds",
+            "description": "Magnitudes con las que está asociada la unidad."
+          }
+        },
+        "type": "object",
+        "required": [
+          "unit_id",
+          "ucum_code",
+          "unece_code",
+          "symbol",
+          "status",
+          "name",
+          "plural",
+          "quantity_kinds"
+        ],
+        "title": "Unit",
+        "description": "Unidad de medida: una sola identidad aunque se use en varias magnitudes (°C)."
+      },
+      "UnitEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Unit"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "UnitEnvelope"
+      },
+      "UnitListEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version"
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/Unit"
+            },
+            "type": "array",
+            "title": "Data"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "UnitListEnvelope"
+      },
+      "UnitQuantityKind": {
+        "properties": {
+          "quantity_kind_id": {
+            "type": "string",
+            "title": "Quantity Kind Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive"
+            ],
+            "title": "Status",
+            "description": "Estado de la asociación."
+          },
+          "reference": {
+            "type": "boolean",
+            "title": "Reference",
+            "description": "La unidad es la de referencia de esa magnitud."
+          }
+        },
+        "type": "object",
+        "required": [
+          "quantity_kind_id",
+          "status",
+          "reference"
+        ],
+        "title": "UnitQuantityKind"
+      },
+      "VersionData": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version"
+        ],
+        "title": "VersionData"
+      },
+      "VersionEnvelope": {
+        "properties": {
+          "snapshot_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Version"
+          },
+          "data": {
+            "$ref": "#/components/schemas/VersionData"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_version",
+          "data"
+        ],
+        "title": "VersionEnvelope"
+      },
+      "ConversionBody": {
+        "additionalProperties": false,
+        "description": "Cuerpo de `POST /v1/conversions`. `value` es una cadena JSON (no un número).",
+        "properties": {
+          "quantity_kind_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Obligatoria: sin ella `quantity_kind_required`.",
+            "title": "Quantity Kind Id"
+          },
+          "value": {
+            "description": "Decimal `^-?(0|[1-9][0-9]{0,29})(\\.[0-9]{1,30})?$`. Un valor que no es cadena JSON es `invalid_value`.",
+            "title": "Value",
+            "type": "string"
+          },
+          "from_unit_id": {
+            "title": "From Unit Id",
+            "type": "string"
+          },
+          "to_unit_id": {
+            "title": "To Unit Id",
+            "type": "string"
+          },
+          "catalog_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Versión histórica; por defecto, la vigente.",
+            "title": "Catalog Version"
+          }
+        },
+        "required": [
+          "value",
+          "from_unit_id",
+          "to_unit_id"
+        ],
+        "title": "ConversionBody",
+        "type": "object"
+      }
+    }
+  }
+}

@@ -171,3 +171,26 @@ def test_the_service_never_writes() -> None:
     before = (dict(reader.units), list(reader.associations), reader.version)
     service(reader).convert(request())
     assert (dict(reader.units), list(reader.associations), reader.version) == before
+
+
+@pytest.mark.parametrize(
+    ("case", "code"),
+    [
+        (
+            ConversionRequest("not-a-uuid", "1", unit_id("lb"), unit_id("kg")),
+            "invalid_quantity_kind_id",
+        ),
+        (ConversionRequest(kind_id("mass"), "1", "x", unit_id("kg")), "invalid_unit_id"),
+        (ConversionRequest(kind_id("mass"), "1", unit_id("lb"), "x"), "invalid_unit_id"),
+        (ConversionRequest(kind_id("mass"), "1e3", unit_id("lb"), unit_id("kg")), "invalid_value"),
+        (ConversionRequest(None, "1", unit_id("lb"), unit_id("kg")), "quantity_kind_required"),
+    ],
+)
+@pytest.mark.parametrize("version", [None, 7])
+def test_a_malformed_request_is_rejected_by_format_even_with_an_empty_catalog(
+    case: ConversionRequest, code: str, version: int | None
+) -> None:
+    for reader in (InMemoryUnitsReader(), InMemoryUnitsReader(build_snapshot(1))):
+        response = service(reader).convert(case, catalog_version=version)
+        assert isinstance(response.outcome, ConversionRejection)
+        assert response.outcome.code == code
