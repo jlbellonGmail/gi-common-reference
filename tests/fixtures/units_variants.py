@@ -16,12 +16,17 @@ BULK_ID = "6f0e0000-0000-4000-8000-000000000002"
 
 
 def sack_snapshot(
-    version: int = 1, *, factor: str = "60", retired: tuple[str, ...] = ()
+    version: int = 1,
+    *,
+    factor: str = "60",
+    retired: tuple[str, ...] = (),
+    inactive_links: tuple[tuple[str, str], ...] = (),
 ) -> dict[str, Any]:
     """Ejemplo + unidad `sack` (sin UCUM ni UNECE) asociada a la masa con `factor` respecto de kg.
 
     `retired` lista claves de unidad (p. ej. `oz`, `sack`) que pasan a `inactive` junto con sus
-    asociaciones.
+    asociaciones. `inactive_links` lista pares (código de magnitud, clave de unidad) cuya asociación
+    pasa a `inactive` mientras la unidad sigue `active` en sus otras magnitudes.
     """
 
     def change(document: dict[str, Any]) -> None:
@@ -56,6 +61,9 @@ def sack_snapshot(
             for row in document["quantity_kind_units"]:
                 if row["unit_id"] == target:
                     row["status"] = "inactive"
+
+        for code, key in inactive_links:
+            association_row(document, code, key)["status"] = "inactive"
 
     return seal(edit(build_snapshot(1), change))
 
