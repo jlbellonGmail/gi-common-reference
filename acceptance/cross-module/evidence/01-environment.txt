@@ -1,6 +1,6 @@
 # Entorno de la aceptación transversal 006 (sintético, no productivo)
 python: 3.14.10 (Windows)
-git HEAD: 78cf75862115c5678104761882446e5128d9ee30
+git HEAD: 1b682ab79722251695ea82b2abb578d17bef1d6b
 git base (origin/feature/005-units-of-measure): 212016a3f50005fcd86ce5bf75869d7ed51744e8
 ai-native (launcher del repositorio): v4.0.1 878322ae4f3d0fd0446330e83b86761aa9a32d5e
 base de datos: postgres:16-alpine (testcontainers, descartable)
