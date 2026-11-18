@@ -252,7 +252,7 @@
     "stderr": ""
   },
   {
-    "command": "git diff --stat origin/feature/005-units-of-measure -- <código, migraciones, contratos, specs 001-005>",
+    "command": "git diff --stat 212016a3f50005fcd86ce5bf75869d7ed51744e8 -- <código, migraciones, contratos, specs 001-005>",
     "exit_code": 0,
     "stdout": "",
     "stderr": ""

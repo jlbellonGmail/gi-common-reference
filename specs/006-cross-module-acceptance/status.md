@@ -23,7 +23,7 @@ Estado vivo y verificable (AGENTS.md). El estado sale de este archivo, `tasks.md
 - GREEN: `pytest tests/acceptance/test_cross_module_acceptance.py` → 28 passed (Postgres 16, testcontainers).
 
 ### T4 — runner y evidencia (done)
-- `python tools/acceptance/cross_module_acceptance.py` sobre `1b682ab` (código de 006 rebasado sobre 005 `212016a`) → `28 passed`, exit 0, dos ejecuciones con evidencia byte a byte idéntica (antes, el orden de un `set` en CA-5 hacía variar `04-http-transcripts.json`; corregido); evidencia en `acceptance/cross-module/evidence/`; sha256 de los blobs commiteados = `06-manifest-sha256.txt` (verificado con `git show :<ruta> | sha256sum`).
+- `python tools/acceptance/cross_module_acceptance.py` sobre `ec55d6c` (código final de 006 sobre 005 `212016a`) → `28 passed`, exit 0; antes, sobre `1b682ab`, dos ejecuciones con evidencia byte a byte idéntica (antes, el orden de un `set` en CA-5 hacía variar `04-http-transcripts.json`; corregido); evidencia en `acceptance/cross-module/evidence/`; sha256 de los blobs commiteados = `06-manifest-sha256.txt` (verificado con `git show :<ruta> | sha256sum`).
 
 ### T5 — manual (done)
 - `docs/aceptacion-manual.md` (M-01…M-13, restauración, checklist por módulo) y `tools/acceptance/write_acceptance_dataset.py` (mismos builders que la suite; dos ejecuciones → bytes idénticos).
@@ -33,6 +33,8 @@ Estado vivo y verificable (AGENTS.md). El estado sale de este archivo, `tasks.md
 - `ruff format --check .`, `ruff check .`, `mypy` strict: PASS. `sdd validate 006-cross-module-acceptance`: PASS. `hitl --base feature/005-units-of-measure`: PASS (riesgo high, `human_gate: required`).
 - Regresión sobre la revisión de 006: aceptaciones de 004 y 005 (`tests/acceptance/test_currency_acceptance.py`, `test_units_acceptance.py`, `ACCEPTANCE_BASE=origin/develop`) → 31 passed.
 - Suite completa: corrida por la plataforma sobre 005 `50efb12` (3496 passed, 0 failed); 006 solo agrega archivos de prueba/doc nuevos (CA-14).
+
+- CA-14 comparaba contra la punta de `origin/feature/005-units-of-measure`; al registrar la revisión de 005 (`reviews.jsonl`) esa punta avanzó y la prueba habría fallado sin que 006 tocara nada. Ahora compara contra el merge-base (`ec55d6c`); mutación: una línea añadida a `units/__init__.py` → FAIL; restaurada → PASS.
 
 ## Pendientes declarados
 - `GET /v1/countries/{id}/flag` en caja negra: NOT_EXECUTED (sin SVG empaquetados hasta PREP).
