@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "platform": {
     "repo": "github:jlbellonGmail/ai-native",
-    "version": "v3.4.3",
-    "commit": "7bfa2f063303ce48af90a024283625856d74e8cb",
-    "digest": "sha256:12c15adc8db3d30559eb72e075eedc16b620b522dd9235696cb83617446cea7b",
+    "version": "v4.0.1",
+    "commit": "878322ae4f3d0fd0446330e83b86761aa9a32d5e",
+    "digest": "sha256:6c5550f0d1c0a01670dbc4966650e4504dcabe186b312dbdca0c39a80991324a",
     "channel": "stable"
   },
   "profiles": [
