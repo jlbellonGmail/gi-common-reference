@@ -149,26 +149,6 @@
     }
   },
   {
-    "request": "GET /v1/countries/c756eac0-5950-5d6d-b9eb-86c92a68a5ad",
-    "status": 200,
-    "body": {
-      "snapshot_version": 1,
-      "data": {
-        "country_id": "c756eac0-5950-5d6d-b9eb-86c92a68a5ad",
-        "alpha2": "PR",
-        "alpha3": "PRI",
-        "numeric_code": "630",
-        "status": "active",
-        "replacement_country_ids": [],
-        "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
-        "subregion_id": "1cc20843-3e0c-5637-b7a4-d220f48c2291",
-        "calling_code": "1",
-        "name": null,
-        "official_name": null
-      }
-    }
-  },
-  {
     "request": "GET /v1/countries/71705c97-1868-546f-a495-8ba94dce51a7",
     "status": 200,
     "body": {
@@ -182,6 +162,26 @@
         "replacement_country_ids": [],
         "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
         "subregion_id": "0528e5b4-52aa-548b-b9bd-9f47a500876a",
+        "calling_code": "1",
+        "name": null,
+        "official_name": null
+      }
+    }
+  },
+  {
+    "request": "GET /v1/countries/c756eac0-5950-5d6d-b9eb-86c92a68a5ad",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "country_id": "c756eac0-5950-5d6d-b9eb-86c92a68a5ad",
+        "alpha2": "PR",
+        "alpha3": "PRI",
+        "numeric_code": "630",
+        "status": "active",
+        "replacement_country_ids": [],
+        "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+        "subregion_id": "1cc20843-3e0c-5637-b7a4-d220f48c2291",
         "calling_code": "1",
         "name": null,
         "official_name": null
