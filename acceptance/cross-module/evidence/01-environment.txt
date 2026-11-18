@@ -1,0 +1,16 @@
+# Entorno de la aceptación transversal 006 (sintético, no productivo)
+python: 3.14.10 (Windows)
+git HEAD: b075b64325bb8f6e373fa29250241b3e5bbf4d88
+git base (origin/feature/005-units-of-measure): 6b6127b169780a6bf083be8968216d4096e07cd8
+ai-native (launcher del repositorio): v4.0.1 878322ae4f3d0fd0446330e83b86761aa9a32d5e
+base de datos: postgres:16-alpine (testcontainers, descartable)
+paquetes:
+  alembic==1.20.0
+  fastapi==0.150.0
+  psycopg==3.3.6
+  pydantic==2.14.1
+  pytest==9.1.1
+  testcontainers==4.15.0
+  uvicorn==0.54.0
+comando: python tools/acceptance/cross_module_acceptance.py --base origin/feature/005-units-of-measure
+pytest exit code: 0

@@ -1,0 +1,4938 @@
+[
+  {
+    "request": "GET /v1/locales/by-code/es",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+        "code": "es",
+        "status": "active",
+        "iana_deprecated": false,
+        "replacement_locale_id": null
+      }
+    }
+  },
+  {
+    "request": "GET /v1/countries/by-alpha2/AR?locale_id=7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "country_id": "fe4be564-5597-5c73-b0c0-18ad9209f207",
+        "alpha2": "AR",
+        "alpha3": "ARG",
+        "numeric_code": "032",
+        "status": "active",
+        "replacement_country_ids": [],
+        "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+        "subregion_id": "1cc20843-3e0c-5637-b7a4-d220f48c2291",
+        "calling_code": "54",
+        "name": "Argentina",
+        "official_name": "República Argentina"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/regions/29786b02-6ca2-5d40-9c90-17e6bdf27303",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+        "code": "019",
+        "status": "active",
+        "replacement_region_id": null,
+        "name": null
+      }
+    }
+  },
+  {
+    "request": "GET /v1/subregions/1cc20843-3e0c-5637-b7a4-d220f48c2291",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "subregion_id": "1cc20843-3e0c-5637-b7a4-d220f48c2291",
+        "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+        "code": "419",
+        "status": "active",
+        "replacement_subregion_id": null,
+        "name": null
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-country/fe4be564-5597-5c73-b0c0-18ad9209f207",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": [
+        {
+          "country_currency_id": "fc7fa67b-b245-5141-9b90-4d038e7b9cd6",
+          "country_id": "fe4be564-5597-5c73-b0c0-18ad9209f207",
+          "currency": {
+            "currency_id": "499f86b1-0b36-594d-8536-95435b38eef1",
+            "alphabetic_code": "ARS",
+            "numeric_code": "032",
+            "minor_units": 2,
+            "fund_code": false,
+            "status": "active",
+            "replacement_currency_ids": [],
+            "name": null
+          },
+          "status": "active",
+          "valid_from": null,
+          "valid_to": null
+        }
+      ]
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-code/USD",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+        "alphabetic_code": "USD",
+        "numeric_code": "840",
+        "minor_units": 2,
+        "fund_code": false,
+        "status": "active",
+        "replacement_currency_ids": [],
+        "name": null
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/12c3be84-c22e-5d01-adbf-f28c3aeb0807/countries",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": [
+        {
+          "country_currency_id": "01906231-bc73-58fb-b24d-ed37d2d8b6db",
+          "country_id": "71705c97-1868-546f-a495-8ba94dce51a7",
+          "currency": {
+            "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+            "alphabetic_code": "USD",
+            "numeric_code": "840",
+            "minor_units": 2,
+            "fund_code": false,
+            "status": "active",
+            "replacement_currency_ids": [],
+            "name": null
+          },
+          "status": "active",
+          "valid_from": null,
+          "valid_to": null
+        },
+        {
+          "country_currency_id": "b79074ab-8dbd-5e70-b59c-c4cfbcf2f384",
+          "country_id": "c756eac0-5950-5d6d-b9eb-86c92a68a5ad",
+          "currency": {
+            "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+            "alphabetic_code": "USD",
+            "numeric_code": "840",
+            "minor_units": 2,
+            "fund_code": false,
+            "status": "active",
+            "replacement_currency_ids": [],
+            "name": null
+          },
+          "status": "active",
+          "valid_from": "1899-01-01",
+          "valid_to": null
+        }
+      ]
+    }
+  },
+  {
+    "request": "GET /v1/countries/c756eac0-5950-5d6d-b9eb-86c92a68a5ad",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "country_id": "c756eac0-5950-5d6d-b9eb-86c92a68a5ad",
+        "alpha2": "PR",
+        "alpha3": "PRI",
+        "numeric_code": "630",
+        "status": "active",
+        "replacement_country_ids": [],
+        "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+        "subregion_id": "1cc20843-3e0c-5637-b7a4-d220f48c2291",
+        "calling_code": "1",
+        "name": null,
+        "official_name": null
+      }
+    }
+  },
+  {
+    "request": "GET /v1/countries/71705c97-1868-546f-a495-8ba94dce51a7",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "country_id": "71705c97-1868-546f-a495-8ba94dce51a7",
+        "alpha2": "US",
+        "alpha3": "USA",
+        "numeric_code": "840",
+        "status": "active",
+        "replacement_country_ids": [],
+        "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+        "subregion_id": "0528e5b4-52aa-548b-b9bd-9f47a500876a",
+        "calling_code": "1",
+        "name": null,
+        "official_name": null
+      }
+    }
+  },
+  {
+    "request": "GET /v1/units?quantity_kind_id=b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": [
+        {
+          "unit_id": "fca8e202-9630-5819-b1b1-5da8915f53d1",
+          "ucum_code": "g",
+          "unece_code": "GRM",
+          "symbol": "g",
+          "status": "active",
+          "name": null,
+          "plural": null,
+          "quantity_kinds": [
+            {
+              "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+              "status": "active",
+              "reference": false
+            }
+          ]
+        },
+        {
+          "unit_id": "2f2fc747-50fd-5709-a665-4fa037eea3b2",
+          "ucum_code": "kg",
+          "unece_code": "KGM",
+          "symbol": "kg",
+          "status": "active",
+          "name": null,
+          "plural": null,
+          "quantity_kinds": [
+            {
+              "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+              "status": "active",
+              "reference": true
+            }
+          ]
+        },
+        {
+          "unit_id": "577ce238-f253-50cf-b881-a9c879f4bfc9",
+          "ucum_code": "[lb_av]",
+          "unece_code": "LBR",
+          "symbol": "lb",
+          "status": "active",
+          "name": null,
+          "plural": null,
+          "quantity_kinds": [
+            {
+              "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+              "status": "active",
+              "reference": false
+            }
+          ]
+        },
+        {
+          "unit_id": "ba991d32-7e98-54d4-a925-cf1ef00954bc",
+          "ucum_code": "mg",
+          "unece_code": "MGM",
+          "symbol": "mg",
+          "status": "active",
+          "name": null,
+          "plural": null,
+          "quantity_kinds": [
+            {
+              "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+              "status": "active",
+              "reference": false
+            }
+          ]
+        },
+        {
+          "unit_id": "8c86c3de-7527-51e5-8e5f-ee328f2d3002",
+          "ucum_code": "[oz_av]",
+          "unece_code": "ONZ",
+          "symbol": "oz",
+          "status": "active",
+          "name": null,
+          "plural": null,
+          "quantity_kinds": [
+            {
+              "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+              "status": "active",
+              "reference": false
+            }
+          ]
+        },
+        {
+          "unit_id": "75e56bc3-ffc5-5bd9-a4f4-81548bf6dfcb",
+          "ucum_code": "t",
+          "unece_code": "TNE",
+          "symbol": "t",
+          "status": "active",
+          "name": null,
+          "plural": null,
+          "quantity_kinds": [
+            {
+              "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+              "status": "active",
+              "reference": false
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "request": "POST /v1/conversions",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "result": "0.45359237",
+        "exact": true,
+        "unit_id": "2f2fc747-50fd-5709-a665-4fa037eea3b2",
+        "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+        "catalog_version": 1
+      }
+    }
+  },
+  {
+    "request": "GET /v1/regions/29786b02-6ca2-5d40-9c90-17e6bdf27303?locale_id=1d806402-a823-4580-9f4d-958c6e5a5354",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+        "code": "019",
+        "status": "active",
+        "replacement_region_id": null,
+        "name": "Americas"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/regions/29786b02-6ca2-5d40-9c90-17e6bdf27303?locale_id=7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+        "code": "019",
+        "status": "active",
+        "replacement_region_id": null,
+        "name": "Américas"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/regions/29786b02-6ca2-5d40-9c90-17e6bdf27303?locale_id=b8756f67-cbc0-4499-b3b6-453605c505b2",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+        "code": "019",
+        "status": "active",
+        "replacement_region_id": null,
+        "name": null
+      }
+    }
+  },
+  {
+    "request": "GET /v1/regions/29786b02-6ca2-5d40-9c90-17e6bdf27303?locale_id=not-a-uuid",
+    "status": 422,
+    "body": {
+      "snapshot_version": 1,
+      "error": {
+        "code": "invalid_locale_id",
+        "message": "locale_id debe ser un UUID"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/regions/29786b02-6ca2-5d40-9c90-17e6bdf27303?locale_id=00000000-0000-4000-8000-000000000000",
+    "status": 422,
+    "body": {
+      "snapshot_version": 1,
+      "error": {
+        "code": "unknown_locale",
+        "message": "el locale_id no existe en el catálogo de Locale"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/subregions/1cc20843-3e0c-5637-b7a4-d220f48c2291?locale_id=1d806402-a823-4580-9f4d-958c6e5a5354",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "subregion_id": "1cc20843-3e0c-5637-b7a4-d220f48c2291",
+        "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+        "code": "419",
+        "status": "active",
+        "replacement_subregion_id": null,
+        "name": "Latin America and the Caribbean"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/subregions/1cc20843-3e0c-5637-b7a4-d220f48c2291?locale_id=7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "subregion_id": "1cc20843-3e0c-5637-b7a4-d220f48c2291",
+        "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+        "code": "419",
+        "status": "active",
+        "replacement_subregion_id": null,
+        "name": "América Latina y el Caribe"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/subregions/1cc20843-3e0c-5637-b7a4-d220f48c2291?locale_id=b8756f67-cbc0-4499-b3b6-453605c505b2",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "subregion_id": "1cc20843-3e0c-5637-b7a4-d220f48c2291",
+        "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+        "code": "419",
+        "status": "active",
+        "replacement_subregion_id": null,
+        "name": null
+      }
+    }
+  },
+  {
+    "request": "GET /v1/subregions/1cc20843-3e0c-5637-b7a4-d220f48c2291?locale_id=not-a-uuid",
+    "status": 422,
+    "body": {
+      "snapshot_version": 1,
+      "error": {
+        "code": "invalid_locale_id",
+        "message": "locale_id debe ser un UUID"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/subregions/1cc20843-3e0c-5637-b7a4-d220f48c2291?locale_id=00000000-0000-4000-8000-000000000000",
+    "status": 422,
+    "body": {
+      "snapshot_version": 1,
+      "error": {
+        "code": "unknown_locale",
+        "message": "el locale_id no existe en el catálogo de Locale"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/countries/71705c97-1868-546f-a495-8ba94dce51a7?locale_id=1d806402-a823-4580-9f4d-958c6e5a5354",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "country_id": "71705c97-1868-546f-a495-8ba94dce51a7",
+        "alpha2": "US",
+        "alpha3": "USA",
+        "numeric_code": "840",
+        "status": "active",
+        "replacement_country_ids": [],
+        "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+        "subregion_id": "0528e5b4-52aa-548b-b9bd-9f47a500876a",
+        "calling_code": "1",
+        "name": "United States",
+        "official_name": "United States of America"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/countries/71705c97-1868-546f-a495-8ba94dce51a7?locale_id=7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "country_id": "71705c97-1868-546f-a495-8ba94dce51a7",
+        "alpha2": "US",
+        "alpha3": "USA",
+        "numeric_code": "840",
+        "status": "active",
+        "replacement_country_ids": [],
+        "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+        "subregion_id": "0528e5b4-52aa-548b-b9bd-9f47a500876a",
+        "calling_code": "1",
+        "name": "Estados Unidos",
+        "official_name": "Estados Unidos de América"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/countries/71705c97-1868-546f-a495-8ba94dce51a7?locale_id=b8756f67-cbc0-4499-b3b6-453605c505b2",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "country_id": "71705c97-1868-546f-a495-8ba94dce51a7",
+        "alpha2": "US",
+        "alpha3": "USA",
+        "numeric_code": "840",
+        "status": "active",
+        "replacement_country_ids": [],
+        "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+        "subregion_id": "0528e5b4-52aa-548b-b9bd-9f47a500876a",
+        "calling_code": "1",
+        "name": null,
+        "official_name": null
+      }
+    }
+  },
+  {
+    "request": "GET /v1/countries/71705c97-1868-546f-a495-8ba94dce51a7?locale_id=not-a-uuid",
+    "status": 422,
+    "body": {
+      "snapshot_version": 1,
+      "error": {
+        "code": "invalid_locale_id",
+        "message": "locale_id debe ser un UUID"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/countries/71705c97-1868-546f-a495-8ba94dce51a7?locale_id=00000000-0000-4000-8000-000000000000",
+    "status": 422,
+    "body": {
+      "snapshot_version": 1,
+      "error": {
+        "code": "unknown_locale",
+        "message": "el locale_id no existe en el catálogo de Locale"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/12c3be84-c22e-5d01-adbf-f28c3aeb0807?locale_id=1d806402-a823-4580-9f4d-958c6e5a5354",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+        "alphabetic_code": "USD",
+        "numeric_code": "840",
+        "minor_units": 2,
+        "fund_code": false,
+        "status": "active",
+        "replacement_currency_ids": [],
+        "name": "US Dollar"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/12c3be84-c22e-5d01-adbf-f28c3aeb0807?locale_id=7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+        "alphabetic_code": "USD",
+        "numeric_code": "840",
+        "minor_units": 2,
+        "fund_code": false,
+        "status": "active",
+        "replacement_currency_ids": [],
+        "name": "dólar estadounidense"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/12c3be84-c22e-5d01-adbf-f28c3aeb0807?locale_id=b8756f67-cbc0-4499-b3b6-453605c505b2",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+        "alphabetic_code": "USD",
+        "numeric_code": "840",
+        "minor_units": 2,
+        "fund_code": false,
+        "status": "active",
+        "replacement_currency_ids": [],
+        "name": null
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/12c3be84-c22e-5d01-adbf-f28c3aeb0807?locale_id=not-a-uuid",
+    "status": 422,
+    "body": {
+      "snapshot_version": 1,
+      "error": {
+        "code": "invalid_locale_id",
+        "message": "locale_id debe ser un UUID"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/12c3be84-c22e-5d01-adbf-f28c3aeb0807?locale_id=00000000-0000-4000-8000-000000000000",
+    "status": 422,
+    "body": {
+      "snapshot_version": 1,
+      "error": {
+        "code": "unknown_locale",
+        "message": "el locale_id no existe en el catálogo de Locale"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/units/2f2fc747-50fd-5709-a665-4fa037eea3b2?locale_id=1d806402-a823-4580-9f4d-958c6e5a5354",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "unit_id": "2f2fc747-50fd-5709-a665-4fa037eea3b2",
+        "ucum_code": "kg",
+        "unece_code": "KGM",
+        "symbol": "kg",
+        "status": "active",
+        "name": "kilogram",
+        "plural": "kilograms",
+        "quantity_kinds": [
+          {
+            "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+            "status": "active",
+            "reference": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "request": "GET /v1/units/2f2fc747-50fd-5709-a665-4fa037eea3b2?locale_id=7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "unit_id": "2f2fc747-50fd-5709-a665-4fa037eea3b2",
+        "ucum_code": "kg",
+        "unece_code": "KGM",
+        "symbol": "kg",
+        "status": "active",
+        "name": "kilogramo",
+        "plural": "kilogramos",
+        "quantity_kinds": [
+          {
+            "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+            "status": "active",
+            "reference": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "request": "GET /v1/units/2f2fc747-50fd-5709-a665-4fa037eea3b2?locale_id=b8756f67-cbc0-4499-b3b6-453605c505b2",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "unit_id": "2f2fc747-50fd-5709-a665-4fa037eea3b2",
+        "ucum_code": "kg",
+        "unece_code": "KGM",
+        "symbol": "kg",
+        "status": "active",
+        "name": null,
+        "plural": null,
+        "quantity_kinds": [
+          {
+            "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+            "status": "active",
+            "reference": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "request": "GET /v1/units/2f2fc747-50fd-5709-a665-4fa037eea3b2?locale_id=not-a-uuid",
+    "status": 422,
+    "body": {
+      "snapshot_version": 1,
+      "error": {
+        "code": "invalid_locale_id",
+        "message": "locale_id debe ser un UUID"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/units/2f2fc747-50fd-5709-a665-4fa037eea3b2?locale_id=00000000-0000-4000-8000-000000000000",
+    "status": 422,
+    "body": {
+      "snapshot_version": 1,
+      "error": {
+        "code": "unknown_locale",
+        "message": "el locale_id no existe en el catálogo de Locale"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/quantity-kinds/b5215a84-a8e2-5953-9de0-ac0c4a8aac78?locale_id=1d806402-a823-4580-9f4d-958c6e5a5354",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+        "code": "mass",
+        "conversion_type": "linear",
+        "reference_unit_id": "2f2fc747-50fd-5709-a665-4fa037eea3b2",
+        "status": "active",
+        "name": "Mass"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/quantity-kinds/b5215a84-a8e2-5953-9de0-ac0c4a8aac78?locale_id=7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+        "code": "mass",
+        "conversion_type": "linear",
+        "reference_unit_id": "2f2fc747-50fd-5709-a665-4fa037eea3b2",
+        "status": "active",
+        "name": "Masa"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/quantity-kinds/b5215a84-a8e2-5953-9de0-ac0c4a8aac78?locale_id=b8756f67-cbc0-4499-b3b6-453605c505b2",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+        "code": "mass",
+        "conversion_type": "linear",
+        "reference_unit_id": "2f2fc747-50fd-5709-a665-4fa037eea3b2",
+        "status": "active",
+        "name": null
+      }
+    }
+  },
+  {
+    "request": "GET /v1/quantity-kinds/b5215a84-a8e2-5953-9de0-ac0c4a8aac78?locale_id=not-a-uuid",
+    "status": 422,
+    "body": {
+      "snapshot_version": 1,
+      "error": {
+        "code": "invalid_locale_id",
+        "message": "locale_id debe ser un UUID"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/quantity-kinds/b5215a84-a8e2-5953-9de0-ac0c4a8aac78?locale_id=00000000-0000-4000-8000-000000000000",
+    "status": 422,
+    "body": {
+      "snapshot_version": 1,
+      "error": {
+        "code": "unknown_locale",
+        "message": "el locale_id no existe en el catálogo de Locale"
+      }
+    }
+  },
+  {
+    "request": "POST /v1/locales",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PUT /v1/locales",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PATCH /v1/locales",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "DELETE /v1/locales",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "POST /v1/regions",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PUT /v1/regions",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PATCH /v1/regions",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "DELETE /v1/regions",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "POST /v1/subregions",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PUT /v1/subregions",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PATCH /v1/subregions",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "DELETE /v1/subregions",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "POST /v1/countries",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PUT /v1/countries",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PATCH /v1/countries",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "DELETE /v1/countries",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "POST /v1/currencies",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PUT /v1/currencies",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PATCH /v1/currencies",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "DELETE /v1/currencies",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "POST /v1/units",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PUT /v1/units",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PATCH /v1/units",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "DELETE /v1/units",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "POST /v1/quantity-kinds",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PUT /v1/quantity-kinds",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PATCH /v1/quantity-kinds",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "DELETE /v1/quantity-kinds",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "GET /v1/conversions",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "PUT /v1/conversions",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "DELETE /v1/conversions",
+    "status": 405,
+    "body": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "request": "GET /v1/openapi.json",
+    "status": 200,
+    "body": {
+      "openapi": "3.1.0",
+      "info": {
+        "title": "gi-common-reference: locales",
+        "description": "Catálogo global de locales (idiomas), versionado y de solo lectura.",
+        "version": "1.0.0"
+      },
+      "paths": {
+        "/v1/locales/by-code/{code}": {
+          "get": {
+            "tags": [
+              "locales"
+            ],
+            "summary": "Obtener un locale por su código",
+            "description": "Tolera mayúsculas. Si el código no se publicó pero el registro IANA declara su\nPreferred-Value, devuelve el locale de ese valor. No recorta espacios ni acepta\nseparadores: lo que no es un subtag de idioma bien formado es 422.",
+            "operationId": "getLocaleByCode",
+            "parameters": [
+              {
+                "name": "code",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Code"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/LocaleEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado, sin fallback a otro locale.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/locales/{locale_id}": {
+          "get": {
+            "tags": [
+              "locales"
+            ],
+            "summary": "Obtener un locale por su locale_id",
+            "operationId": "getLocaleById",
+            "parameters": [
+              {
+                "name": "locale_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Locale Id"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/LocaleEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado, sin fallback a otro locale.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/locales": {
+          "get": {
+            "tags": [
+              "locales"
+            ],
+            "summary": "Listar los locales publicados, ordenados por código",
+            "operationId": "listLocales",
+            "parameters": [
+              {
+                "name": "status",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "active",
+                    "inactive"
+                  ]
+                },
+                "description": "Restringe el resultado a un `status`."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/LocaleListEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "components": {
+        "schemas": {
+          "ErrorBody": {
+            "properties": {
+              "code": {
+                "type": "string",
+                "title": "Code"
+              },
+              "message": {
+                "type": "string",
+                "title": "Message"
+              }
+            },
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "title": "ErrorBody"
+          },
+          "ErrorEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version",
+                "description": "Snapshot vigente, o `null` si no hay."
+              },
+              "error": {
+                "$ref": "#/components/schemas/ErrorBody"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "error"
+            ],
+            "title": "ErrorEnvelope"
+          },
+          "Locale": {
+            "properties": {
+              "locale_id": {
+                "type": "string",
+                "title": "Locale Id",
+                "description": "Identidad estable del locale (UUID asignado por PREP)."
+              },
+              "code": {
+                "type": "string",
+                "title": "Code",
+                "description": "Código publicado: subtag de idioma BCP 47 en minúsculas."
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "inactive"
+                ],
+                "title": "Status",
+                "description": "`active`: apto para nuevas referencias; `inactive`: sigue resoluble."
+              },
+              "iana_deprecated": {
+                "type": "boolean",
+                "title": "Iana Deprecated",
+                "description": "El registro IANA de referencia declara el código como deprecado."
+              },
+              "replacement_locale_id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Replacement Locale Id",
+                "description": "Locale del Preferred-Value del registro IANA; solo si está deprecado."
+              }
+            },
+            "type": "object",
+            "required": [
+              "locale_id",
+              "code",
+              "status",
+              "iana_deprecated",
+              "replacement_locale_id"
+            ],
+            "title": "Locale",
+            "description": "Un idioma publicado. No contiene textos traducibles (RF-6)."
+          },
+          "LocaleEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "type": "integer",
+                "title": "Snapshot Version",
+                "description": "Snapshot vigente del catálogo de locales."
+              },
+              "data": {
+                "$ref": "#/components/schemas/Locale"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "LocaleEnvelope"
+          },
+          "LocaleListEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version",
+                "description": "Snapshot vigente; `null` si todavía no se incorporó ninguno."
+              },
+              "data": {
+                "items": {
+                  "$ref": "#/components/schemas/Locale"
+                },
+                "type": "array",
+                "title": "Data"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "LocaleListEnvelope"
+          }
+        }
+      }
+    }
+  },
+  {
+    "request": "GET /v1/openapi/regions.json",
+    "status": 200,
+    "body": {
+      "openapi": "3.1.0",
+      "info": {
+        "title": "gi-common-reference: regions",
+        "description": "Catálogo global de regiones y subregiones UN M49, versionado y de solo lectura, con nombres por locale_id.",
+        "version": "1.0.0"
+      },
+      "paths": {
+        "/v1/regions/by-code/{code}": {
+          "get": {
+            "tags": [
+              "regions"
+            ],
+            "summary": "Obtener una Region por su código UN M49 vigente",
+            "description": "La `active` que tiene el código; si ninguna, la `inactive` que lo obtuvo en el snapshot\nmás reciente. Un código que no tiene 3 dígitos es 422; un código histórico, 404.",
+            "operationId": "getRegionByCode",
+            "parameters": [
+              {
+                "name": "code",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Code"
+                }
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/RegionEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/regions/{region_id}": {
+          "get": {
+            "tags": [
+              "regions"
+            ],
+            "summary": "Obtener una Region por su region_id, cualquiera sea su status",
+            "operationId": "getRegionById",
+            "parameters": [
+              {
+                "name": "region_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Region Id"
+                }
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/RegionEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/regions": {
+          "get": {
+            "tags": [
+              "regions"
+            ],
+            "summary": "Listar las regiones publicadas, ordenadas por código",
+            "operationId": "listRegions",
+            "parameters": [
+              {
+                "name": "status",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "active",
+                    "inactive"
+                  ]
+                },
+                "description": "Restringe el resultado a un `status`."
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/RegionListEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/subregions/by-code/{code}": {
+          "get": {
+            "tags": [
+              "subregions"
+            ],
+            "summary": "Obtener una Subregion por su código UN M49 vigente",
+            "description": "Mismas reglas que para Region; `419` pedido como Region es 404 (RF-4).",
+            "operationId": "getSubregionByCode",
+            "parameters": [
+              {
+                "name": "code",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Code"
+                }
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/SubregionEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/subregions/{subregion_id}": {
+          "get": {
+            "tags": [
+              "subregions"
+            ],
+            "summary": "Obtener una Subregion por su subregion_id, cualquiera sea su status",
+            "operationId": "getSubregionById",
+            "parameters": [
+              {
+                "name": "subregion_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Subregion Id"
+                }
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/SubregionEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/subregions": {
+          "get": {
+            "tags": [
+              "subregions"
+            ],
+            "summary": "Listar las subregiones publicadas, ordenadas por código",
+            "operationId": "listSubregions",
+            "parameters": [
+              {
+                "name": "region_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Restringe el resultado a una Region.",
+                  "title": "Region Id"
+                },
+                "description": "Restringe el resultado a una Region."
+              },
+              {
+                "name": "status",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "active",
+                    "inactive"
+                  ]
+                },
+                "description": "Restringe el resultado a un `status`."
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve el nombre en este locale (UUID del catálogo de Locale). Sin traducción, `name` es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/SubregionListEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "components": {
+        "schemas": {
+          "ErrorBody": {
+            "properties": {
+              "code": {
+                "type": "string",
+                "title": "Code"
+              },
+              "message": {
+                "type": "string",
+                "title": "Message"
+              }
+            },
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "title": "ErrorBody"
+          },
+          "ErrorEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version",
+                "description": "Snapshot vigente, o `null` si no hay."
+              },
+              "error": {
+                "$ref": "#/components/schemas/ErrorBody"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "error"
+            ],
+            "title": "ErrorEnvelope"
+          },
+          "Region": {
+            "properties": {
+              "region_id": {
+                "type": "string",
+                "title": "Region Id",
+                "description": "Identidad estable de la Region (UUID asignado por PREP)."
+              },
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Code",
+                "description": "Código UN M49 vigente de 3 dígitos, o `null`."
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "inactive"
+                ],
+                "title": "Status",
+                "description": "`active`: apta para nuevas referencias; `inactive`: sigue resoluble."
+              },
+              "replacement_region_id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Replacement Region Id",
+                "description": "Region sucesora según la fuente de autoridad; solo si es `inactive`."
+              },
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Name",
+                "description": "Nombre en el `locale_id` pedido, o `null`."
+              }
+            },
+            "type": "object",
+            "required": [
+              "region_id",
+              "code",
+              "status",
+              "replacement_region_id",
+              "name"
+            ],
+            "title": "Region",
+            "description": "Región UN M49 (nivel superior, p. ej. 019 Americas). Sin textos propios (RF-8)."
+          },
+          "RegionEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "type": "integer",
+                "title": "Snapshot Version",
+                "description": "Snapshot vigente del catálogo Region/Subregion."
+              },
+              "data": {
+                "$ref": "#/components/schemas/Region"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "RegionEnvelope"
+          },
+          "RegionListEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version",
+                "description": "Snapshot vigente; `null` si todavía no se incorporó ninguno."
+              },
+              "data": {
+                "items": {
+                  "$ref": "#/components/schemas/Region"
+                },
+                "type": "array",
+                "title": "Data"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "RegionListEnvelope"
+          },
+          "Subregion": {
+            "properties": {
+              "subregion_id": {
+                "type": "string",
+                "title": "Subregion Id",
+                "description": "Identidad estable de la Subregion (UUID de PREP)."
+              },
+              "region_id": {
+                "type": "string",
+                "title": "Region Id",
+                "description": "Region que la contiene."
+              },
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Code",
+                "description": "Código UN M49 vigente de 3 dígitos, o `null`."
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "inactive"
+                ],
+                "title": "Status",
+                "description": "`active`: apta para nuevas referencias; `inactive`: sigue resoluble."
+              },
+              "replacement_subregion_id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Replacement Subregion Id",
+                "description": "Subregion sucesora según la fuente de autoridad; solo si es `inactive`."
+              },
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Name",
+                "description": "Nombre en el `locale_id` pedido, o `null`."
+              }
+            },
+            "type": "object",
+            "required": [
+              "subregion_id",
+              "region_id",
+              "code",
+              "status",
+              "replacement_subregion_id",
+              "name"
+            ],
+            "title": "Subregion",
+            "description": "Subregión UN M49, contenida en exactamente una Region (p. ej. 419 en 019)."
+          },
+          "SubregionEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "type": "integer",
+                "title": "Snapshot Version",
+                "description": "Snapshot vigente del catálogo Region/Subregion."
+              },
+              "data": {
+                "$ref": "#/components/schemas/Subregion"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "SubregionEnvelope"
+          },
+          "SubregionListEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version",
+                "description": "Snapshot vigente; `null` si todavía no se incorporó ninguno."
+              },
+              "data": {
+                "items": {
+                  "$ref": "#/components/schemas/Subregion"
+                },
+                "type": "array",
+                "title": "Data"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "SubregionListEnvelope"
+          }
+        }
+      }
+    }
+  },
+  {
+    "request": "GET /v1/openapi/countries.json",
+    "status": 200,
+    "body": {
+      "openapi": "3.1.0",
+      "info": {
+        "title": "gi-common-reference: countries",
+        "description": "Catálogo global de países ISO 3166-1, versionado y de solo lectura: identidad `country_id`, códigos de resolución, clasificación por `region_id`/`subregion_id`, nombres por `locale_id` y bandera SVG.",
+        "version": "1.0.0"
+      },
+      "paths": {
+        "/v1/countries/by-alpha2/{code}": {
+          "get": {
+            "tags": [
+              "countries"
+            ],
+            "summary": "Obtener un país por su código ISO alpha-2 vigente",
+            "description": "Sin distinguir mayúsculas. El `active` que lo posee; si ninguno, el `inactive` que lo\nobtuvo más recientemente. Un código mal formado es 422; uno histórico, 404.",
+            "operationId": "getCountryByAlpha2",
+            "parameters": [
+              {
+                "name": "code",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Code"
+                }
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/CountryEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/countries/by-alpha3/{code}": {
+          "get": {
+            "tags": [
+              "countries"
+            ],
+            "summary": "Obtener un país por su código ISO alpha-3 vigente",
+            "operationId": "getCountryByAlpha3",
+            "parameters": [
+              {
+                "name": "code",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Code"
+                }
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/CountryEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/countries/by-numeric/{code}": {
+          "get": {
+            "tags": [
+              "countries"
+            ],
+            "summary": "Obtener un país por su código ISO numérico vigente",
+            "description": "Texto exacto de 3 dígitos (`004`); `4` es 422.",
+            "operationId": "getCountryByNumeric",
+            "parameters": [
+              {
+                "name": "code",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Code"
+                }
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/CountryEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/countries/{country_id}/flag": {
+          "get": {
+            "tags": [
+              "countries"
+            ],
+            "summary": "Obtener la bandera SVG de un país",
+            "operationId": "getCountryFlag",
+            "parameters": [
+              {
+                "name": "country_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Country Id"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "El asset SVG de la bandera; `ETag` es su suma de verificación.",
+                "content": {
+                  "image/svg+xml": {
+                    "schema": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                },
+                "headers": {
+                  "ETag": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "description": "`\"sha256:…\"`"
+                  },
+                  "X-Content-Type-Options": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "description": "`nosniff`"
+                  },
+                  "Content-Security-Policy": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "description": "Sin recursos externos ni scripts: el SVG se trata como datos."
+                  }
+                }
+              },
+              "404": {
+                "description": "`country_not_found`, o `flag_not_declared` si el país no tiene bandera.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "`flag_integrity_error`: el asset no coincide.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Validation Error",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/HTTPValidationError"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/countries/{country_id}": {
+          "get": {
+            "tags": [
+              "countries"
+            ],
+            "summary": "Obtener un país por su country_id, cualquiera sea su status",
+            "description": "Un `country_id` mal formado es \"no encontrado\" (404), no un error de validación.",
+            "operationId": "getCountryById",
+            "parameters": [
+              {
+                "name": "country_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Country Id"
+                }
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/CountryEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/countries": {
+          "get": {
+            "tags": [
+              "countries"
+            ],
+            "summary": "Listar los países, ordenados por alpha2",
+            "operationId": "listCountries",
+            "parameters": [
+              {
+                "name": "status",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "active",
+                    "inactive",
+                    "all"
+                  ],
+                  "default": "active"
+                },
+                "description": "`active` (por defecto), `inactive` o `all` para incluir ambos."
+              },
+              {
+                "name": "region_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Restringe el resultado a una Region.",
+                  "title": "Region Id"
+                },
+                "description": "Restringe el resultado a una Region."
+              },
+              {
+                "name": "subregion_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Restringe el resultado a una Subregion.",
+                  "title": "Subregion Id"
+                },
+                "description": "Restringe el resultado a una Subregion."
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` y `official_name` en este locale (UUID del catálogo de Locale). Sin traducción son `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/CountryListEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "components": {
+        "schemas": {
+          "Country": {
+            "properties": {
+              "country_id": {
+                "type": "string",
+                "title": "Country Id",
+                "description": "Identidad estable del país (UUID de Reference)."
+              },
+              "alpha2": {
+                "type": "string",
+                "title": "Alpha2",
+                "description": "ISO 3166-1 alpha-2 vigente (`NA` es Namibia)."
+              },
+              "alpha3": {
+                "type": "string",
+                "title": "Alpha3",
+                "description": "ISO 3166-1 alpha-3 vigente."
+              },
+              "numeric_code": {
+                "type": "string",
+                "title": "Numeric Code",
+                "description": "ISO 3166-1 numérico vigente, con ceros (`004`)."
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "inactive"
+                ],
+                "title": "Status",
+                "description": "`active`: apto para nuevas referencias; `inactive`: sigue resoluble."
+              },
+              "replacement_country_ids": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "Replacement Country Ids",
+                "description": "Países sucesores (0..N), en orden ascendente de `country_id`; vacío si no hay sucesión declarada o si el país es `active`."
+              },
+              "region_id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Region Id",
+                "description": "Region de Region/Subregion, o `null`."
+              },
+              "subregion_id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Subregion Id",
+                "description": "Subregion de Region/Subregion, o `null`."
+              },
+              "calling_code": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Calling Code",
+                "description": "Código de país E.164 sin `+`, o `null`."
+              },
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Name",
+                "description": "Nombre en el `locale_id` pedido, o `null`."
+              },
+              "official_name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Official Name",
+                "description": "Nombre formal en el `locale_id`, o `null`."
+              }
+            },
+            "type": "object",
+            "required": [
+              "country_id",
+              "alpha2",
+              "alpha3",
+              "numeric_code",
+              "status",
+              "replacement_country_ids",
+              "region_id",
+              "subregion_id",
+              "calling_code",
+              "name",
+              "official_name"
+            ],
+            "title": "Country",
+            "description": "País o área ISO 3166-1. La identidad es `country_id`; los códigos son claves de resolución.\n\nSin ningún texto propio (los nombres son de `CountryLocale`) ni códigos de región (RF-34, RF-6)."
+          },
+          "CountryEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "type": "integer",
+                "title": "Snapshot Version",
+                "description": "Snapshot vigente del catálogo Countries."
+              },
+              "data": {
+                "$ref": "#/components/schemas/Country"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "CountryEnvelope"
+          },
+          "CountryListEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version",
+                "description": "Snapshot vigente; `null` si todavía no se incorporó ninguno."
+              },
+              "data": {
+                "items": {
+                  "$ref": "#/components/schemas/Country"
+                },
+                "type": "array",
+                "title": "Data"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "CountryListEnvelope"
+          },
+          "ErrorBody": {
+            "properties": {
+              "code": {
+                "type": "string",
+                "title": "Code"
+              },
+              "message": {
+                "type": "string",
+                "title": "Message"
+              }
+            },
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "title": "ErrorBody"
+          },
+          "ErrorEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version",
+                "description": "Snapshot vigente, o `null` si no hay."
+              },
+              "error": {
+                "$ref": "#/components/schemas/ErrorBody"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "error"
+            ],
+            "title": "ErrorEnvelope"
+          }
+        }
+      }
+    }
+  },
+  {
+    "request": "GET /v1/openapi/currencies.json",
+    "status": 200,
+    "body": {
+      "openapi": "3.1.0",
+      "info": {
+        "title": "gi-common-reference: currencies",
+        "description": "Catálogo global de monedas ISO 4217, versionado y de solo lectura: identidad `currency_id`, código alfabético de resolución, nombres por `locale_id` y asociaciones Country–Currency con vigencia temporal. Sin cotizaciones, tipos de cambio, precios ni saldos.",
+        "version": "1.0.0"
+      },
+      "paths": {
+        "/v1/currencies/version": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "Versión aplicada del catálogo Currency",
+            "operationId": "getCurrencyCatalogVersion",
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/VersionEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/currencies/by-code/{code}": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "Obtener una moneda por su código alfabético ISO 4217",
+            "description": "Sin distinguir mayúsculas (`usd`). Un código mal formado (` USD`, `US`, vacío) es 422;\nuno bien formado que no existe, 404. Resuelve también las monedas `inactive`.",
+            "operationId": "getCurrencyByCode",
+            "parameters": [
+              {
+                "name": "code",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Code"
+                }
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/CurrencyEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/currencies/by-country/{country_id}/history": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "Historial completo de monedas de un país, sin filtrar por fecha",
+            "description": "Orden: inicio de vigencia (los ausentes primero), código alfabético e id.",
+            "operationId": "getCountryCurrencyHistory",
+            "parameters": [
+              {
+                "name": "country_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Country Id"
+                }
+              },
+              {
+                "name": "include_inactive",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "boolean",
+                  "description": "Incluye también los registros `inactive` (por defecto no).",
+                  "default": false,
+                  "title": "Include Inactive"
+                },
+                "description": "Incluye también los registros `inactive` (por defecto no)."
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/AssociationListEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/currencies/by-country/{country_id}": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "Monedas de un país en una fecha de referencia",
+            "description": "Un país existente sin monedas, o sin monedas en esa fecha, devuelve lista vacía; un\n`country_id` inexistente, 404.",
+            "operationId": "listCountryCurrencies",
+            "parameters": [
+              {
+                "name": "country_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Country Id"
+                }
+              },
+              {
+                "name": "as_of",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Fecha de referencia `YYYY-MM-DD` (día calendario). La vigencia `[valid_from, valid_to)` incluye el día de inicio y excluye el de fin. Por defecto, el día UTC de la consulta.",
+                  "title": "As Of"
+                },
+                "description": "Fecha de referencia `YYYY-MM-DD` (día calendario). La vigencia `[valid_from, valid_to)` incluye el día de inicio y excluye el de fin. Por defecto, el día UTC de la consulta."
+              },
+              {
+                "name": "include_inactive",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "boolean",
+                  "description": "Incluye también los registros `inactive` (por defecto no).",
+                  "default": false,
+                  "title": "Include Inactive"
+                },
+                "description": "Incluye también los registros `inactive` (por defecto no)."
+              },
+              {
+                "name": "exclude_funds",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "boolean",
+                  "description": "Excluye los códigos de fondos (BOV, CHE, CLF…).",
+                  "default": false,
+                  "title": "Exclude Funds"
+                },
+                "description": "Excluye los códigos de fondos (BOV, CHE, CLF…)."
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/AssociationListEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/currencies/{currency_id}/validation": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "Validar un currency_id: active, inactive o not_found",
+            "description": "No decide si el consumidor acepta monedas `inactive`.",
+            "operationId": "validateCurrency",
+            "parameters": [
+              {
+                "name": "currency_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Currency Id"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ValidationEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/currencies/{currency_id}/countries/history": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "Historial completo de países de una moneda, sin filtrar por fecha",
+            "operationId": "getCurrencyCountryHistory",
+            "parameters": [
+              {
+                "name": "currency_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Currency Id"
+                }
+              },
+              {
+                "name": "include_inactive",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "boolean",
+                  "description": "Incluye también los registros `inactive` (por defecto no).",
+                  "default": false,
+                  "title": "Include Inactive"
+                },
+                "description": "Incluye también los registros `inactive` (por defecto no)."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/AssociationListEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/currencies/{currency_id}/countries": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "Países de una moneda en una fecha de referencia",
+            "description": "Solo `country_id` y vigencia: los datos del país los resuelve el contrato de 003.",
+            "operationId": "listCurrencyCountries",
+            "parameters": [
+              {
+                "name": "currency_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Currency Id"
+                }
+              },
+              {
+                "name": "as_of",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Fecha de referencia `YYYY-MM-DD` (día calendario). La vigencia `[valid_from, valid_to)` incluye el día de inicio y excluye el de fin. Por defecto, el día UTC de la consulta.",
+                  "title": "As Of"
+                },
+                "description": "Fecha de referencia `YYYY-MM-DD` (día calendario). La vigencia `[valid_from, valid_to)` incluye el día de inicio y excluye el de fin. Por defecto, el día UTC de la consulta."
+              },
+              {
+                "name": "include_inactive",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "boolean",
+                  "description": "Incluye también los registros `inactive` (por defecto no).",
+                  "default": false,
+                  "title": "Include Inactive"
+                },
+                "description": "Incluye también los registros `inactive` (por defecto no)."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/AssociationListEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/currencies/{currency_id}": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "Obtener una moneda por su currency_id, cualquiera sea su status",
+            "description": "Un `currency_id` mal formado es 422; uno bien formado que no existe, 404.",
+            "operationId": "getCurrencyById",
+            "parameters": [
+              {
+                "name": "currency_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Currency Id"
+                }
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/CurrencyEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/currencies": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "Listar las monedas, ordenadas por código alfabético",
+            "operationId": "listCurrencies",
+            "parameters": [
+              {
+                "name": "include_inactive",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "boolean",
+                  "description": "Incluye también los registros `inactive` (por defecto no).",
+                  "default": false,
+                  "title": "Include Inactive"
+                },
+                "description": "Incluye también los registros `inactive` (por defecto no)."
+              },
+              {
+                "name": "exclude_funds",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "boolean",
+                  "description": "Excluye los códigos de fondos (BOV, CHE, CLF…).",
+                  "default": false,
+                  "title": "Exclude Funds"
+                },
+                "description": "Excluye los códigos de fondos (BOV, CHE, CLF…)."
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/CurrencyListEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "components": {
+        "schemas": {
+          "AssociationListEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version"
+              },
+              "data": {
+                "items": {
+                  "$ref": "#/components/schemas/CountryCurrency"
+                },
+                "type": "array",
+                "title": "Data"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "AssociationListEnvelope"
+          },
+          "CountryCurrency": {
+            "properties": {
+              "country_currency_id": {
+                "type": "string",
+                "title": "Country Currency Id",
+                "description": "Identidad de la asociación (UUID)."
+              },
+              "country_id": {
+                "type": "string",
+                "title": "Country Id",
+                "description": "UUID de un Country publicado por 003-countries."
+              },
+              "currency": {
+                "$ref": "#/components/schemas/Currency"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "inactive"
+                ],
+                "title": "Status",
+                "description": "Ciclo de vida del registro."
+              },
+              "valid_from": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Valid From",
+                "description": "Primer día en que corresponde (incluido); `null` si no está acotado."
+              },
+              "valid_to": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Valid To",
+                "description": "Primer día en que ya no corresponde (excluido); `null` sin fin declarado."
+              }
+            },
+            "type": "object",
+            "required": [
+              "country_currency_id",
+              "country_id",
+              "currency",
+              "status",
+              "valid_from",
+              "valid_to"
+            ],
+            "title": "CountryCurrency",
+            "description": "Asociación Country–Currency. `status` es el ciclo de vida del registro; la vigencia es el\nperíodo real `[valid_from, valid_to)` y no la sustituye."
+          },
+          "Currency": {
+            "properties": {
+              "currency_id": {
+                "type": "string",
+                "title": "Currency Id",
+                "description": "Identidad estable de la moneda (UUID de Reference)."
+              },
+              "alphabetic_code": {
+                "type": "string",
+                "title": "Alphabetic Code",
+                "description": "ISO 4217 alfabético (`USD`)."
+              },
+              "numeric_code": {
+                "type": "string",
+                "title": "Numeric Code",
+                "description": "ISO 4217 numérico, con ceros (`032`). Solo atributo."
+              },
+              "minor_units": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Minor Units",
+                "description": "Dígitos decimales estándar; `null` es «no aplicable» (distinto de 0)."
+              },
+              "fund_code": {
+                "type": "boolean",
+                "title": "Fund Code",
+                "description": "ISO la declara código de fondos."
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "inactive"
+                ],
+                "title": "Status",
+                "description": "`active`: apta para nuevas referencias; `inactive`: sigue resoluble."
+              },
+              "replacement_currency_ids": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "Replacement Currency Ids",
+                "description": "Monedas sucesoras (0..N), en orden ascendente de `currency_id`; vacío si no hay sucesión declarada o si la moneda es `active`."
+              },
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Name",
+                "description": "Nombre en el `locale_id` pedido, o `null`."
+              }
+            },
+            "type": "object",
+            "required": [
+              "currency_id",
+              "alphabetic_code",
+              "numeric_code",
+              "minor_units",
+              "fund_code",
+              "status",
+              "replacement_currency_ids",
+              "name"
+            ],
+            "title": "Currency",
+            "description": "Moneda ISO 4217. La identidad es `currency_id`; el código alfabético es clave de resolución.\n\nSin ningún texto propio (el nombre es de `CurrencyLocale`), ni símbolos, ni formato (D-11)."
+          },
+          "CurrencyEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version"
+              },
+              "data": {
+                "$ref": "#/components/schemas/Currency"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "CurrencyEnvelope"
+          },
+          "CurrencyListEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version",
+                "description": "Snapshot vigente; `null` si todavía no se incorporó ninguno."
+              },
+              "data": {
+                "items": {
+                  "$ref": "#/components/schemas/Currency"
+                },
+                "type": "array",
+                "title": "Data"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "CurrencyListEnvelope"
+          },
+          "ErrorBody": {
+            "properties": {
+              "code": {
+                "type": "string",
+                "title": "Code"
+              },
+              "message": {
+                "type": "string",
+                "title": "Message"
+              }
+            },
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "title": "ErrorBody"
+          },
+          "ErrorEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version",
+                "description": "Snapshot vigente, o `null` si no hay."
+              },
+              "error": {
+                "$ref": "#/components/schemas/ErrorBody"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "error"
+            ],
+            "title": "ErrorEnvelope"
+          },
+          "ValidationData": {
+            "properties": {
+              "result": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "inactive",
+                  "not_found"
+                ],
+                "title": "Result",
+                "description": "Resultado de la consulta; `not_found` nunca es un `status` persistido."
+              }
+            },
+            "type": "object",
+            "required": [
+              "result"
+            ],
+            "title": "ValidationData"
+          },
+          "ValidationEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version"
+              },
+              "data": {
+                "$ref": "#/components/schemas/ValidationData"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "ValidationEnvelope"
+          },
+          "VersionData": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version"
+            ],
+            "title": "VersionData"
+          },
+          "VersionEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version"
+              },
+              "data": {
+                "$ref": "#/components/schemas/VersionData"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "VersionEnvelope"
+          }
+        }
+      }
+    }
+  },
+  {
+    "request": "GET /v1/openapi/units.json",
+    "status": 200,
+    "body": {
+      "openapi": "3.1.0",
+      "info": {
+        "title": "gi-common-reference: units",
+        "description": "Catálogo global de magnitudes y unidades de medida, versionado y de solo lectura: identidades estables, códigos UCUM/UNECE, nombres por `locale_id` y conversión exacta entre unidades de una magnitud. Sin cantidades, precios, productos ni unidades específicas de un tenant.",
+        "version": "1.0.0"
+      },
+      "paths": {
+        "/v1/quantity-kinds/{quantity_kind_id}": {
+          "get": {
+            "tags": [
+              "quantity-kinds"
+            ],
+            "summary": "Obtener una magnitud por su quantity_kind_id, cualquiera sea su status",
+            "description": "Un id mal formado es 422; uno bien formado que no existe, 404.",
+            "operationId": "getQuantityKind",
+            "parameters": [
+              {
+                "name": "quantity_kind_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Quantity Kind Id"
+                }
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` (y `plural`) en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` (y `plural`) en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/QuantityKindEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/quantity-kinds": {
+          "get": {
+            "tags": [
+              "quantity-kinds"
+            ],
+            "summary": "Listar las magnitudes, ordenadas por código",
+            "operationId": "listQuantityKinds",
+            "parameters": [
+              {
+                "name": "include_inactive",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "boolean",
+                  "description": "Incluye también los registros `inactive` (por defecto no).",
+                  "default": false,
+                  "title": "Include Inactive"
+                },
+                "description": "Incluye también los registros `inactive` (por defecto no)."
+              },
+              {
+                "name": "code",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Igualdad exacta.",
+                  "title": "Code"
+                },
+                "description": "Igualdad exacta."
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` (y `plural`) en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` (y `plural`) en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/QuantityKindListEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/units/version": {
+          "get": {
+            "tags": [
+              "units"
+            ],
+            "summary": "Versión aplicada del catálogo Units",
+            "operationId": "getUnitsCatalogVersion",
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/VersionEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/units/{unit_id}": {
+          "get": {
+            "tags": [
+              "units"
+            ],
+            "summary": "Obtener una unidad por su unit_id, cualquiera sea su status",
+            "description": "Un `unit_id` mal formado es 422; uno bien formado que no existe, 404.",
+            "operationId": "getUnit",
+            "parameters": [
+              {
+                "name": "unit_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Unit Id"
+                }
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` (y `plural`) en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` (y `plural`) en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/UnitEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/units": {
+          "get": {
+            "tags": [
+              "units"
+            ],
+            "summary": "Listar las unidades, ordenadas por símbolo (orden binario) e id",
+            "operationId": "listUnits",
+            "parameters": [
+              {
+                "name": "quantity_kind_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Unidades asociadas (activas) a esa magnitud; 404 si no existe.",
+                  "title": "Quantity Kind Id"
+                },
+                "description": "Unidades asociadas (activas) a esa magnitud; 404 si no existe."
+              },
+              {
+                "name": "ucum_code",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Igualdad exacta.",
+                  "title": "Ucum Code"
+                },
+                "description": "Igualdad exacta."
+              },
+              {
+                "name": "unece_code",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Igualdad exacta.",
+                  "title": "Unece Code"
+                },
+                "description": "Igualdad exacta."
+              },
+              {
+                "name": "include_inactive",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "boolean",
+                  "description": "Incluye también los registros `inactive` (por defecto no).",
+                  "default": false,
+                  "title": "Include Inactive"
+                },
+                "description": "Incluye también los registros `inactive` (por defecto no)."
+              },
+              {
+                "name": "locale_id",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Devuelve `name` (y `plural`) en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale.",
+                  "title": "Locale Id"
+                },
+                "description": "Devuelve `name` (y `plural`) en este locale (UUID del catálogo de Locale). Sin traducción es `null`: no hay fallback a otro locale."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/UnitListEnvelope"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "No encontrado.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Parámetro inválido (distinto de 404).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/v1/conversions": {
+          "post": {
+            "tags": [
+              "conversions"
+            ],
+            "summary": "Convertir un valor entre dos unidades de una magnitud",
+            "description": "Conversión exacta (`Fraction`) con un único redondeo half-even a 34 dígitos. No se\ninfiere la magnitud. Sin `catalog_version` usa la vigente; con ella reproduce la\nconversión de esa versión. No escribe.",
+            "operationId": "convertQuantity",
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ConversionBody"
+                  }
+                }
+              },
+              "required": true
+            },
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ConversionEnvelope"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Solicitud rechazada; `error.code` es uno de: invalid_request, invalid_value, invalid_quantity_kind_id, invalid_unit_id, invalid_catalog_version, quantity_kind_required, quantity_kind_not_found, unit_not_found, inactive_quantity_kind, inactive_unit, incompatible_units, catalog_version_not_available, result_not_representable.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Falla técnica (distinta de 404 y 422).",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorEnvelope"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "components": {
+        "schemas": {
+          "ConversionData": {
+            "properties": {
+              "result": {
+                "type": "string",
+                "title": "Result",
+                "description": "Decimal sin exponente ni ceros finales; redondeo half-even a 34 dígitos."
+              },
+              "exact": {
+                "type": "boolean",
+                "title": "Exact",
+                "description": "`false` si el resultado se redondeó."
+              },
+              "unit_id": {
+                "type": "string",
+                "title": "Unit Id",
+                "description": "La unidad destino."
+              },
+              "quantity_kind_id": {
+                "type": "string",
+                "title": "Quantity Kind Id"
+              },
+              "catalog_version": {
+                "type": "integer",
+                "title": "Catalog Version",
+                "description": "Versión del catálogo usada para convertir."
+              }
+            },
+            "type": "object",
+            "required": [
+              "result",
+              "exact",
+              "unit_id",
+              "quantity_kind_id",
+              "catalog_version"
+            ],
+            "title": "ConversionData"
+          },
+          "ConversionEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version",
+                "description": "Versión vigente (no la usada)."
+              },
+              "data": {
+                "$ref": "#/components/schemas/ConversionData"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "ConversionEnvelope"
+          },
+          "ErrorBody": {
+            "properties": {
+              "code": {
+                "type": "string",
+                "title": "Code"
+              },
+              "message": {
+                "type": "string",
+                "title": "Message"
+              }
+            },
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "title": "ErrorBody"
+          },
+          "ErrorEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version",
+                "description": "Snapshot vigente, o `null` si no hay."
+              },
+              "error": {
+                "$ref": "#/components/schemas/ErrorBody"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "error"
+            ],
+            "title": "ErrorEnvelope"
+          },
+          "QuantityKind": {
+            "properties": {
+              "quantity_kind_id": {
+                "type": "string",
+                "title": "Quantity Kind Id",
+                "description": "Identidad estable de la magnitud (UUID)."
+              },
+              "code": {
+                "type": "string",
+                "title": "Code",
+                "description": "Código estable en minúsculas (`mass`)."
+              },
+              "conversion_type": {
+                "type": "string",
+                "enum": [
+                  "linear",
+                  "affine"
+                ],
+                "title": "Conversion Type",
+                "description": "`linear`: solo factor; `affine`: factor y desplazamiento."
+              },
+              "reference_unit_id": {
+                "type": "string",
+                "title": "Reference Unit Id",
+                "description": "Unidad de referencia de la magnitud (UUID)."
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "inactive"
+                ],
+                "title": "Status"
+              },
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Name",
+                "description": "Nombre en el `locale_id` pedido, o `null`."
+              }
+            },
+            "type": "object",
+            "required": [
+              "quantity_kind_id",
+              "code",
+              "conversion_type",
+              "reference_unit_id",
+              "status",
+              "name"
+            ],
+            "title": "QuantityKind",
+            "description": "Magnitud física. La identidad es `quantity_kind_id`; `code` es clave de resolución."
+          },
+          "QuantityKindEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version"
+              },
+              "data": {
+                "$ref": "#/components/schemas/QuantityKind"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "QuantityKindEnvelope"
+          },
+          "QuantityKindListEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version",
+                "description": "Snapshot vigente; `null` si todavía no se incorporó ninguno."
+              },
+              "data": {
+                "items": {
+                  "$ref": "#/components/schemas/QuantityKind"
+                },
+                "type": "array",
+                "title": "Data"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "QuantityKindListEnvelope"
+          },
+          "Unit": {
+            "properties": {
+              "unit_id": {
+                "type": "string",
+                "title": "Unit Id",
+                "description": "Identidad estable de la unidad (UUID)."
+              },
+              "ucum_code": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Ucum Code"
+              },
+              "unece_code": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Unece Code"
+              },
+              "symbol": {
+                "type": "string",
+                "title": "Symbol"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "inactive"
+                ],
+                "title": "Status"
+              },
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Name",
+                "description": "Nombre en el `locale_id` pedido, o `null`."
+              },
+              "plural": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Plural",
+                "description": "Plural en el `locale_id` pedido, o `null`."
+              },
+              "quantity_kinds": {
+                "items": {
+                  "$ref": "#/components/schemas/UnitQuantityKind"
+                },
+                "type": "array",
+                "title": "Quantity Kinds",
+                "description": "Magnitudes con las que está asociada la unidad."
+              }
+            },
+            "type": "object",
+            "required": [
+              "unit_id",
+              "ucum_code",
+              "unece_code",
+              "symbol",
+              "status",
+              "name",
+              "plural",
+              "quantity_kinds"
+            ],
+            "title": "Unit",
+            "description": "Unidad de medida: una sola identidad aunque se use en varias magnitudes (°C)."
+          },
+          "UnitEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version"
+              },
+              "data": {
+                "$ref": "#/components/schemas/Unit"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "UnitEnvelope"
+          },
+          "UnitListEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version"
+              },
+              "data": {
+                "items": {
+                  "$ref": "#/components/schemas/Unit"
+                },
+                "type": "array",
+                "title": "Data"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "UnitListEnvelope"
+          },
+          "UnitQuantityKind": {
+            "properties": {
+              "quantity_kind_id": {
+                "type": "string",
+                "title": "Quantity Kind Id"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "inactive"
+                ],
+                "title": "Status",
+                "description": "Estado de la asociación."
+              },
+              "reference": {
+                "type": "boolean",
+                "title": "Reference",
+                "description": "La unidad es la de referencia de esa magnitud."
+              }
+            },
+            "type": "object",
+            "required": [
+              "quantity_kind_id",
+              "status",
+              "reference"
+            ],
+            "title": "UnitQuantityKind"
+          },
+          "VersionData": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version"
+            ],
+            "title": "VersionData"
+          },
+          "VersionEnvelope": {
+            "properties": {
+              "snapshot_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Snapshot Version"
+              },
+              "data": {
+                "$ref": "#/components/schemas/VersionData"
+              }
+            },
+            "type": "object",
+            "required": [
+              "snapshot_version",
+              "data"
+            ],
+            "title": "VersionEnvelope"
+          },
+          "ConversionBody": {
+            "additionalProperties": false,
+            "description": "Cuerpo de `POST /v1/conversions`. `value` es una cadena JSON (no un número).",
+            "properties": {
+              "quantity_kind_id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Obligatoria: sin ella `quantity_kind_required`.",
+                "title": "Quantity Kind Id"
+              },
+              "value": {
+                "description": "Decimal `^-?(0|[1-9][0-9]{0,29})(\\.[0-9]{1,30})?$`. Un valor que no es cadena JSON es `invalid_value`.",
+                "title": "Value",
+                "type": "string"
+              },
+              "from_unit_id": {
+                "title": "From Unit Id",
+                "type": "string"
+              },
+              "to_unit_id": {
+                "title": "To Unit Id",
+                "type": "string"
+              },
+              "catalog_version": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Versión histórica; por defecto, la vigente.",
+                "title": "Catalog Version"
+              }
+            },
+            "required": [
+              "value",
+              "from_unit_id",
+              "to_unit_id"
+            ],
+            "title": "ConversionBody",
+            "type": "object"
+          }
+        }
+      }
+    }
+  },
+  {
+    "request": "POST /v1/conversions",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "result": "0.45359237",
+        "exact": true,
+        "unit_id": "2f2fc747-50fd-5709-a665-4fa037eea3b2",
+        "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+        "catalog_version": 1
+      }
+    }
+  },
+  {
+    "request": "POST /v1/conversions",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "result": "212",
+        "exact": true,
+        "unit_id": "59286a77-e65f-5055-97d6-dcf775bf9ab7",
+        "quantity_kind_id": "ca64bb7b-9824-5ca9-8888-b7d538630b30",
+        "catalog_version": 1
+      }
+    }
+  },
+  {
+    "request": "POST /v1/conversions",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "result": "-273.15",
+        "exact": true,
+        "unit_id": "d79e8834-8511-5935-9ad5-f828280842f7",
+        "quantity_kind_id": "ca64bb7b-9824-5ca9-8888-b7d538630b30",
+        "catalog_version": 1
+      }
+    }
+  },
+  {
+    "request": "POST /v1/conversions",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": {
+        "result": "1000",
+        "exact": true,
+        "unit_id": "3561fd3d-586a-58ed-adc5-1c8cd3b83951",
+        "quantity_kind_id": "852847bb-783d-5940-8b4f-cf7c07510ec5",
+        "catalog_version": 1
+      }
+    }
+  },
+  {
+    "request": "POST /v1/conversions",
+    "status": 422,
+    "body": {
+      "snapshot_version": 1,
+      "error": {
+        "code": "incompatible_units",
+        "message": "una de las unidades no está asociada a la magnitud"
+      }
+    }
+  },
+  {
+    "request": "GET /v1/locales",
+    "status": 200,
+    "body": {
+      "snapshot_version": 1,
+      "data": [
+        {
+          "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+          "code": "en",
+          "status": "active",
+          "iana_deprecated": false,
+          "replacement_locale_id": null
+        },
+        {
+          "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+          "code": "es",
+          "status": "active",
+          "iana_deprecated": false,
+          "replacement_locale_id": null
+        },
+        {
+          "locale_id": "b8756f67-cbc0-4499-b3b6-453605c505b2",
+          "code": "fr",
+          "status": "active",
+          "iana_deprecated": false,
+          "replacement_locale_id": null
+        }
+      ]
+    }
+  },
+  {
+    "request": "GET /v1/countries/c756eac0-5950-5d6d-b9eb-86c92a68a5ad",
+    "status": 200,
+    "body": {
+      "snapshot_version": 2,
+      "data": {
+        "country_id": "c756eac0-5950-5d6d-b9eb-86c92a68a5ad",
+        "alpha2": "PR",
+        "alpha3": "PRI",
+        "numeric_code": "630",
+        "status": "inactive",
+        "replacement_country_ids": [],
+        "region_id": "29786b02-6ca2-5d40-9c90-17e6bdf27303",
+        "subregion_id": "1cc20843-3e0c-5637-b7a4-d220f48c2291",
+        "calling_code": "1",
+        "name": null,
+        "official_name": null
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/by-code/USD",
+    "status": 200,
+    "body": {
+      "snapshot_version": 2,
+      "data": {
+        "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+        "alphabetic_code": "USD",
+        "numeric_code": "840",
+        "minor_units": 2,
+        "fund_code": false,
+        "status": "active",
+        "replacement_currency_ids": [],
+        "name": null
+      }
+    }
+  },
+  {
+    "request": "GET /v1/currencies/12c3be84-c22e-5d01-adbf-f28c3aeb0807/countries",
+    "status": 200,
+    "body": {
+      "snapshot_version": 2,
+      "data": [
+        {
+          "country_currency_id": "01906231-bc73-58fb-b24d-ed37d2d8b6db",
+          "country_id": "71705c97-1868-546f-a495-8ba94dce51a7",
+          "currency": {
+            "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+            "alphabetic_code": "USD",
+            "numeric_code": "840",
+            "minor_units": 2,
+            "fund_code": false,
+            "status": "active",
+            "replacement_currency_ids": [],
+            "name": null
+          },
+          "status": "active",
+          "valid_from": null,
+          "valid_to": null
+        }
+      ]
+    }
+  },
+  {
+    "request": "GET /v1/currencies/12c3be84-c22e-5d01-adbf-f28c3aeb0807/countries/history",
+    "status": 200,
+    "body": {
+      "snapshot_version": 2,
+      "data": [
+        {
+          "country_currency_id": "01906231-bc73-58fb-b24d-ed37d2d8b6db",
+          "country_id": "71705c97-1868-546f-a495-8ba94dce51a7",
+          "currency": {
+            "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+            "alphabetic_code": "USD",
+            "numeric_code": "840",
+            "minor_units": 2,
+            "fund_code": false,
+            "status": "active",
+            "replacement_currency_ids": [],
+            "name": null
+          },
+          "status": "active",
+          "valid_from": null,
+          "valid_to": null
+        },
+        {
+          "country_currency_id": "b79074ab-8dbd-5e70-b59c-c4cfbcf2f384",
+          "country_id": "c756eac0-5950-5d6d-b9eb-86c92a68a5ad",
+          "currency": {
+            "currency_id": "12c3be84-c22e-5d01-adbf-f28c3aeb0807",
+            "alphabetic_code": "USD",
+            "numeric_code": "840",
+            "minor_units": 2,
+            "fund_code": false,
+            "status": "active",
+            "replacement_currency_ids": [],
+            "name": null
+          },
+          "status": "active",
+          "valid_from": "1899-01-01",
+          "valid_to": "2026-01-01"
+        }
+      ]
+    }
+  }
+]

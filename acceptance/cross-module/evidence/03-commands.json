@@ -1,0 +1,296 @@
+[
+  {
+    "command": "python -m alembic upgrade head",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.locales.interfaces.cli incorporate <work>\\locales-v1.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=1 (3 nuevos, 0 actualizados)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.regions.interfaces.cli incorporate <work>\\regions-v1.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=1 (locale_snapshot_version=1; 3 regiones nuevas, 4 subregiones nuevas, 0 actualizaciones, 0 reclasificaciones, 0 recodificaciones)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.countries.interfaces.cli incorporate <work>\\countries-v1.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=1 (locale_snapshot_version=1; region_snapshot_version=1; 8 países nuevos, 0 actualizaciones, 0 recodificaciones)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\currencies-v1.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=1 (locale_snapshot_version=1; country_snapshot_version=1; 5 monedas nuevas, 0 actualizadas, 10 localizaciones, 3 asociaciones nuevas, 0 asociaciones actualizadas)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.units.interfaces.cli incorporate <work>\\units-v1.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=1 (locale_snapshot_version=1; ucum_table_version=2.2; 50 unidades nuevas, 0 actualizadas, 14 magnitudes nuevas, 0 actualizadas, 54 asociaciones nuevas, 0 actualizadas, 128 localizaciones)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m alembic current",
+    "exit_code": 0,
+    "stdout": "0005 (head)",
+    "stderr": ""
+  },
+  {
+    "command": "verificación del grafo (FKs, specs, migraciones, imports)",
+    "exit_code": 0,
+    "stdout": "[[\"countries\", \"locales\"], [\"countries\", \"regions\"], [\"currencies\", \"countries\"], [\"currencies\", \"locales\"], [\"regions\", \"locales\"], [\"units\", \"locales\"]]",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.countries.interfaces.cli diff <work>\\countries-v1.json",
+    "exit_code": 0,
+    "stdout": "NO-OP snapshot_version=1 ya incorporado: sin cambios",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli diff <work>\\currencies-v1.json",
+    "exit_code": 0,
+    "stdout": "NO-OP snapshot_version=1 ya incorporado: sin cambios",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.units.interfaces.cli diff <work>\\units-v1.json",
+    "exit_code": 0,
+    "stdout": "NO-OP snapshot_version=1 ya incorporado: sin cambios",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.locales.interfaces.cli incorporate <work>\\locales-v1-again.json",
+    "exit_code": 0,
+    "stdout": "NO-OP snapshot_version=1 ya incorporado",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.regions.interfaces.cli incorporate <work>\\regions-v1-again.json",
+    "exit_code": 0,
+    "stdout": "NO-OP snapshot_version=1 ya incorporado",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.countries.interfaces.cli incorporate <work>\\countries-v1-again.json",
+    "exit_code": 0,
+    "stdout": "NO-OP snapshot_version=1 ya incorporado",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\currencies-v1-again.json",
+    "exit_code": 0,
+    "stdout": "NO-OP snapshot_version=1 ya incorporado",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.units.interfaces.cli incorporate <work>\\units-v1-again.json",
+    "exit_code": 0,
+    "stdout": "NO-OP snapshot_version=1 ya incorporado",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.countries.interfaces.cli incorporate <work>\\country-ghost-region.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=2\n  - RF-6: país 35be21fd-7ddb-5ffb-b954-c8c9f87519d9 (BV): la region_id 00000000-0000-4000-8000-000000000000 no existe en Region/Subregion"
+  },
+  {
+    "command": "python -m gi_common_reference.countries.interfaces.cli incorporate <work>\\country-future-regions.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=2\n  - RF-47: la versión 2 de Region/Subregion declarada es posterior a la vigente (1)"
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\currency-ghost-country.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=2\n  - RF-40: la asociación 8a6546bb-b765-5c11-bec7-6fd84b1c440a referencia un country_id inexistente: 00000000-0000-4000-8000-000000000000"
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\currency-future-countries.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=2\n  - RF-41: la country_snapshot_version 2 declarada no está incorporada"
+  },
+  {
+    "command": "python -m gi_common_reference.units.interfaces.cli incorporate <work>\\units-ghost-locale.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=2\n  - RF-18: la localización de la unidad 2f2fc747-50fd-5709-a665-4fa037eea3b2 (00000000-0000-4000-8000-000000000000) usa el locale inexistente 00000000-0000-4000-8000-000000000000"
+  },
+  {
+    "command": "python -m gi_common_reference.regions.interfaces.cli incorporate <work>\\regions-ghost-locale.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=2\n  - RF-28: nombre de Region 29786b02-6ca2-5d40-9c90-17e6bdf27303 en 00000000-0000-4000-8000-000000000000: el locale no existe en Locale"
+  },
+  {
+    "command": "SQL directo (rol dueño)",
+    "exit_code": 0,
+    "stdout": "INSERT INTO reference.region_locale (region_id, locale_id, name) SELECT region_id, locale_id, name FROM jsonb_populate_record(NULL::reference.region_locale, (SELECT to_jsonb(t) || jsonb_build_object('locale_id', %s::text) FROM reference.region_locale t LIMIT 1)) ['00000000-0000-4000-8000-000000000000'] -> 23503\nINSERT INTO reference.subregion_locale (subregion_id, locale_id, name) SELECT subregion_id, locale_id, name FROM jsonb_populate_record(NULL::reference.subregion_locale, (SELECT to_jsonb(t) || jsonb_build_object('locale_id', %s::text) FROM reference.subregion_locale t LIMIT 1)) ['00000000-0000-4000-8000-000000000000'] -> 23503\nINSERT INTO reference.country_locale (country_id, locale_id, name, official_name) SELECT country_id, locale_id, name, official_name FROM jsonb_populate_record(NULL::reference.country_locale, (SELECT to_jsonb(t) || jsonb_build_object('locale_id', %s::text) FROM reference.country_locale t LIMIT 1)) ['00000000-0000-4000-8000-000000000000'] -> 23503\nINSERT INTO reference.currency_locale (currency_id, locale_id, name) SELECT currency_id, locale_id, name FROM jsonb_populate_record(NULL::reference.currency_locale, (SELECT to_jsonb(t) || jsonb_build_object('locale_id', %s::text) FROM reference.currency_locale t LIMIT 1)) ['00000000-0000-4000-8000-000000000000'] -> 23503\nINSERT INTO reference.unit_locale (unit_id, locale_id, name, plural) SELECT unit_id, locale_id, name, plural FROM jsonb_populate_record(NULL::reference.unit_locale, (SELECT to_jsonb(t) || jsonb_build_object('locale_id', %s::text) FROM reference.unit_locale t LIMIT 1)) ['00000000-0000-4000-8000-000000000000'] -> 23503\nINSERT INTO reference.quantity_kind_locale (quantity_kind_id, locale_id, name) SELECT quantity_kind_id, locale_id, name FROM jsonb_populate_record(NULL::reference.quantity_kind_locale, (SELECT to_jsonb(t) || jsonb_build_object('locale_id', %s::text) FROM reference.quantity_kind_locale t LIMIT 1)) ['00000000-0000-4000-8000-000000000000'] -> 23503\nINSERT INTO reference.country_currency (country_currency_id, country_id, currency_id, status, valid_from, valid_to, first_snapshot_version, last_changed_snapshot_version) SELECT country_currency_id, country_id, currency_id, status, valid_from, valid_to, first_snapshot_version, last_changed_snapshot_version FROM jsonb_populate_record(NULL::reference.country_currency, (SELECT to_jsonb(t) || jsonb_build_object('country_currency_id', %s::text, 'country_id', %s::text) FROM reference.country_currency t LIMIT 1)) ['6f1f9a3c-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000000'] -> 23503\nUPDATE reference.country SET region_id = %s WHERE alpha2 = 'AR' ['00000000-0000-4000-8000-000000000000'] -> 23503\nUPDATE reference.country_locale SET locale_id = %s ['b8756f67-cbc0-4499-b3b6-453605c505b2'] -> 23001\nUPDATE reference.country_currency SET country_id = %s ['856b1b92-68d7-5d9f-abb1-54613bea3e90'] -> 23001\nDELETE FROM reference.locale WHERE locale_id = %s ['7d74e7f4-4dd7-4a85-a540-09d2393b9a91'] -> 23001\nDELETE FROM reference.region WHERE region_id = %s ['29786b02-6ca2-5d40-9c90-17e6bdf27303'] -> 23001\nDELETE FROM reference.country WHERE country_id = %s ['fe4be564-5597-5c73-b0c0-18ad9209f207'] -> 23001\nDELETE FROM reference.currency WHERE currency_id = %s ['12c3be84-c22e-5d01-adbf-f28c3aeb0807'] -> 23001\nDELETE FROM reference.unit WHERE unit_id = %s ['2f2fc747-50fd-5709-a665-4fa037eea3b2'] -> 23001",
+    "stderr": ""
+  },
+  {
+    "command": "python -m alembic upgrade head",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.regions.interfaces.cli incorporate <work>\\early-regions.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=1\n  - RF-38: el catálogo de Locale no tiene ningún snapshot incorporado"
+  },
+  {
+    "command": "python -m gi_common_reference.countries.interfaces.cli incorporate <work>\\early-countries.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=1\n  - RF-36: el catálogo de Locale no tiene ningún snapshot incorporado\n  - RF-47: el catálogo Region/Subregion no tiene ningún snapshot incorporado"
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\early-currencies.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=1\n  - RF-13: no hay una versión vigente del catálogo de Locale\n  - RF-40: no hay una versión vigente del catálogo Countries"
+  },
+  {
+    "command": "python -m gi_common_reference.units.interfaces.cli incorporate <work>\\early-units.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=1\n  - RF-19: no hay una versión vigente del catálogo de Locale"
+  },
+  {
+    "command": "python -m gi_common_reference.locales.interfaces.cli incorporate <work>\\locales.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=1 (3 nuevos, 0 actualizados)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.countries.interfaces.cli incorporate <work>\\c-early.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=1\n  - RF-47: el catálogo Region/Subregion no tiene ningún snapshot incorporado"
+  },
+  {
+    "command": "python -m gi_common_reference.regions.interfaces.cli incorporate <work>\\regions.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=1 (locale_snapshot_version=1; 3 regiones nuevas, 4 subregiones nuevas, 0 actualizaciones, 0 reclasificaciones, 0 recodificaciones)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\k-early.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=1\n  - RF-40: no hay una versión vigente del catálogo Countries"
+  },
+  {
+    "command": "python -m gi_common_reference.countries.interfaces.cli incorporate <work>\\countries.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=1 (locale_snapshot_version=1; region_snapshot_version=1; 8 países nuevos, 0 actualizaciones, 0 recodificaciones)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\currencies.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=1 (locale_snapshot_version=1; country_snapshot_version=1; 5 monedas nuevas, 0 actualizadas, 10 localizaciones, 3 asociaciones nuevas, 0 asociaciones actualizadas)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.units.interfaces.cli incorporate <work>\\units.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=1 (locale_snapshot_version=1; ucum_table_version=2.2; 50 unidades nuevas, 0 actualizadas, 14 magnitudes nuevas, 0 actualizadas, 54 asociaciones nuevas, 0 actualizadas, 128 localizaciones)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m alembic downgrade base",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": "python -m alembic upgrade head",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.locales.interfaces.cli incorporate <work>\\again-locales.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=1 (3 nuevos, 0 actualizados)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.regions.interfaces.cli incorporate <work>\\again-regions.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=1 (locale_snapshot_version=1; 3 regiones nuevas, 4 subregiones nuevas, 0 actualizaciones, 0 reclasificaciones, 0 recodificaciones)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.countries.interfaces.cli incorporate <work>\\again-countries.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=1 (locale_snapshot_version=1; region_snapshot_version=1; 8 países nuevos, 0 actualizaciones, 0 recodificaciones)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\again-currencies.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=1 (locale_snapshot_version=1; country_snapshot_version=1; 5 monedas nuevas, 0 actualizadas, 10 localizaciones, 3 asociaciones nuevas, 0 asociaciones actualizadas)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.units.interfaces.cli incorporate <work>\\again-units.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=1 (locale_snapshot_version=1; ucum_table_version=2.2; 50 unidades nuevas, 0 actualizadas, 14 magnitudes nuevas, 0 actualizadas, 54 asociaciones nuevas, 0 actualizadas, 128 localizaciones)",
+    "stderr": ""
+  },
+  {
+    "command": "git diff --stat origin/feature/005-units-of-measure -- <código, migraciones, contratos, specs 001-005>",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli check-integrity",
+    "exit_code": 0,
+    "stdout": "INTEGRO: ninguna asociación active abierta sobre un Country o Currency inactive",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.countries.interfaces.cli incorporate <work>\\countries-v2-retire-pr.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=2 (locale_snapshot_version=1; region_snapshot_version=1; 0 países nuevos, 1 actualizaciones, 0 recodificaciones)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli check-integrity",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "INTEGRIDAD VIOLADA: 1 asociación(es) (RF-19)\n  - b79074ab-8dbd-5e70-b59c-c4cfbcf2f384: country_id=c756eac0-5950-5d6d-b9eb-86c92a68a5ad currency_id=12c3be84-c22e-5d01-adbf-f28c3aeb0807: Country inactive"
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\currencies-v2-stale.json",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "RECHAZADO snapshot_version=2\n  - RF-19: la asociación b79074ab-8dbd-5e70-b59c-c4cfbcf2f384 está active y abierta sobre un Country inactive; cierre su vigencia (RF-46)"
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli incorporate <work>\\currencies-v2-close-pr.json",
+    "exit_code": 0,
+    "stdout": "INCORPORADO snapshot_version=2 (locale_snapshot_version=1; country_snapshot_version=2; 0 monedas nuevas, 0 actualizadas, 0 localizaciones, 0 asociaciones nuevas, 1 asociaciones actualizadas)",
+    "stderr": ""
+  },
+  {
+    "command": "python -m gi_common_reference.currencies.interfaces.cli check-integrity",
+    "exit_code": 0,
+    "stdout": "INTEGRO: ninguna asociación active abierta sobre un Country o Currency inactive",
+    "stderr": ""
+  }
+]
