@@ -2,7 +2,7 @@
 
 Estado vivo y verificable (AGENTS.md). El estado sale de este archivo, `tasks.md`, git y los comandos citados.
 
-- Rama: `feature/006-cross-module-acceptance` · base `feature/005-units-of-measure` `50efb12` (005 completa + lock AI-NATIVE v4.0.1) · AI-NATIVE CLI v4.0.1 / lock v4.0.1
+- Rama: `feature/006-cross-module-acceptance` · base `feature/005-units-of-measure` `212016a` (005 completa + lock AI-NATIVE v4.0.1; rebasada desde `50efb12`) · AI-NATIVE CLI v4.0.1 / lock v4.0.1
 - Merge: después de #10 (005). Sin cambios de producto.
 
 ## Gates
@@ -32,9 +32,18 @@ Estado vivo y verificable (AGENTS.md). El estado sale de este archivo, `tasks.md
 ### T6 — verificación y regresión (done)
 - `ruff format --check .`, `ruff check .`, `mypy` strict: PASS. `sdd validate 006-cross-module-acceptance`: PASS. `hitl --base feature/005-units-of-measure`: PASS (riesgo high, `human_gate: required`).
 - Regresión sobre la revisión de 006: aceptaciones de 004 y 005 (`tests/acceptance/test_currency_acceptance.py`, `test_units_acceptance.py`, `ACCEPTANCE_BASE=origin/develop`) → 31 passed.
-- Suite completa: corrida por la plataforma sobre 005 `50efb12` (3496 passed, 0 failed); 006 solo agrega archivos de prueba/doc nuevos (CA-14).
+- Suite oficial completa por la plataforma (`sdd review validate --base 212016a`, `PYTHONUTF8=1`) sobre la revisión `sha256:afb8ba94…` (`f867a38`): **3524 passed, 0 failed, 0 skipped** (3496 de 005 + 28 de 006), 2831 s. 005 sobre su revisión final: 3496 passed.
 
 - CA-14 comparaba contra la punta de `origin/feature/005-units-of-measure`; al registrar la revisión de 005 (`reviews.jsonl`) esa punta avanzó y la prueba habría fallado sin que 006 tocara nada. Ahora compara contra el merge-base (`ec55d6c`); mutación: una línea añadida a `units/__init__.py` → FAIL; restaurada → PASS.
+
+## Revisión independiente
+- Ronda 1 (nonce `2f2c712f809dd652ec589b73`, revisión `sha256:afb8ba94…`): **APPROVED**, 5 hallazgos no bloqueantes. Atendidos después:
+  1. CA-9 no verificaba el motivo de los rechazos → ahora exige exit 1, `RECHAZADO` y el texto de dependencia ausente (`RF-n: el catálogo … no tiene ningún snapshot` / `no hay una versión vigente`); los dos parciales, `RF-47` y `RF-40` exactos.
+  2. CA-13 solo leía el log del stack compartido → `assert_no_network` también al final de `test_09` (base nueva) y de `test_15`.
+  3. CA-15: el rechazo de Currency v2 sobre Countries v1 ahora exige su motivo real, `RF-19` con la asociación PR–USD (la deriva se exige reparar), no solo exit 1.
+  4. Las 2 mutaciones del grafo eran manuales → automatizadas en `test_02` (`graph_diff` sobre el grafo declarado mutado en memoria).
+  5. Deriva documental (`plan.md` D9, base `50efb12`) corregida; el runner registra también el merge-base que usa CA-14.
+- Incidente no reproducible: una ejecución aislada de `test_09`+`test_15` durante la verificación de estos cambios tardó 2 h 35 min y `test_15` falló sin que la salida filtrada mostrara la causa. Reejecutados de inmediato: `test_15` solo → passed (2 min); `test_09`+`test_15` → 2 passed (2 min 25 s). Causa no determinada (probablemente del entorno: Docker/host); se declara, no se da por explicada.
 
 ## Pendientes declarados
 - `GET /v1/countries/{id}/flag` en caja negra: NOT_EXECUTED (sin SVG empaquetados hasta PREP).

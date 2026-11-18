@@ -42,6 +42,10 @@ pytest_plugins = ["tests.acceptance.cross_module_support"]
 
 EN, ES, FR = regions_fx.EN, regions_fx.ES, regions_fx.FR
 GHOST = "00000000-0000-4000-8000-000000000000"
+# Rechazo por dependencia ausente (texto de las CLIs de 002–005).
+MISSING_DEPENDENCY = re.compile(
+    r"RF-\d+: (el catálogo .* no tiene ningún snapshot|no hay una versión vigente)"
+)
 GRAPH_DATA: dict[str, Any] = json.loads(GRAPH.read_text("utf-8"))
 MODULES: dict[str, Any] = GRAPH_DATA["modules"]
 OPENAPI = {
@@ -83,6 +87,24 @@ def owner_of(table: str) -> str:
     owners = [name for name, module in MODULES.items() if table in module["tables"]]
     assert len(owners) == 1, (table, owners)
     return owners[0]
+
+
+def declared_edges(modules: dict[str, Any]) -> set[tuple[str, str]]:
+    return {(m, d) for m, module in modules.items() for d in module["dependsOn"]}
+
+
+def graph_diff(
+    real: set[tuple[str, str]], declared: set[tuple[str, str]]
+) -> dict[str, set[tuple[str, str]]]:
+    """Aristas entre módulos que difieren entre la base real y el grafo declarado."""
+    diff = {"solo en la base": real - declared, "solo declarado": declared - real}
+    return {key: value for key, value in diff.items() if value}
+
+
+def assert_no_network(stack: ReferenceStack) -> None:
+    """CA-13: el guard de red no registró ningún intento de salir de localhost."""
+    log = stack.net_log.read_text("utf-8") if stack.net_log.exists() else ""
+    assert log == "", log
 
 
 def enable_logins(stack: ReferenceStack) -> None:
@@ -143,8 +165,17 @@ def test_02_dependency_graph_matches_the_real_system(reference_stack: ReferenceS
             "WHERE c.contype = 'f' AND n.nspname = 'reference'"
         ).fetchall()
     real = {(owner_of(a), owner_of(b)) for a, b in fks if owner_of(a) != owner_of(b)}
-    declared = {(m, d) for m, module in MODULES.items() for d in module["dependsOn"]}
-    assert real == declared, {"solo en la base": real - declared, "solo declarado": declared - real}
+    declared = declared_edges(MODULES)
+    assert graph_diff(real, declared) == {}, graph_diff(real, declared)
+    # Mutaciones automáticas del grafo declarado: una arista inventada y una omitida se detectan.
+    invented = {**MODULES, "units": {**MODULES["units"], "dependsOn": ["locales", "countries"]}}
+    assert graph_diff(real, declared_edges(invented)) == {
+        "solo declarado": {("units", "countries")}
+    }
+    omitted = {**MODULES, "currencies": {**MODULES["currencies"], "dependsOn": ["locales"]}}
+    assert graph_diff(real, declared_edges(omitted)) == {
+        "solo en la base": {("currencies", "countries")}
+    }
 
     order = GRAPH_DATA["incorporationOrder"]
     assert tuple(order) == ORDER and set(order) == set(MODULES)
@@ -483,12 +514,18 @@ def test_09_runtime_enforces_the_dependency_order(blank_stack: ReferenceStack) -
         early = stack.incorporate(module, documents[module], f"early-{module}.json")
         assert early.returncode != 0, (module, early.stdout, early.stderr)
         assert "Traceback" not in early.stderr, (module, early.stderr)
+        assert early.returncode == 1 and "RECHAZADO" in early.stdout + early.stderr
+        assert MISSING_DEPENDENCY.search(early.stdout + early.stderr), (module, early.stderr)
     assert stack.fingerprint() == empty
     # Countries sin Regions aunque Locale ya esté; Currency sin Countries aunque Regions esté.
     assert stack.incorporate("locales", documents["locales"], "locales.json").returncode == 0
-    assert stack.incorporate("countries", documents["countries"], "c-early.json").returncode != 0
+    partial = stack.incorporate("countries", documents["countries"], "c-early.json")
+    assert partial.returncode == 1, (partial.stdout, partial.stderr)
+    assert "RF-47: el catálogo Region/Subregion no tiene ningún snapshot" in partial.stderr
     assert stack.incorporate("regions", documents["regions"], "regions.json").returncode == 0
-    assert stack.incorporate("currencies", documents["currencies"], "k-early.json").returncode != 0
+    partial = stack.incorporate("currencies", documents["currencies"], "k-early.json")
+    assert partial.returncode == 1, (partial.stdout, partial.stderr)
+    assert "RF-40: no hay una versión vigente del catálogo Countries" in partial.stderr
     for module in ("countries", "currencies", "units"):
         done = stack.incorporate(module, documents[module], f"{module}.json")
         assert done.returncode == 0, (module, done.stdout, done.stderr)
@@ -507,6 +544,7 @@ def test_09_runtime_enforces_the_dependency_order(blank_stack: ReferenceStack) -
     for module in ORDER:
         done = stack.incorporate(module, documents[module], f"again-{module}.json")
         assert done.returncode == 0, (module, done.stdout, done.stderr)
+    assert_no_network(stack)  # CA-13 también para la base nueva (alembic y CLIs de este caso)
 
 
 def test_10_the_api_is_read_only_and_roles_are_least_privilege(
@@ -603,8 +641,7 @@ def test_13_no_process_reached_outside_localhost(reference_stack: ReferenceStack
     """CA-13: CLIs, migraciones y API corrieron con el guard de red: nada salió de localhost."""
     stack = reference_stack
     stack.get("/v1/locales")
-    log = stack.net_log.read_text("utf-8") if stack.net_log.exists() else ""
-    assert log == ""
+    assert_no_network(stack)
 
 
 def test_14_006_does_not_modify_product_code_or_existing_tests(
@@ -687,6 +724,8 @@ def test_15_country_retirement_drift_is_detected_and_repaired_across_modules(
     stale = currency_snapshot(2, country_snapshot_version=1)
     rejected = stack.incorporate("currencies", stale, "currencies-v2-stale.json")
     assert rejected.returncode == 1, (rejected.stdout, rejected.stderr)
+    assert "RF-19" in rejected.stderr, rejected.stderr  # la deriva se exige reparar
+    assert currencies_fx.association_id("PR", "USD") in rejected.stderr
 
     repaired = currencies_closing_pr()
     done = stack.incorporate("currencies", repaired, "currencies-v2-close-pr.json")
@@ -702,3 +741,4 @@ def test_15_country_retirement_drift_is_detected_and_repaired_across_modules(
     status, body = stack.get(f"/v1/currencies/{usd}/countries/history")
     assert status == 200, body
     assert countries_fx.country_id("PR") in {row["country_id"] for row in items(body)}
+    assert_no_network(stack)  # CA-13 también para los procesos de este caso

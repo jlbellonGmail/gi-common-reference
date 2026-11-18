@@ -58,6 +58,7 @@ def environment(base: str) -> str:
             f"python: {platform.python_version()} ({platform.system()})",
             f"git HEAD: {run('git', 'rev-parse', 'HEAD')}",
             f"git base ({base}): {run('git', 'rev-parse', base)}",
+            f"merge-base con HEAD (base de CA-14): {run('git', 'merge-base', base, 'HEAD')}",
             "ai-native (launcher del repositorio): "
             + run("node", ".ai-native/ai-native.mjs", "version").splitlines()[0],
             "base de datos: postgres:16-alpine (testcontainers, descartable)",

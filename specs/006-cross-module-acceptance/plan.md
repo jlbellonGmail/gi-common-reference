@@ -6,7 +6,7 @@
 
 ## Precondición
 
-`feature/006-cross-module-acceptance` parte de `feature/005-units-of-measure` (`50efb12`: 005 completa + lock AI-NATIVE v4.0.1), porque necesita los cinco catálogos. Se mergea **después** de #10 (005); hasta entonces su diff contra `develop` incluye 005.
+`feature/006-cross-module-acceptance` parte de `feature/005-units-of-measure` (`212016a`: 005 completa, lock AI-NATIVE v4.0.1 y re-cierre), porque necesita los cinco catálogos. Se mergea **después** de #10 (005); hasta entonces su diff contra `develop` incluye 005.
 
 ## Diseño
 
@@ -20,7 +20,7 @@
 | D6 Rechazos con motivo | CA-7 exige exit 1, `RECHAZADO`, el motivo esperado y ausencia de «omite» | Evita falsos PASS por rechazos ajenos (detectado al implementar: 3 de 6 casos fallaban por omisión de datos publicados). |
 | D7 FK vs. trigger | CA-8 inserta filas NUEVAS clonadas con la referencia rota y exige 23503; cambios/borrados aparte (23001) | Distingue integridad referencial de inmutabilidad. |
 | D8 Evidencia | `tools/acceptance/cross_module_acceptance.py` → `acceptance/cross-module/evidence/01–06`, `-text` en `.gitattributes` | Manifiesto sha256 estable entre plataformas (criterio de 004/005). |
-| D9 Base del diff (CA-14) | `CROSS_ACCEPTANCE_BASE` o, por defecto, `origin/feature/005-units-of-measure` → `origin/develop` | Mientras 005 no esté en `develop`, la base es su punta. |
+| D9 Base del diff (CA-14) | merge-base de HEAD con `CROSS_ACCEPTANCE_BASE` o, por defecto, con `origin/feature/005-units-of-measure` → `origin/develop` (lo que 006 introduce, no la punta móvil de la base) | Mientras 005 no esté en `develop`, la base es su punta. |
 
 ## Archivos
 

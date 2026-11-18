@@ -32,7 +32,7 @@ Cada catálogo tiene su suite y, 004 y 005, su aceptación caja negra. Pero ning
 ## Criterios de aceptación
 
 - CA-1. `alembic current` = `0005 (head)`; cada tabla de `reference` tiene un único módulo dueño; ninguna columna `tenant_id`; `anon`/`authenticated`/`PUBLIC` sin privilegios; `reference_reader` solo `SELECT`. Prueba: `test_01`.
-- CA-2. Grafo declarado = FKs reales entre módulos = specs («Depende de») = cadena 0001→0005 = `architecture.json`; orden topológico; ningún módulo importa el paquete de otro. Prueba: `test_02` (+2 mutaciones).
+- CA-2. Grafo declarado = FKs reales entre módulos = specs («Depende de») = cadena 0001→0005 = `architecture.json`; orden topológico; ningún módulo importa el paquete de otro. Prueba: `test_02` (incluye 2 mutaciones automáticas del grafo).
 - CA-3. Las cinco CLIs incorporan v1 en orden (exit 0); `diff` (countries, currencies, units) no escribe; una versión por catálogo. Prueba: `test_03`.
 - CA-4. Reincorporar los cinco snapshots idénticos es un no-op (dump lógico idéntico). Prueba: `test_04`.
 - CA-5. Un consumidor navega por identidades estables: Locale `es` → País AR → Región 019 / Subregión 419 (padre coherente) → monedas de AR (ARS) → países de USD (US, PR), cada uno resoluble → unidades de `mass` → conversión 1 lb → kg = `0.45359237` exacta. Prueba: `test_05`.

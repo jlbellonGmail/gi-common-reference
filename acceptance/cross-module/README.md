@@ -24,7 +24,7 @@ Resultado de la ejecución registrada en `evidence/` (revisión en `01-environme
 | Criterio | Qué demuestra | Estado |
 |---|---|---|
 | CA-1 | head `0005`; dueño único por tabla; sin `tenant_id`; sin privilegios públicos; reader solo `SELECT` | PASS |
-| CA-2 | grafo = FKs reales = specs = migraciones = `architecture.json`; sin imports entre módulos | PASS (+2 mutaciones detectadas) |
+| CA-2 | grafo = FKs reales = specs = migraciones = `architecture.json`; sin imports entre módulos | PASS (incluye 2 mutaciones automáticas del grafo) |
 | CA-3 | cinco CLIs en orden; `diff` no escribe | PASS |
 | CA-4 | reincorporación idempotente (dump idéntico) | PASS |
 | CA-5 | navegación Locale → País → Región/Subregión → Moneda → Units; 1 lb → kg exacto | PASS |
