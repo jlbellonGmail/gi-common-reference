@@ -1,0 +1,17 @@
+{
+  "prereq-locales.json": "sha256:67b2008d461bfcdf9af0d19941cf53e48b5f71a28a3e26b6f0e6bf6a90dfa075",
+  "rejected-digest-adulterado.json": "sha256:b8ac5b5a0f1ab29b33eca565426d438183f1e087edf9b3afa943881007fc208b",
+  "rejected-factor-distinto-del-normativo.json": "sha256:36fec093842d01ea5a91c604e36928f293fd5209056db4ea150c532f47cea95c",
+  "rejected-misma-version-otro-digest.json": "sha256:516ac155233d7659dd06c8c6562c8873b66c49c439b11afeb3d27120ad57f034",
+  "rejected-omision-de-una-unidad-publicada.json": "sha256:4593f57f2683c7a05f71bb96f5eedb4e94c176279a81da939157e74b932fb9b0",
+  "rejected-ucum-atomo-desconocido.json": "sha256:2e30dc3f3f9ce2a6efe4b8c2b47b219c6e773c6fc8adbfdc55eb6608a69e12d5",
+  "rejected-ucum-factor-declarado-distinto.json": "sha256:3930ebfb573c08940bdcfd9b9abb5f8493690de2b48d258abba1d475e96ad547",
+  "rejected-ucum-prefijo-sobre-no-metrico.json": "sha256:3831198ee6ae21734b30e8f04288b2a330ab96e2c74ec609940fbe40d79a0a39",
+  "rejected-ucum-publicado-cambiado.json": "sha256:f42e4536914b0749140507d2ecc3e72f9159c71186c56b0eb4bef8aac27fc5e2",
+  "rejected-ucum-sintaxis.json": "sha256:faec0839a89dccd69c5d6edfb44f8d65a4f448fad32e0cad24506e1407850b1f",
+  "rejected-version-anterior.json": "sha256:eddc2787ed36ca15cc103147ad8684acdc016fc6288480bb19f004a2ba55baf0",
+  "ucum-essence.xml": "sha256:dfccea1b5dc284245ebae97edd1dc03c45864da4e87df55bc9851797b4fd0b61",
+  "units-snapshot-2.json": "sha256:904664b73c79e4189a306a89a355133fcc824b913a6a320bf18a8f39a3021ef9",
+  "units-snapshot-3.json": "sha256:af2b3d2dcf1580d8d815bf44561b185e5c881f183f012d8e786adabf2637af22",
+  "units-snapshot.v1.example.json": "sha256:b92bf2c2f0b645c468d49d9e320b386b9369ef66867a2bff53cfcd33a915859b"
+}

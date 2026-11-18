@@ -7,3 +7,7 @@ tests/fixtures/flags/*.svg -text
 
 # Evidencia de la aceptación de 004-currency: bytes exactos (sumas de verificación del manifiesto).
 acceptance/currencies/evidence/* -text
+
+# Tabla UCUM redistribuida sin modificar (UCUM License v1.1): bytes exactos, sin conversión de fin de línea.
+src/gi_common_reference/units/infrastructure/ucum/ucum-essence.xml -text
+acceptance/units/evidence/* -text

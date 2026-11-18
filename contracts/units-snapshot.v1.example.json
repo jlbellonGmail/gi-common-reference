@@ -1,0 +1,1621 @@
+{
+  "snapshot_version": 1,
+  "content_digest": "sha256:7c38b35e1e07af2cd70e5827cf23229cf5f99e50a8b3c1d5fdde7660f0f18e68",
+  "provenance": {
+    "sources": [
+      {
+        "role": "definitions",
+        "name": "BIPM SI Brochure 9th ed. / NIST SP 811 (2008) (sintético)",
+        "edition": "synthetic-1",
+        "retrieved_at": "2026-11-02",
+        "location": "tests/fixtures (sintético, no productivo)",
+        "checksum": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "license": "CC0-1.0 (fixture sintético)"
+      },
+      {
+        "role": "ucum",
+        "name": "UCUM ucum-essence.xml",
+        "edition": "2.2 (2024-06-17)",
+        "retrieved_at": "2026-11-02",
+        "location": "https://raw.githubusercontent.com/ucum-org/ucum/main/ucum-essence.xml (ejemplo no productivo)",
+        "checksum": "sha256:dfccea1b5dc284245ebae97edd1dc03c45864da4e87df55bc9851797b4fd0b61",
+        "license": "UCUM License v1.1"
+      },
+      {
+        "role": "names",
+        "name": "Nombres de unidades (sintético)",
+        "edition": "synthetic-1",
+        "retrieved_at": "2026-11-02",
+        "location": "tests/fixtures (sintético, no productivo)",
+        "checksum": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "license": "CC0-1.0 (fixture sintético)"
+      },
+      {
+        "role": "unece",
+        "name": "UNECE Rec 20 vía datasets/unece-units-of-measure (sintético)",
+        "edition": "synthetic-1",
+        "retrieved_at": "2026-11-02",
+        "location": "units-of-measure.csv (copia derivada; ejemplo no productivo)",
+        "checksum": "sha256:e2d06370cdadf5da1bce705783ff5d0d94d11d70eacba6d592adf401c32fb76e",
+        "license": "CC0-1.0 (fixture sintético)"
+      }
+    ],
+    "unresolved_conflicts": []
+  },
+  "quantity_kinds": [
+    {
+      "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+      "code": "mass",
+      "conversion_type": "linear",
+      "reference_unit_id": "2f2fc747-50fd-5709-a665-4fa037eea3b2",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "852847bb-783d-5940-8b4f-cf7c07510ec5",
+      "code": "length",
+      "conversion_type": "linear",
+      "reference_unit_id": "3561fd3d-586a-58ed-adc5-1c8cd3b83951",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "b4336c45-20c6-51f9-8a54-d3b809249a96",
+      "code": "area",
+      "conversion_type": "linear",
+      "reference_unit_id": "f51d3a20-10ed-527e-9715-7b760bc41203",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "ce9bd8ad-a796-504c-9f7a-c6c703652d62",
+      "code": "volume",
+      "conversion_type": "linear",
+      "reference_unit_id": "5ffab9ea-e13f-5c7e-a4ad-424ca122c5ce",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "21dad811-e1b8-5321-8816-4cad3984d6de",
+      "code": "duration",
+      "conversion_type": "linear",
+      "reference_unit_id": "961cf8d7-8d3c-5cd4-b1f2-e8b245175497",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "ca64bb7b-9824-5ca9-8888-b7d538630b30",
+      "code": "temperature",
+      "conversion_type": "affine",
+      "reference_unit_id": "8cf7d262-b184-5cd7-ad60-7181e9420d54",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "c047a3aa-830a-5e8b-82d1-55ca3456883d",
+      "code": "temperature_difference",
+      "conversion_type": "linear",
+      "reference_unit_id": "8cf7d262-b184-5cd7-ad60-7181e9420d54",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "52f63a8c-adf8-5d37-9232-e260609d9529",
+      "code": "speed",
+      "conversion_type": "linear",
+      "reference_unit_id": "f5e96ba7-47b6-5cf6-8d2a-6c7bf2587050",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "02fbd007-c595-54f1-a6e4-e75d379cf99b",
+      "code": "density",
+      "conversion_type": "linear",
+      "reference_unit_id": "747aecff-56ea-506b-9d05-1a8468981c42",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "3f9deceb-ff67-52c3-961d-ccf784bb652e",
+      "code": "mass_concentration",
+      "conversion_type": "linear",
+      "reference_unit_id": "747aecff-56ea-506b-9d05-1a8468981c42",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "e1447efc-9de2-5321-ad87-8747cec07e6f",
+      "code": "mass_per_area",
+      "conversion_type": "linear",
+      "reference_unit_id": "aa42f361-6a3a-53b9-9e19-82f8e621e606",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "f17f888e-83c2-5580-ad8c-400b083669f1",
+      "code": "volume_per_area",
+      "conversion_type": "linear",
+      "reference_unit_id": "6178c5a3-4e90-505b-9096-5a2b5575a5e6",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "350924d4-e202-51d9-8e96-515452a36004",
+      "code": "count",
+      "conversion_type": "linear",
+      "reference_unit_id": "2415963d-dcee-5926-95d3-c0393fd37c71",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "01a17b3d-ee3b-537b-aa18-e4e5d94ac6fe",
+      "code": "dimensionless_ratio",
+      "conversion_type": "linear",
+      "reference_unit_id": "cc87e1da-f665-5e1a-b380-190c991416dc",
+      "status": "active"
+    }
+  ],
+  "units": [
+    {
+      "unit_id": "2f2fc747-50fd-5709-a665-4fa037eea3b2",
+      "ucum_code": "kg",
+      "unece_code": "KGM",
+      "symbol": "kg",
+      "status": "active"
+    },
+    {
+      "unit_id": "fca8e202-9630-5819-b1b1-5da8915f53d1",
+      "ucum_code": "g",
+      "unece_code": "GRM",
+      "symbol": "g",
+      "status": "active"
+    },
+    {
+      "unit_id": "ba991d32-7e98-54d4-a925-cf1ef00954bc",
+      "ucum_code": "mg",
+      "unece_code": "MGM",
+      "symbol": "mg",
+      "status": "active"
+    },
+    {
+      "unit_id": "75e56bc3-ffc5-5bd9-a4f4-81548bf6dfcb",
+      "ucum_code": "t",
+      "unece_code": "TNE",
+      "symbol": "t",
+      "status": "active"
+    },
+    {
+      "unit_id": "577ce238-f253-50cf-b881-a9c879f4bfc9",
+      "ucum_code": "[lb_av]",
+      "unece_code": "LBR",
+      "symbol": "lb",
+      "status": "active"
+    },
+    {
+      "unit_id": "8c86c3de-7527-51e5-8e5f-ee328f2d3002",
+      "ucum_code": "[oz_av]",
+      "unece_code": "ONZ",
+      "symbol": "oz",
+      "status": "active"
+    },
+    {
+      "unit_id": "3561fd3d-586a-58ed-adc5-1c8cd3b83951",
+      "ucum_code": "m",
+      "unece_code": "MTR",
+      "symbol": "m",
+      "status": "active"
+    },
+    {
+      "unit_id": "518f734c-d5cc-51ea-9953-cbcfd7e14e71",
+      "ucum_code": "mm",
+      "unece_code": "MMT",
+      "symbol": "mm",
+      "status": "active"
+    },
+    {
+      "unit_id": "47220ab3-2e97-53f0-8f7c-8b9a15e90b76",
+      "ucum_code": "cm",
+      "unece_code": "CMT",
+      "symbol": "cm",
+      "status": "active"
+    },
+    {
+      "unit_id": "1b240b80-ff64-5ba4-b133-b644ea2d5859",
+      "ucum_code": "km",
+      "unece_code": "KMT",
+      "symbol": "km",
+      "status": "active"
+    },
+    {
+      "unit_id": "da37c780-6406-57f6-8d46-802a3715579c",
+      "ucum_code": "[in_i]",
+      "unece_code": "INH",
+      "symbol": "in",
+      "status": "active"
+    },
+    {
+      "unit_id": "c8a883e6-55e5-569d-bde8-c790434f0dc6",
+      "ucum_code": "[ft_i]",
+      "unece_code": "FOT",
+      "symbol": "ft",
+      "status": "active"
+    },
+    {
+      "unit_id": "95053404-8607-58ac-b337-feaefd894747",
+      "ucum_code": "[mi_i]",
+      "unece_code": "SMI",
+      "symbol": "mi",
+      "status": "active"
+    },
+    {
+      "unit_id": "f51d3a20-10ed-527e-9715-7b760bc41203",
+      "ucum_code": "m2",
+      "unece_code": "MTK",
+      "symbol": "m²",
+      "status": "active"
+    },
+    {
+      "unit_id": "4f07602e-a197-567e-8103-f951575bb4d9",
+      "ucum_code": "cm2",
+      "unece_code": "CMK",
+      "symbol": "cm²",
+      "status": "active"
+    },
+    {
+      "unit_id": "b061bd94-5b58-5149-9a3a-9c0ad3d22590",
+      "ucum_code": "km2",
+      "unece_code": "KMK",
+      "symbol": "km²",
+      "status": "active"
+    },
+    {
+      "unit_id": "0b4cd70c-3b0e-5dd3-86ce-9b6ed8079b21",
+      "ucum_code": "har",
+      "unece_code": null,
+      "symbol": "ha",
+      "status": "active"
+    },
+    {
+      "unit_id": "5ffab9ea-e13f-5c7e-a4ad-424ca122c5ce",
+      "ucum_code": "m3",
+      "unece_code": "MTQ",
+      "symbol": "m³",
+      "status": "active"
+    },
+    {
+      "unit_id": "03b7717e-740b-5dd2-b66a-f30ccc269096",
+      "ucum_code": "cm3",
+      "unece_code": "CMQ",
+      "symbol": "cm³",
+      "status": "active"
+    },
+    {
+      "unit_id": "428205b8-8de6-5fad-b007-63c2985f87b2",
+      "ucum_code": "mL",
+      "unece_code": "MLT",
+      "symbol": "mL",
+      "status": "active"
+    },
+    {
+      "unit_id": "8159f4f5-5dcf-5b85-b98c-37f7c0095f8f",
+      "ucum_code": "L",
+      "unece_code": "LTR",
+      "symbol": "L",
+      "status": "active"
+    },
+    {
+      "unit_id": "3de10cfc-b96a-5afd-8639-7b9428213325",
+      "ucum_code": "[gal_us]",
+      "unece_code": "GLL",
+      "symbol": "gal",
+      "status": "active"
+    },
+    {
+      "unit_id": "961cf8d7-8d3c-5cd4-b1f2-e8b245175497",
+      "ucum_code": "s",
+      "unece_code": "SEC",
+      "symbol": "s",
+      "status": "active"
+    },
+    {
+      "unit_id": "46cf47a5-618b-54c0-a050-c2230cd9783e",
+      "ucum_code": "min",
+      "unece_code": "MIN",
+      "symbol": "min",
+      "status": "active"
+    },
+    {
+      "unit_id": "5cfd596e-5bb7-598c-acb5-d51728e12d5f",
+      "ucum_code": "h",
+      "unece_code": "HUR",
+      "symbol": "h",
+      "status": "active"
+    },
+    {
+      "unit_id": "323bb83a-09a1-59fc-a75b-7b0b374b64f4",
+      "ucum_code": "d",
+      "unece_code": "DAY",
+      "symbol": "d",
+      "status": "active"
+    },
+    {
+      "unit_id": "99b8b724-ab6b-5399-b7f0-d4f17fe848bf",
+      "ucum_code": "wk",
+      "unece_code": "WEE",
+      "symbol": "wk",
+      "status": "active"
+    },
+    {
+      "unit_id": "8cf7d262-b184-5cd7-ad60-7181e9420d54",
+      "ucum_code": "K",
+      "unece_code": "KEL",
+      "symbol": "K",
+      "status": "active"
+    },
+    {
+      "unit_id": "d79e8834-8511-5935-9ad5-f828280842f7",
+      "ucum_code": "Cel",
+      "unece_code": "CEL",
+      "symbol": "°C",
+      "status": "active"
+    },
+    {
+      "unit_id": "59286a77-e65f-5055-97d6-dcf775bf9ab7",
+      "ucum_code": "[degF]",
+      "unece_code": "FAH",
+      "symbol": "°F",
+      "status": "active"
+    },
+    {
+      "unit_id": "f5e96ba7-47b6-5cf6-8d2a-6c7bf2587050",
+      "ucum_code": "m/s",
+      "unece_code": "MTS",
+      "symbol": "m/s",
+      "status": "active"
+    },
+    {
+      "unit_id": "36e6ab58-2f24-5297-8efd-4e79687cb21b",
+      "ucum_code": "km/h",
+      "unece_code": "KMH",
+      "symbol": "km/h",
+      "status": "active"
+    },
+    {
+      "unit_id": "89c6367b-1615-57cd-936a-03f887116f93",
+      "ucum_code": "[mi_i]/h",
+      "unece_code": "HM",
+      "symbol": "mph",
+      "status": "active"
+    },
+    {
+      "unit_id": "747aecff-56ea-506b-9d05-1a8468981c42",
+      "ucum_code": "kg/m3",
+      "unece_code": "KMQ",
+      "symbol": "kg/m³",
+      "status": "active"
+    },
+    {
+      "unit_id": "06ef7f4b-0e63-56c0-ac5f-e00f02d2a59e",
+      "ucum_code": "g/cm3",
+      "unece_code": "23",
+      "symbol": "g/cm³",
+      "status": "active"
+    },
+    {
+      "unit_id": "effbb0d7-6ba7-58f0-a5a8-2e9ddb87a93e",
+      "ucum_code": "kg/L",
+      "unece_code": "B35",
+      "symbol": "kg/L",
+      "status": "active"
+    },
+    {
+      "unit_id": "ee3ef56f-6799-5087-9a61-ac6b4f6e4ada",
+      "ucum_code": "g/L",
+      "unece_code": "GL",
+      "symbol": "g/L",
+      "status": "active"
+    },
+    {
+      "unit_id": "936a19c2-2ae6-5cd2-a661-defef2600ab2",
+      "ucum_code": "mg/L",
+      "unece_code": "M1",
+      "symbol": "mg/L",
+      "status": "active"
+    },
+    {
+      "unit_id": "aa42f361-6a3a-53b9-9e19-82f8e621e606",
+      "ucum_code": "kg/m2",
+      "unece_code": "28",
+      "symbol": "kg/m²",
+      "status": "active"
+    },
+    {
+      "unit_id": "d93e24f3-4737-5168-ac63-a2cd387c612e",
+      "ucum_code": "g/m2",
+      "unece_code": "GM",
+      "symbol": "g/m²",
+      "status": "active"
+    },
+    {
+      "unit_id": "ffd29e7d-7b16-5940-99a5-90368ac9f8d9",
+      "ucum_code": "kg/har",
+      "unece_code": null,
+      "symbol": "kg/ha",
+      "status": "active"
+    },
+    {
+      "unit_id": "44aa6ef2-0b02-56c1-af61-fa3451afb7e3",
+      "ucum_code": "t/har",
+      "unece_code": null,
+      "symbol": "t/ha",
+      "status": "active"
+    },
+    {
+      "unit_id": "6178c5a3-4e90-505b-9096-5a2b5575a5e6",
+      "ucum_code": "m3/m2",
+      "unece_code": null,
+      "symbol": "m³/m²",
+      "status": "active"
+    },
+    {
+      "unit_id": "ca1350a8-42b6-5ffe-9f1d-5dec1096f203",
+      "ucum_code": "L/har",
+      "unece_code": null,
+      "symbol": "L/ha",
+      "status": "active"
+    },
+    {
+      "unit_id": "2578f44f-3c04-50fe-b756-6d5d8e9e65cc",
+      "ucum_code": "mL/m2",
+      "unece_code": null,
+      "symbol": "mL/m²",
+      "status": "active"
+    },
+    {
+      "unit_id": "2415963d-dcee-5926-95d3-c0393fd37c71",
+      "ucum_code": "{each}",
+      "unece_code": "H87",
+      "symbol": "ea",
+      "status": "active"
+    },
+    {
+      "unit_id": "cc87e1da-f665-5e1a-b380-190c991416dc",
+      "ucum_code": "1",
+      "unece_code": "C62",
+      "symbol": "1",
+      "status": "active"
+    },
+    {
+      "unit_id": "f454723c-744c-5306-97db-870054e0cce9",
+      "ucum_code": "%",
+      "unece_code": "P1",
+      "symbol": "%",
+      "status": "active"
+    },
+    {
+      "unit_id": "5bd20141-fc0f-57bd-a1b3-9021f0350204",
+      "ucum_code": "[ppth]",
+      "unece_code": "NX",
+      "symbol": "‰",
+      "status": "active"
+    },
+    {
+      "unit_id": "698ba1dc-3063-5c31-b7d6-c6f3665bc86b",
+      "ucum_code": "[ppm]",
+      "unece_code": "59",
+      "symbol": "ppm",
+      "status": "active"
+    }
+  ],
+  "quantity_kind_units": [
+    {
+      "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+      "unit_id": "2f2fc747-50fd-5709-a665-4fa037eea3b2",
+      "factor": "1",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+      "unit_id": "fca8e202-9630-5819-b1b1-5da8915f53d1",
+      "factor": "0.001",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+      "unit_id": "ba991d32-7e98-54d4-a925-cf1ef00954bc",
+      "factor": "0.000001",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+      "unit_id": "75e56bc3-ffc5-5bd9-a4f4-81548bf6dfcb",
+      "factor": "1000",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+      "unit_id": "577ce238-f253-50cf-b881-a9c879f4bfc9",
+      "factor": "0.45359237",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+      "unit_id": "8c86c3de-7527-51e5-8e5f-ee328f2d3002",
+      "factor": "0.028349523125",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "852847bb-783d-5940-8b4f-cf7c07510ec5",
+      "unit_id": "3561fd3d-586a-58ed-adc5-1c8cd3b83951",
+      "factor": "1",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "852847bb-783d-5940-8b4f-cf7c07510ec5",
+      "unit_id": "518f734c-d5cc-51ea-9953-cbcfd7e14e71",
+      "factor": "0.001",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "852847bb-783d-5940-8b4f-cf7c07510ec5",
+      "unit_id": "47220ab3-2e97-53f0-8f7c-8b9a15e90b76",
+      "factor": "0.01",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "852847bb-783d-5940-8b4f-cf7c07510ec5",
+      "unit_id": "1b240b80-ff64-5ba4-b133-b644ea2d5859",
+      "factor": "1000",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "852847bb-783d-5940-8b4f-cf7c07510ec5",
+      "unit_id": "da37c780-6406-57f6-8d46-802a3715579c",
+      "factor": "0.0254",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "852847bb-783d-5940-8b4f-cf7c07510ec5",
+      "unit_id": "c8a883e6-55e5-569d-bde8-c790434f0dc6",
+      "factor": "0.3048",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "852847bb-783d-5940-8b4f-cf7c07510ec5",
+      "unit_id": "95053404-8607-58ac-b337-feaefd894747",
+      "factor": "1609.344",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "b4336c45-20c6-51f9-8a54-d3b809249a96",
+      "unit_id": "f51d3a20-10ed-527e-9715-7b760bc41203",
+      "factor": "1",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "b4336c45-20c6-51f9-8a54-d3b809249a96",
+      "unit_id": "4f07602e-a197-567e-8103-f951575bb4d9",
+      "factor": "0.0001",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "b4336c45-20c6-51f9-8a54-d3b809249a96",
+      "unit_id": "b061bd94-5b58-5149-9a3a-9c0ad3d22590",
+      "factor": "1000000",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "b4336c45-20c6-51f9-8a54-d3b809249a96",
+      "unit_id": "0b4cd70c-3b0e-5dd3-86ce-9b6ed8079b21",
+      "factor": "10000",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "ce9bd8ad-a796-504c-9f7a-c6c703652d62",
+      "unit_id": "5ffab9ea-e13f-5c7e-a4ad-424ca122c5ce",
+      "factor": "1",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "ce9bd8ad-a796-504c-9f7a-c6c703652d62",
+      "unit_id": "03b7717e-740b-5dd2-b66a-f30ccc269096",
+      "factor": "0.000001",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "ce9bd8ad-a796-504c-9f7a-c6c703652d62",
+      "unit_id": "428205b8-8de6-5fad-b007-63c2985f87b2",
+      "factor": "0.000001",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "ce9bd8ad-a796-504c-9f7a-c6c703652d62",
+      "unit_id": "8159f4f5-5dcf-5b85-b98c-37f7c0095f8f",
+      "factor": "0.001",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "ce9bd8ad-a796-504c-9f7a-c6c703652d62",
+      "unit_id": "3de10cfc-b96a-5afd-8639-7b9428213325",
+      "factor": "0.003785411784",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "21dad811-e1b8-5321-8816-4cad3984d6de",
+      "unit_id": "961cf8d7-8d3c-5cd4-b1f2-e8b245175497",
+      "factor": "1",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "21dad811-e1b8-5321-8816-4cad3984d6de",
+      "unit_id": "46cf47a5-618b-54c0-a050-c2230cd9783e",
+      "factor": "60",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "21dad811-e1b8-5321-8816-4cad3984d6de",
+      "unit_id": "5cfd596e-5bb7-598c-acb5-d51728e12d5f",
+      "factor": "3600",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "21dad811-e1b8-5321-8816-4cad3984d6de",
+      "unit_id": "323bb83a-09a1-59fc-a75b-7b0b374b64f4",
+      "factor": "86400",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "21dad811-e1b8-5321-8816-4cad3984d6de",
+      "unit_id": "99b8b724-ab6b-5399-b7f0-d4f17fe848bf",
+      "factor": "604800",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "ca64bb7b-9824-5ca9-8888-b7d538630b30",
+      "unit_id": "8cf7d262-b184-5cd7-ad60-7181e9420d54",
+      "factor": "1",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "ca64bb7b-9824-5ca9-8888-b7d538630b30",
+      "unit_id": "d79e8834-8511-5935-9ad5-f828280842f7",
+      "factor": "1",
+      "offset": "273.15",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "ca64bb7b-9824-5ca9-8888-b7d538630b30",
+      "unit_id": "59286a77-e65f-5055-97d6-dcf775bf9ab7",
+      "factor": "5/9",
+      "offset": "459.67",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "c047a3aa-830a-5e8b-82d1-55ca3456883d",
+      "unit_id": "8cf7d262-b184-5cd7-ad60-7181e9420d54",
+      "factor": "1",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "c047a3aa-830a-5e8b-82d1-55ca3456883d",
+      "unit_id": "d79e8834-8511-5935-9ad5-f828280842f7",
+      "factor": "1",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "c047a3aa-830a-5e8b-82d1-55ca3456883d",
+      "unit_id": "59286a77-e65f-5055-97d6-dcf775bf9ab7",
+      "factor": "5/9",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "52f63a8c-adf8-5d37-9232-e260609d9529",
+      "unit_id": "f5e96ba7-47b6-5cf6-8d2a-6c7bf2587050",
+      "factor": "1",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "52f63a8c-adf8-5d37-9232-e260609d9529",
+      "unit_id": "36e6ab58-2f24-5297-8efd-4e79687cb21b",
+      "factor": "5/18",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "52f63a8c-adf8-5d37-9232-e260609d9529",
+      "unit_id": "89c6367b-1615-57cd-936a-03f887116f93",
+      "factor": "0.44704",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "02fbd007-c595-54f1-a6e4-e75d379cf99b",
+      "unit_id": "747aecff-56ea-506b-9d05-1a8468981c42",
+      "factor": "1",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "02fbd007-c595-54f1-a6e4-e75d379cf99b",
+      "unit_id": "06ef7f4b-0e63-56c0-ac5f-e00f02d2a59e",
+      "factor": "1000",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "02fbd007-c595-54f1-a6e4-e75d379cf99b",
+      "unit_id": "effbb0d7-6ba7-58f0-a5a8-2e9ddb87a93e",
+      "factor": "1000",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "3f9deceb-ff67-52c3-961d-ccf784bb652e",
+      "unit_id": "747aecff-56ea-506b-9d05-1a8468981c42",
+      "factor": "1",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "3f9deceb-ff67-52c3-961d-ccf784bb652e",
+      "unit_id": "ee3ef56f-6799-5087-9a61-ac6b4f6e4ada",
+      "factor": "1",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "3f9deceb-ff67-52c3-961d-ccf784bb652e",
+      "unit_id": "936a19c2-2ae6-5cd2-a661-defef2600ab2",
+      "factor": "0.001",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "e1447efc-9de2-5321-ad87-8747cec07e6f",
+      "unit_id": "aa42f361-6a3a-53b9-9e19-82f8e621e606",
+      "factor": "1",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "e1447efc-9de2-5321-ad87-8747cec07e6f",
+      "unit_id": "d93e24f3-4737-5168-ac63-a2cd387c612e",
+      "factor": "0.001",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "e1447efc-9de2-5321-ad87-8747cec07e6f",
+      "unit_id": "ffd29e7d-7b16-5940-99a5-90368ac9f8d9",
+      "factor": "0.0001",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "e1447efc-9de2-5321-ad87-8747cec07e6f",
+      "unit_id": "44aa6ef2-0b02-56c1-af61-fa3451afb7e3",
+      "factor": "0.1",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "f17f888e-83c2-5580-ad8c-400b083669f1",
+      "unit_id": "6178c5a3-4e90-505b-9096-5a2b5575a5e6",
+      "factor": "1",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "f17f888e-83c2-5580-ad8c-400b083669f1",
+      "unit_id": "ca1350a8-42b6-5ffe-9f1d-5dec1096f203",
+      "factor": "0.0000001",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "f17f888e-83c2-5580-ad8c-400b083669f1",
+      "unit_id": "2578f44f-3c04-50fe-b756-6d5d8e9e65cc",
+      "factor": "0.000001",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "350924d4-e202-51d9-8e96-515452a36004",
+      "unit_id": "2415963d-dcee-5926-95d3-c0393fd37c71",
+      "factor": "1",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "01a17b3d-ee3b-537b-aa18-e4e5d94ac6fe",
+      "unit_id": "cc87e1da-f665-5e1a-b380-190c991416dc",
+      "factor": "1",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "01a17b3d-ee3b-537b-aa18-e4e5d94ac6fe",
+      "unit_id": "f454723c-744c-5306-97db-870054e0cce9",
+      "factor": "0.01",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "01a17b3d-ee3b-537b-aa18-e4e5d94ac6fe",
+      "unit_id": "5bd20141-fc0f-57bd-a1b3-9021f0350204",
+      "factor": "0.001",
+      "offset": "0",
+      "status": "active"
+    },
+    {
+      "quantity_kind_id": "01a17b3d-ee3b-537b-aa18-e4e5d94ac6fe",
+      "unit_id": "698ba1dc-3063-5c31-b7d6-c6f3665bc86b",
+      "factor": "0.000001",
+      "offset": "0",
+      "status": "active"
+    }
+  ],
+  "quantity_kind_names": [
+    {
+      "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Mass"
+    },
+    {
+      "quantity_kind_id": "b5215a84-a8e2-5953-9de0-ac0c4a8aac78",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Masa"
+    },
+    {
+      "quantity_kind_id": "852847bb-783d-5940-8b4f-cf7c07510ec5",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Length"
+    },
+    {
+      "quantity_kind_id": "852847bb-783d-5940-8b4f-cf7c07510ec5",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Longitud"
+    },
+    {
+      "quantity_kind_id": "b4336c45-20c6-51f9-8a54-d3b809249a96",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Area"
+    },
+    {
+      "quantity_kind_id": "b4336c45-20c6-51f9-8a54-d3b809249a96",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Superficie"
+    },
+    {
+      "quantity_kind_id": "ce9bd8ad-a796-504c-9f7a-c6c703652d62",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Volume"
+    },
+    {
+      "quantity_kind_id": "ce9bd8ad-a796-504c-9f7a-c6c703652d62",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Volumen"
+    },
+    {
+      "quantity_kind_id": "21dad811-e1b8-5321-8816-4cad3984d6de",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Duration"
+    },
+    {
+      "quantity_kind_id": "21dad811-e1b8-5321-8816-4cad3984d6de",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Duración"
+    },
+    {
+      "quantity_kind_id": "ca64bb7b-9824-5ca9-8888-b7d538630b30",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Temperature"
+    },
+    {
+      "quantity_kind_id": "ca64bb7b-9824-5ca9-8888-b7d538630b30",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Temperatura"
+    },
+    {
+      "quantity_kind_id": "c047a3aa-830a-5e8b-82d1-55ca3456883d",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Temperature difference"
+    },
+    {
+      "quantity_kind_id": "c047a3aa-830a-5e8b-82d1-55ca3456883d",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Diferencia de temperatura"
+    },
+    {
+      "quantity_kind_id": "52f63a8c-adf8-5d37-9232-e260609d9529",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Speed"
+    },
+    {
+      "quantity_kind_id": "52f63a8c-adf8-5d37-9232-e260609d9529",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Velocidad"
+    },
+    {
+      "quantity_kind_id": "02fbd007-c595-54f1-a6e4-e75d379cf99b",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Density"
+    },
+    {
+      "quantity_kind_id": "02fbd007-c595-54f1-a6e4-e75d379cf99b",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Densidad"
+    },
+    {
+      "quantity_kind_id": "3f9deceb-ff67-52c3-961d-ccf784bb652e",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Mass concentration"
+    },
+    {
+      "quantity_kind_id": "3f9deceb-ff67-52c3-961d-ccf784bb652e",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Concentración másica"
+    },
+    {
+      "quantity_kind_id": "e1447efc-9de2-5321-ad87-8747cec07e6f",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Mass per area"
+    },
+    {
+      "quantity_kind_id": "e1447efc-9de2-5321-ad87-8747cec07e6f",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Masa por superficie"
+    },
+    {
+      "quantity_kind_id": "f17f888e-83c2-5580-ad8c-400b083669f1",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Volume per area"
+    },
+    {
+      "quantity_kind_id": "f17f888e-83c2-5580-ad8c-400b083669f1",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Volumen por superficie"
+    },
+    {
+      "quantity_kind_id": "350924d4-e202-51d9-8e96-515452a36004",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Count"
+    },
+    {
+      "quantity_kind_id": "350924d4-e202-51d9-8e96-515452a36004",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Conteo"
+    },
+    {
+      "quantity_kind_id": "01a17b3d-ee3b-537b-aa18-e4e5d94ac6fe",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "Dimensionless ratio"
+    },
+    {
+      "quantity_kind_id": "01a17b3d-ee3b-537b-aa18-e4e5d94ac6fe",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "Razón adimensional"
+    }
+  ],
+  "unit_names": [
+    {
+      "unit_id": "2f2fc747-50fd-5709-a665-4fa037eea3b2",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "kilogram",
+      "plural": "kilograms"
+    },
+    {
+      "unit_id": "2f2fc747-50fd-5709-a665-4fa037eea3b2",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "kilogramo",
+      "plural": "kilogramos"
+    },
+    {
+      "unit_id": "fca8e202-9630-5819-b1b1-5da8915f53d1",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "gram",
+      "plural": "grams"
+    },
+    {
+      "unit_id": "fca8e202-9630-5819-b1b1-5da8915f53d1",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "gramo",
+      "plural": "gramos"
+    },
+    {
+      "unit_id": "ba991d32-7e98-54d4-a925-cf1ef00954bc",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "milligram",
+      "plural": "milligrams"
+    },
+    {
+      "unit_id": "ba991d32-7e98-54d4-a925-cf1ef00954bc",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "miligramo",
+      "plural": "miligramos"
+    },
+    {
+      "unit_id": "75e56bc3-ffc5-5bd9-a4f4-81548bf6dfcb",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "tonne",
+      "plural": "tonnes"
+    },
+    {
+      "unit_id": "75e56bc3-ffc5-5bd9-a4f4-81548bf6dfcb",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "tonelada",
+      "plural": "toneladas"
+    },
+    {
+      "unit_id": "577ce238-f253-50cf-b881-a9c879f4bfc9",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "pound",
+      "plural": "pounds"
+    },
+    {
+      "unit_id": "577ce238-f253-50cf-b881-a9c879f4bfc9",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "libra",
+      "plural": "libras"
+    },
+    {
+      "unit_id": "8c86c3de-7527-51e5-8e5f-ee328f2d3002",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "ounce",
+      "plural": "ounces"
+    },
+    {
+      "unit_id": "8c86c3de-7527-51e5-8e5f-ee328f2d3002",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "onza",
+      "plural": "onzas"
+    },
+    {
+      "unit_id": "3561fd3d-586a-58ed-adc5-1c8cd3b83951",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "meter",
+      "plural": "meters"
+    },
+    {
+      "unit_id": "3561fd3d-586a-58ed-adc5-1c8cd3b83951",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "metro",
+      "plural": "metros"
+    },
+    {
+      "unit_id": "518f734c-d5cc-51ea-9953-cbcfd7e14e71",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "millimeter",
+      "plural": "millimeters"
+    },
+    {
+      "unit_id": "518f734c-d5cc-51ea-9953-cbcfd7e14e71",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "milímetro",
+      "plural": "milímetros"
+    },
+    {
+      "unit_id": "47220ab3-2e97-53f0-8f7c-8b9a15e90b76",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "centimeter",
+      "plural": "centimeters"
+    },
+    {
+      "unit_id": "47220ab3-2e97-53f0-8f7c-8b9a15e90b76",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "centímetro",
+      "plural": "centímetros"
+    },
+    {
+      "unit_id": "1b240b80-ff64-5ba4-b133-b644ea2d5859",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "kilometer",
+      "plural": "kilometers"
+    },
+    {
+      "unit_id": "1b240b80-ff64-5ba4-b133-b644ea2d5859",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "kilómetro",
+      "plural": "kilómetros"
+    },
+    {
+      "unit_id": "da37c780-6406-57f6-8d46-802a3715579c",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "inch",
+      "plural": "inches"
+    },
+    {
+      "unit_id": "da37c780-6406-57f6-8d46-802a3715579c",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "pulgada",
+      "plural": "pulgadas"
+    },
+    {
+      "unit_id": "c8a883e6-55e5-569d-bde8-c790434f0dc6",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "foot",
+      "plural": "feet"
+    },
+    {
+      "unit_id": "c8a883e6-55e5-569d-bde8-c790434f0dc6",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "pie",
+      "plural": "pies"
+    },
+    {
+      "unit_id": "95053404-8607-58ac-b337-feaefd894747",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "mile",
+      "plural": "miles"
+    },
+    {
+      "unit_id": "95053404-8607-58ac-b337-feaefd894747",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "milla",
+      "plural": "millas"
+    },
+    {
+      "unit_id": "f51d3a20-10ed-527e-9715-7b760bc41203",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "square meter",
+      "plural": "square meters"
+    },
+    {
+      "unit_id": "f51d3a20-10ed-527e-9715-7b760bc41203",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "metro cuadrado",
+      "plural": "metros cuadrados"
+    },
+    {
+      "unit_id": "4f07602e-a197-567e-8103-f951575bb4d9",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "square centimeter",
+      "plural": "square centimeters"
+    },
+    {
+      "unit_id": "4f07602e-a197-567e-8103-f951575bb4d9",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "centímetro cuadrado",
+      "plural": "centímetros cuadrados"
+    },
+    {
+      "unit_id": "b061bd94-5b58-5149-9a3a-9c0ad3d22590",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "square kilometer",
+      "plural": "square kilometers"
+    },
+    {
+      "unit_id": "b061bd94-5b58-5149-9a3a-9c0ad3d22590",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "kilómetro cuadrado",
+      "plural": "kilómetros cuadrados"
+    },
+    {
+      "unit_id": "0b4cd70c-3b0e-5dd3-86ce-9b6ed8079b21",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "hectare",
+      "plural": "hectares"
+    },
+    {
+      "unit_id": "0b4cd70c-3b0e-5dd3-86ce-9b6ed8079b21",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "hectárea",
+      "plural": "hectáreas"
+    },
+    {
+      "unit_id": "5ffab9ea-e13f-5c7e-a4ad-424ca122c5ce",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "cubic meter",
+      "plural": "cubic meters"
+    },
+    {
+      "unit_id": "5ffab9ea-e13f-5c7e-a4ad-424ca122c5ce",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "metro cúbico",
+      "plural": "metros cúbicos"
+    },
+    {
+      "unit_id": "03b7717e-740b-5dd2-b66a-f30ccc269096",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "cubic centimeter",
+      "plural": "cubic centimeters"
+    },
+    {
+      "unit_id": "03b7717e-740b-5dd2-b66a-f30ccc269096",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "centímetro cúbico",
+      "plural": "centímetros cúbicos"
+    },
+    {
+      "unit_id": "428205b8-8de6-5fad-b007-63c2985f87b2",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "milliliter",
+      "plural": "milliliters"
+    },
+    {
+      "unit_id": "428205b8-8de6-5fad-b007-63c2985f87b2",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "mililitro",
+      "plural": "mililitros"
+    },
+    {
+      "unit_id": "8159f4f5-5dcf-5b85-b98c-37f7c0095f8f",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "liter",
+      "plural": "liters"
+    },
+    {
+      "unit_id": "8159f4f5-5dcf-5b85-b98c-37f7c0095f8f",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "litro",
+      "plural": "litros"
+    },
+    {
+      "unit_id": "3de10cfc-b96a-5afd-8639-7b9428213325",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "US gallon",
+      "plural": "US gallons"
+    },
+    {
+      "unit_id": "3de10cfc-b96a-5afd-8639-7b9428213325",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "galón estadounidense",
+      "plural": "galones estadounidenses"
+    },
+    {
+      "unit_id": "961cf8d7-8d3c-5cd4-b1f2-e8b245175497",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "second",
+      "plural": "seconds"
+    },
+    {
+      "unit_id": "961cf8d7-8d3c-5cd4-b1f2-e8b245175497",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "segundo",
+      "plural": "segundos"
+    },
+    {
+      "unit_id": "46cf47a5-618b-54c0-a050-c2230cd9783e",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "minute",
+      "plural": "minutes"
+    },
+    {
+      "unit_id": "46cf47a5-618b-54c0-a050-c2230cd9783e",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "minuto",
+      "plural": "minutos"
+    },
+    {
+      "unit_id": "5cfd596e-5bb7-598c-acb5-d51728e12d5f",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "hour",
+      "plural": "hours"
+    },
+    {
+      "unit_id": "5cfd596e-5bb7-598c-acb5-d51728e12d5f",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "hora",
+      "plural": "horas"
+    },
+    {
+      "unit_id": "323bb83a-09a1-59fc-a75b-7b0b374b64f4",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "day",
+      "plural": "days"
+    },
+    {
+      "unit_id": "323bb83a-09a1-59fc-a75b-7b0b374b64f4",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "día",
+      "plural": "días"
+    },
+    {
+      "unit_id": "99b8b724-ab6b-5399-b7f0-d4f17fe848bf",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "week",
+      "plural": "weeks"
+    },
+    {
+      "unit_id": "99b8b724-ab6b-5399-b7f0-d4f17fe848bf",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "semana",
+      "plural": "semanas"
+    },
+    {
+      "unit_id": "8cf7d262-b184-5cd7-ad60-7181e9420d54",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "kelvin",
+      "plural": "kelvins"
+    },
+    {
+      "unit_id": "8cf7d262-b184-5cd7-ad60-7181e9420d54",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "kelvin",
+      "plural": "kelvin"
+    },
+    {
+      "unit_id": "d79e8834-8511-5935-9ad5-f828280842f7",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "degree Celsius",
+      "plural": "degrees Celsius"
+    },
+    {
+      "unit_id": "d79e8834-8511-5935-9ad5-f828280842f7",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "grado Celsius",
+      "plural": "grados Celsius"
+    },
+    {
+      "unit_id": "59286a77-e65f-5055-97d6-dcf775bf9ab7",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "degree Fahrenheit",
+      "plural": "degrees Fahrenheit"
+    },
+    {
+      "unit_id": "59286a77-e65f-5055-97d6-dcf775bf9ab7",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "grado Fahrenheit",
+      "plural": "grados Fahrenheit"
+    },
+    {
+      "unit_id": "f5e96ba7-47b6-5cf6-8d2a-6c7bf2587050",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "meter per second",
+      "plural": "meters per second"
+    },
+    {
+      "unit_id": "f5e96ba7-47b6-5cf6-8d2a-6c7bf2587050",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "metro por segundo",
+      "plural": "metros por segundo"
+    },
+    {
+      "unit_id": "36e6ab58-2f24-5297-8efd-4e79687cb21b",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "kilometer per hour",
+      "plural": "kilometers per hour"
+    },
+    {
+      "unit_id": "36e6ab58-2f24-5297-8efd-4e79687cb21b",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "kilómetro por hora",
+      "plural": "kilómetros por hora"
+    },
+    {
+      "unit_id": "89c6367b-1615-57cd-936a-03f887116f93",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "mile per hour",
+      "plural": "miles per hour"
+    },
+    {
+      "unit_id": "89c6367b-1615-57cd-936a-03f887116f93",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "milla por hora",
+      "plural": "millas por hora"
+    },
+    {
+      "unit_id": "747aecff-56ea-506b-9d05-1a8468981c42",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "kilogram per cubic meter",
+      "plural": "kilograms per cubic meter"
+    },
+    {
+      "unit_id": "747aecff-56ea-506b-9d05-1a8468981c42",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "kilogramo por metro cúbico",
+      "plural": "kilogramos por metro cúbico"
+    },
+    {
+      "unit_id": "06ef7f4b-0e63-56c0-ac5f-e00f02d2a59e",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "gram per cubic centimeter",
+      "plural": "grams per cubic centimeter"
+    },
+    {
+      "unit_id": "06ef7f4b-0e63-56c0-ac5f-e00f02d2a59e",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "gramo por centímetro cúbico",
+      "plural": "gramos por centímetro cúbico"
+    },
+    {
+      "unit_id": "effbb0d7-6ba7-58f0-a5a8-2e9ddb87a93e",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "kilogram per liter",
+      "plural": "kilograms per liter"
+    },
+    {
+      "unit_id": "effbb0d7-6ba7-58f0-a5a8-2e9ddb87a93e",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "kilogramo por litro",
+      "plural": "kilogramos por litro"
+    },
+    {
+      "unit_id": "ee3ef56f-6799-5087-9a61-ac6b4f6e4ada",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "gram per liter",
+      "plural": "grams per liter"
+    },
+    {
+      "unit_id": "ee3ef56f-6799-5087-9a61-ac6b4f6e4ada",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "gramo por litro",
+      "plural": "gramos por litro"
+    },
+    {
+      "unit_id": "936a19c2-2ae6-5cd2-a661-defef2600ab2",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "milligram per liter",
+      "plural": "milligrams per liter"
+    },
+    {
+      "unit_id": "936a19c2-2ae6-5cd2-a661-defef2600ab2",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "miligramo por litro",
+      "plural": "miligramos por litro"
+    },
+    {
+      "unit_id": "aa42f361-6a3a-53b9-9e19-82f8e621e606",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "kilogram per square meter",
+      "plural": "kilograms per square meter"
+    },
+    {
+      "unit_id": "aa42f361-6a3a-53b9-9e19-82f8e621e606",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "kilogramo por metro cuadrado",
+      "plural": "kilogramos por metro cuadrado"
+    },
+    {
+      "unit_id": "d93e24f3-4737-5168-ac63-a2cd387c612e",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "gram per square meter",
+      "plural": "grams per square meter"
+    },
+    {
+      "unit_id": "d93e24f3-4737-5168-ac63-a2cd387c612e",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "gramo por metro cuadrado",
+      "plural": "gramos por metro cuadrado"
+    },
+    {
+      "unit_id": "ffd29e7d-7b16-5940-99a5-90368ac9f8d9",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "kilogram per hectare",
+      "plural": "kilograms per hectare"
+    },
+    {
+      "unit_id": "ffd29e7d-7b16-5940-99a5-90368ac9f8d9",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "kilogramo por hectárea",
+      "plural": "kilogramos por hectárea"
+    },
+    {
+      "unit_id": "44aa6ef2-0b02-56c1-af61-fa3451afb7e3",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "tonne per hectare",
+      "plural": "tonnes per hectare"
+    },
+    {
+      "unit_id": "44aa6ef2-0b02-56c1-af61-fa3451afb7e3",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "tonelada por hectárea",
+      "plural": "toneladas por hectárea"
+    },
+    {
+      "unit_id": "6178c5a3-4e90-505b-9096-5a2b5575a5e6",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "cubic meter per square meter",
+      "plural": "cubic meters per square meter"
+    },
+    {
+      "unit_id": "6178c5a3-4e90-505b-9096-5a2b5575a5e6",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "metro cúbico por metro cuadrado",
+      "plural": "metros cúbicos por metro cuadrado"
+    },
+    {
+      "unit_id": "ca1350a8-42b6-5ffe-9f1d-5dec1096f203",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "liter per hectare",
+      "plural": "liters per hectare"
+    },
+    {
+      "unit_id": "ca1350a8-42b6-5ffe-9f1d-5dec1096f203",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "litro por hectárea",
+      "plural": "litros por hectárea"
+    },
+    {
+      "unit_id": "2578f44f-3c04-50fe-b756-6d5d8e9e65cc",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "milliliter per square meter",
+      "plural": "milliliters per square meter"
+    },
+    {
+      "unit_id": "2578f44f-3c04-50fe-b756-6d5d8e9e65cc",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "mililitro por metro cuadrado",
+      "plural": "mililitros por metro cuadrado"
+    },
+    {
+      "unit_id": "2415963d-dcee-5926-95d3-c0393fd37c71",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "each",
+      "plural": "each"
+    },
+    {
+      "unit_id": "2415963d-dcee-5926-95d3-c0393fd37c71",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "unidad",
+      "plural": "unidades"
+    },
+    {
+      "unit_id": "cc87e1da-f665-5e1a-b380-190c991416dc",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "one",
+      "plural": "one"
+    },
+    {
+      "unit_id": "cc87e1da-f665-5e1a-b380-190c991416dc",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "uno",
+      "plural": "uno"
+    },
+    {
+      "unit_id": "f454723c-744c-5306-97db-870054e0cce9",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "percent",
+      "plural": "percent"
+    },
+    {
+      "unit_id": "f454723c-744c-5306-97db-870054e0cce9",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "por ciento",
+      "plural": "por ciento"
+    },
+    {
+      "unit_id": "5bd20141-fc0f-57bd-a1b3-9021f0350204",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "part per thousand",
+      "plural": "parts per thousand"
+    },
+    {
+      "unit_id": "5bd20141-fc0f-57bd-a1b3-9021f0350204",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "parte por mil",
+      "plural": "partes por mil"
+    },
+    {
+      "unit_id": "698ba1dc-3063-5c31-b7d6-c6f3665bc86b",
+      "locale_id": "1d806402-a823-4580-9f4d-958c6e5a5354",
+      "name": "part per million",
+      "plural": "parts per million"
+    },
+    {
+      "unit_id": "698ba1dc-3063-5c31-b7d6-c6f3665bc86b",
+      "locale_id": "7d74e7f4-4dd7-4a85-a540-09d2393b9a91",
+      "name": "parte por millón",
+      "plural": "partes por millón"
+    }
+  ]
+}

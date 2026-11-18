@@ -47,6 +47,12 @@ where = ["src"]
     "currency-snapshot.v1.schema.json",
     "required-locales.v1.json",
 ]
+"gi_common_reference.units.infrastructure" = [
+    "units-snapshot.v1.schema.json",
+    "required-locales.v1.json",
+    "ucum/ucum-essence.xml",
+    "ucum/NOTICE.md",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests/unit", "tests/integration", "tests/contract", "tests/acceptance"]

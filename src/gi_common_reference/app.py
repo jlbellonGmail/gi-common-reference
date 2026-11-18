@@ -3,7 +3,10 @@
 Arranque: `uvicorn --factory gi_common_reference.app:app_from_environment`, con
 `REFERENCE_READER_DATABASE_URL` apuntando a la base con el rol `reference_reader`.
 
-La aplicación compone cuatro APIs con contratos propios (D5 de 002, D14 de 003, D19 de 004):
+La aplicación compone cinco APIs con contratos propios (D5 de 002, D14 de 003, D19 de 004, D16 de
+005):
+`/v1/units*`, `/v1/quantity-kinds*`, `/v1/conversions*` y `/v1/openapi/units.json` van a la de
+Units;
 `/v1/currencies*` y `/v1/openapi/currencies.json` van a la de Currency; `/v1/countries*` y
 `/v1/openapi/countries.json`, a la de Countries; `/v1/regions*`, `/v1/subregions*` y
 `/v1/openapi/regions.json`, a la de Regions; todo lo demás, a la de Locale, sin cambios (su
@@ -12,7 +15,8 @@ contrato sigue en `/v1/openapi.json`).
 Contratos OpenAPI: `python -m gi_common_reference.app > contracts/locales-api.v1.openapi.json`,
 `python -m gi_common_reference.app regions > contracts/regions-api.v1.openapi.json`,
 `python -m gi_common_reference.app countries > contracts/countries-api.v1.openapi.json` y
-`python -m gi_common_reference.app currencies > contracts/currencies-api.v1.openapi.json`.
+`python -m gi_common_reference.app currencies > contracts/currencies-api.v1.openapi.json` y
+`python -m gi_common_reference.app units > contracts/units-api.v1.openapi.json`.
 """
 
 import json
@@ -31,6 +35,7 @@ from gi_common_reference.bootstrap import (
     postgres_currency_reader,
     postgres_reader,
     postgres_region_reader,
+    postgres_units_reader,
     system_clock,
 )
 from gi_common_reference.countries.interfaces.http import (
@@ -66,11 +71,22 @@ from gi_common_reference.regions.interfaces.http import (
 from gi_common_reference.regions.interfaces.http import (
     create_api as create_regions_api,
 )
+from gi_common_reference.units.interfaces.http import (
+    OPENAPI_URL as UNITS_OPENAPI_URL,
+)
+from gi_common_reference.units.interfaces.http import (
+    UnitsReader,
+    UnitsSession,
+)
+from gi_common_reference.units.interfaces.http import (
+    create_api as create_units_api,
+)
 
 READER_DATABASE_URL = "REFERENCE_READER_DATABASE_URL"
 REGIONS_PREFIXES = ("/v1/regions", "/v1/subregions")
 COUNTRIES_PREFIXES = ("/v1/countries",)
 CURRENCIES_PREFIXES = ("/v1/currencies",)
+UNITS_PREFIXES = ("/v1/units", "/v1/quantity-kinds", "/v1/conversions")
 
 
 def create_app(reader: LocaleReader) -> FastAPI:
@@ -78,7 +94,7 @@ def create_app(reader: LocaleReader) -> FastAPI:
 
 
 class CatalogApp:
-    """Despacha cada request por su path a la API de Currency, Countries, Regions o Locale.
+    """Despacha cada request por su path a la API de Units, Currency, Countries, Regions o Locale.
 
     El ciclo de vida (`lifespan`) va a la de Locale: ninguna registra eventos de arranque ni de
     cierre. `currencies` es opcional para construir la aplicación sin ese catálogo (pruebas de las
@@ -91,12 +107,20 @@ class CatalogApp:
         regions: FastAPI,
         countries: FastAPI,
         currencies: FastAPI | None = None,
+        units: FastAPI | None = None,
     ) -> None:
         self.locales, self.regions, self.countries = locales, regions, countries
         self.currencies = currencies
+        self.units = units
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         if (
+            self.units is not None
+            and scope["type"] in ("http", "websocket")
+            and belongs_to_units(scope["path"])
+        ):
+            await self.units(scope, receive, send)
+        elif (
             self.currencies is not None
             and scope["type"] in ("http", "websocket")
             and belongs_to_currencies(scope["path"])
@@ -128,6 +152,10 @@ def belongs_to_currencies(path: str) -> bool:
     return _under(path, CURRENCIES_OPENAPI_URL, CURRENCIES_PREFIXES)
 
 
+def belongs_to_units(path: str) -> bool:
+    return _under(path, UNITS_OPENAPI_URL, UNITS_PREFIXES)
+
+
 def create_catalog_app(
     locale_reader: LocaleReader,
     region_reader: RegionReader,
@@ -135,6 +163,7 @@ def create_catalog_app(
     flag_store: FlagStore,
     currency_reader: CurrencyReader | None = None,
     clock: Clock | None = None,
+    units_reader: UnitsReader | None = None,
 ) -> CatalogApp:
     currencies = (
         None
@@ -146,6 +175,7 @@ def create_catalog_app(
         create_regions_api(region_reader),
         create_countries_api(country_reader, flag_store),
         currencies,
+        None if units_reader is None else create_units_api(units_reader),
     )
 
 
@@ -162,6 +192,7 @@ def app_from_environment(environ: Mapping[str, str] | None = None) -> CatalogApp
         country_flag_store(),
         postgres_currency_reader(conninfo),
         system_clock(),
+        postgres_units_reader(conninfo),
     )
 
 
@@ -183,6 +214,11 @@ def countries_openapi_document() -> dict[str, Any]:
 def currencies_openapi_document() -> dict[str, Any]:
     reader: CurrencyReader = _UnusedCurrencyReader()
     return create_currencies_api(reader, system_clock()).openapi()
+
+
+def units_openapi_document() -> dict[str, Any]:
+    reader: UnitsReader = _UnusedUnitsReader()
+    return create_units_api(reader).openapi()
 
 
 class _UnusedLocaleReader:
@@ -207,11 +243,17 @@ class _UnusedCurrencyReader:
         raise RuntimeError("este lector no se usa para generar el contrato")
 
 
+class _UnusedUnitsReader:
+    def session(self) -> AbstractContextManager[UnitsSession]:
+        raise RuntimeError("este lector no se usa para generar el contrato")
+
+
 if __name__ == "__main__":
     documents = {
         "regions": regions_openapi_document,
         "countries": countries_openapi_document,
         "currencies": currencies_openapi_document,
+        "units": units_openapi_document,
     }
     selected = documents.get(sys.argv[1] if sys.argv[1:] else "", openapi_document)
     print(json.dumps(selected(), indent=2, ensure_ascii=False))
