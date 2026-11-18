@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "description": "Grafo de dependencias entre los catálogos de gi-common-reference (spec 006). Es declarativo: tests/acceptance/test_cross_module_acceptance.py lo verifica contra las FKs reales de la base migrada, la cadena de migraciones, architecture.json, las specs y el rechazo en runtime de un orden de incorporación inválido. AI-NATIVE v4.0.1 no ofrece un comando de Dependency Graph; este archivo no lo sustituye ni lo simula.",
+  "schema": "reference",
+  "modules": {
+    "locales": {
+      "spec": "001-locales",
+      "migration": "0001",
+      "cli": "gi_common_reference.locales.interfaces.cli",
+      "tables": ["locale_snapshot", "locale", "locale_alias"],
+      "dependsOn": []
+    },
+    "regions": {
+      "spec": "002-regions-subregions",
+      "migration": "0002",
+      "cli": "gi_common_reference.regions.interfaces.cli",
+      "tables": [
+        "region_snapshot",
+        "region",
+        "subregion",
+        "region_locale",
+        "subregion_locale",
+        "subregion_reclassification",
+        "region_recoding",
+        "subregion_recoding"
+      ],
+      "dependsOn": ["locales"]
+    },
+    "countries": {
+      "spec": "003-countries",
+      "migration": "0003",
+      "cli": "gi_common_reference.countries.interfaces.cli",
+      "tables": ["country_snapshot", "country", "country_locale", "country_flag", "country_recoding"],
+      "dependsOn": ["locales", "regions"]
+    },
+    "currencies": {
+      "spec": "004-currency",
+      "migration": "0004",
+      "cli": "gi_common_reference.currencies.interfaces.cli",
+      "tables": ["currency_snapshot", "currency", "currency_locale", "country_currency"],
+      "dependsOn": ["locales", "countries"]
+    },
+    "units": {
+      "spec": "005-units-of-measure",
+      "migration": "0005",
+      "cli": "gi_common_reference.units.interfaces.cli",
+      "tables": [
+        "unit_snapshot",
+        "quantity_kind",
+        "unit",
+        "quantity_kind_unit",
+        "quantity_kind_locale",
+        "unit_locale"
+      ],
+      "dependsOn": ["locales"]
+    }
+  },
+  "incorporationOrder": ["locales", "regions", "countries", "currencies", "units"]
+}

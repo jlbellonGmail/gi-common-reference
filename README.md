@@ -85,3 +85,5 @@ Las nuevas funcionalidades y cambios relevantes se desarrollan mediante specs si
 Las reglas permanentes para agentes y colaboradores están definidas en [`AGENTS.md`](AGENTS.md).
 
 Requisitos del entorno (Docker, Node, release de AI-NATIVE), instalación reproducible y verificación: [`docs/desarrollo.md`](docs/desarrollo.md). Despliegue y operación (roles, migraciones, API, incorporación de snapshots): [`docs/operacion.md`](docs/operacion.md).
+
+Validación funcional: aceptación transversal automatizada de los cinco catálogos (`python tools/acceptance/cross_module_acceptance.py`), grafo de dependencias verificado ([`docs/dependency-graph.json`](docs/dependency-graph.json)) y manual de aceptación para el responsable humano ([`docs/aceptacion-manual.md`](docs/aceptacion-manual.md)).

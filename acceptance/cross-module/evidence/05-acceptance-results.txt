@@ -1,0 +1,43 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.10, pytest-9.1.1, pluggy-1.7.0 -- <repo>\.venv\Scripts\python.exe
+rootdir: <repo>
+configfile: pyproject.toml
+plugins: anyio-4.15.1, socket-0.8.1
+collecting ... collected 28 items
+
+tests/acceptance/test_cross_module_acceptance.py::test_01_migrations_reach_head_and_every_reference_is_global PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_02_dependency_graph_matches_the_real_system PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_03_all_five_catalogs_incorporated_in_order_and_diff_does_not_write PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_04_reincorporating_every_catalog_is_idempotent PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_05_consumers_navigate_across_catalogs_through_the_public_api PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_06_localization_is_uniform_across_catalogs[regions] PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_06_localization_is_uniform_across_catalogs[subregions] PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_06_localization_is_uniform_across_catalogs[countries] PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_06_localization_is_uniform_across_catalogs[currencies] PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_06_localization_is_uniform_across_catalogs[units] PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_06_localization_is_uniform_across_catalogs[quantity-kinds] PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_07_cross_module_references_are_validated_on_incorporation PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_08_the_database_protects_cross_module_integrity PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_09_runtime_enforces_the_dependency_order PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_10_the_api_is_read_only_and_roles_are_least_privilege PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_11_served_openapi_equals_the_published_contract[locales] PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_11_served_openapi_equals_the_published_contract[regions] PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_11_served_openapi_equals_the_published_contract[countries] PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_11_served_openapi_equals_the_published_contract[currencies] PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_11_served_openapi_equals_the_published_contract[units] PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_12_conversions_are_exact_in_the_integrated_system[1-lb-kg-mass-0.45359237-True] PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_12_conversions_are_exact_in_the_integrated_system[100-Cel-degF-temperature-212-True] PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_12_conversions_are_exact_in_the_integrated_system[0-K-Cel-temperature--273.15-True] PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_12_conversions_are_exact_in_the_integrated_system[1-km-m-length-1000-True] PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_12b_incompatible_conversion_is_rejected PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_13_no_process_reached_outside_localhost PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_14_006_does_not_modify_product_code_or_existing_tests PASSED 
+tests/acceptance/test_cross_module_acceptance.py::test_15_country_retirement_drift_is_detected_and_repaired_across_modules PASSED 
+
+============================== warnings summary ===============================
+.venv\Lib\site-packages\_pytest\config\__init__.py:885
+  <repo>\.venv\Lib\site-packages\_pytest\config\__init__.py:885: PytestAssertRewriteWarning: Module already imported so cannot be rewritten; tests.acceptance.cross_module_support
+    self.import_plugin(import_spec)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================== 28 passed, 1 warning ==================
