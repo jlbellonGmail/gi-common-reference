@@ -88,3 +88,13 @@ python tools/acceptance/units_acceptance.py --base origin/develop
 ```
 
 Estado por criterio, lo diferido (dataset real de PREP) y lo pendiente para AI-NATIVE v4 en [`acceptance/units/README.md`](../acceptance/units/README.md).
+
+## Aceptación transversal 006 (001–005 juntos) y grafo de dependencias
+
+AI-NATIVE v4.0.1 tampoco expone comandos de Native Acceptance ni de Dependency Graph. La aceptación transversal ejecuta los cinco catálogos juntos como caja negra: base Postgres nueva, `alembic` por subproceso, cada catálogo incorporado con su CLI en el orden del grafo y la API real por HTTP, con guard de red:
+
+```text
+python tools/acceptance/cross_module_acceptance.py
+```
+
+Deja la evidencia en `acceptance/cross-module/evidence/` (ver [`acceptance/cross-module/README.md`](../acceptance/cross-module/README.md)). El grafo declarado está en [`dependency-graph.json`](dependency-graph.json) y lo verifica `test_02` contra las FKs reales, las specs, la cadena de migraciones, `architecture.json` y los imports. Para validar a mano: [`aceptacion-manual.md`](aceptacion-manual.md) (dataset con `python tools/acceptance/write_acceptance_dataset.py <dir>`).
