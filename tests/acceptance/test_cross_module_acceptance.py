@@ -262,7 +262,7 @@ def test_05_consumers_navigate_across_catalogs_through_the_public_api(
     assert status == 200, body
     linked = {row["country_id"] for row in items(body)}
     assert linked == {countries_fx.country_id("US"), countries_fx.country_id("PR")}
-    for country_id in linked:
+    for country_id in sorted(linked):
         status, body = stack.get(f"/v1/countries/{country_id}")
         assert status == 200, body
 
