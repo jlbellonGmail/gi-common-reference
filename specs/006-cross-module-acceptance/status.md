@@ -23,7 +23,7 @@ Estado vivo y verificable (AGENTS.md). El estado sale de este archivo, `tasks.md
 - GREEN: `pytest tests/acceptance/test_cross_module_acceptance.py` → 28 passed (Postgres 16, testcontainers).
 
 ### T4 — runner y evidencia (done)
-- `python tools/acceptance/cross_module_acceptance.py` sobre `ec55d6c` (código final de 006 sobre 005 `212016a`) → `28 passed`, exit 0; antes, sobre `1b682ab`, dos ejecuciones con evidencia byte a byte idéntica (antes, el orden de un `set` en CA-5 hacía variar `04-http-transcripts.json`; corregido); evidencia en `acceptance/cross-module/evidence/`; sha256 de los blobs commiteados = `06-manifest-sha256.txt` (verificado con `git show :<ruta> | sha256sum`).
+- `python tools/acceptance/cross_module_acceptance.py` sobre `22111e7` (código final de 006, con los hallazgos de la revisión atendidos, sobre 005 `212016a`) → `28 passed`, exit 0; antes sobre `ec55d6c`, 28 passed; antes, sobre `1b682ab`, dos ejecuciones con evidencia byte a byte idéntica (antes, el orden de un `set` en CA-5 hacía variar `04-http-transcripts.json`; corregido); evidencia en `acceptance/cross-module/evidence/`; sha256 de los blobs commiteados = `06-manifest-sha256.txt` (verificado con `git show :<ruta> | sha256sum`).
 
 ### T5 — manual (done)
 - `docs/aceptacion-manual.md` (M-01…M-13, restauración, checklist por módulo) y `tools/acceptance/write_acceptance_dataset.py` (mismos builders que la suite; dos ejecuciones → bytes idénticos).
