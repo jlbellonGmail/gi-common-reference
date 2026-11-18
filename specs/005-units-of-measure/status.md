@@ -2,7 +2,7 @@
 
 Estado vivo y verificable (AGENTS.md). El estado sale de este archivo, `tasks.md`, git y los comandos citados.
 
-- Rama: `feature/005-units-of-measure` · base `develop` `0be253d` (001–004 aprobadas) · AI-NATIVE CLI v3.4.3 / lock v3.4.3
+- Rama: `feature/005-units-of-measure` · base `develop` `0be253d` (001–004 aprobadas) · implementado con AI-NATIVE v3.4.3; desde `50efb12` AI-NATIVE CLI v4.0.1 / lock v4.0.1 (mismo cambio de lock que #11)
 - Fuentes verificadas para el diseño (2026-11-02): `ucum-essence.xml` v2.2 rev. 2024-06-17 (`github.com/ucum-org/ucum`, sha256 `dfccea1b5dc284245ebae97edd1dc03c45864da4e87df55bc9851797b4fd0b61`, UCUM License v1.1); UNECE Rec 20 vía `github.com/datasets/unece-units-of-measure` (`units-of-measure.csv`, sha256 `e2d06370cdadf5da1bce705783ff5d0d94d11d70eacba6d592adf401c32fb76e`; copia derivada, no la publicación oficial).
 
 ## Gates
@@ -99,4 +99,13 @@ Estado vivo y verificable (AGENTS.md). El estado sale de este archivo, `tasks.md
   - la partición de tablas en `head` con Units pasó a `tests/integration/units/test_dependency_direction.py`;
   - la aceptación de Units ya no admite esa excepción.
 - Reverificación solo de lo afectado: dependencias de 004 y 005, la prueba fijada de 003 y la aceptación completa de 004 → 29 passed. Aceptación de Units regenerada sobre `3648393` → 16 passed (evidencia `acceptance/units/evidence/*`).
-- Suite completa registrada sobre la revisión final: ver más abajo.
+- Suite completa registrada sobre la revisión final: ver «Re-cierre bajo AI-NATIVE v4.0.1».
+
+## Re-cierre bajo AI-NATIVE v4.0.1 (2026-11-18)
+
+- Cambio desde la aprobación `fd5a4e7a…` (`6b6127b`): solo `ai-native.lock.json` v3.4.3 → v4.0.1 (`50efb12`) y este `status.md`. Código, migraciones, contratos y pruebas sin cambios. La plataforma marcó la revisión anterior como STALE (`sdd review status`), correctamente.
+- `sdd validate 005-units-of-measure`: PASS; `hitl --base develop`: PASS (riesgo high, `human_gate: required`); `status --check`: PASS.
+- Suite completa por la plataforma sobre `50efb12` (revisión `sha256:468ce813…`): `sdd review validate … --command "<.venv>\python.exe -m pytest -q -p no:cacheprovider --junitxml=…"` con `PYTHONUTF8=1` → **VALIDATION_RUN: PASS (exit 0)**; JUnit: **3496 tests, 0 failures, 0 errors, 0 skipped**, 2866 s. Un intento previo con ruta relativa `.venv/Scripts/python` falló por invocación (`cmd.exe` no reconoce `.venv`, exit 1, ninguna prueba ejecutada) y quedó registrado como FAIL en el estado de la plataforma.
+- Esa revisión difiere de la final solo en este `status.md` (el hash de revisión incluye todo salvo `reviews.jsonl`). Sobre la revisión final se registran `ruff format --check`, `ruff check`, `mypy` y `sdd validate` (ver `sdd review status`); la suite no se repite porque ningún archivo ejecutable cambió.
+- Aceptación transversal de los cinco catálogos (incluido 005): spec 006, `feature/006-cross-module-acceptance` (28 passed).
+- Pendientes declarados sin cambio: CA-18(b) `DEFERRED_TO_PREP_DATASET`; sin aceptación sobre Supabase `gi-dev`; sin CI en el repositorio. AI-NATIVE v4.0.1 no expone Native Acceptance ni Dependency Graph (comprobado en la release): la aceptación sigue siendo caja negra por pytest y el grafo se verifica en 006.
