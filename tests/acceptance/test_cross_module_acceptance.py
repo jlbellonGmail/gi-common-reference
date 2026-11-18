@@ -611,8 +611,18 @@ def test_14_006_does_not_modify_product_code_or_existing_tests(
     reference_stack: ReferenceStack,
 ) -> None:
     """CA-14: 006 solo agrega pruebas, documentación, el grafo y su spec: código, migraciones,
-    contratos y pruebas existentes de 001–005 quedan idénticos."""
-    base = base_ref()
+    contratos y pruebas existentes de 001–005 quedan idénticos. Se compara contra el merge-base
+    con la base (lo que 006 introduce, incluido el árbol de trabajo), no contra su punta: la rama
+    base puede avanzar (p. ej. registrar su revisión) sin que 006 haya modificado nada."""
+    fork = subprocess.run(
+        ["git", "merge-base", base_ref(), "HEAD"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert fork.returncode == 0, fork.stderr
+    base = fork.stdout.strip()
     paths = (
         "src",
         "migrations",
