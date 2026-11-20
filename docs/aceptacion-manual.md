@@ -188,7 +188,7 @@ docker exec gi-ref-acc pg_isready -U admin -d reference_acc   # repetir hasta "a
 - `docker run` crea el contenedor `gi-ref-acc` con una base vacía `reference_acc` y un superusuario `admin`, publicado en el puerto **55432** sólo de la interfaz local `127.0.0.1` (no es accesible desde otras máquinas de la red, importante porque las credenciales son triviales) y no en 5432 para no chocar con un PostgreSQL local. La versión original del manual publicaba `-p 55432:5432`, que abre el puerto en todas las interfaces de la máquina.
 - `pg_isready` informa cuándo la base acepta conexiones; los primeros segundos puede responder `no response`.
 
-**Por qué nunca una base productiva ni Supabase:** los casos crean roles, cargan datos sintéticos, retiran Puerto Rico (M-13) y, en la restauración, deshacen todas las migraciones (`downgrade base`), con lo que eliminan tablas, datos y permisos. En una base real eso contaminaría o destruiría datos y permisos compartidos. Supabase `gi-dev` está explícitamente fuera de alcance (§10).
+**Por qué nunca una base productiva ni Supabase:** los casos crean roles, cargan datos sintéticos, retiran Puerto Rico (M-13) y, en la restauración, deshacen todas las migraciones (`downgrade base`), con lo que eliminan tablas, datos y permisos de tabla. En una base real eso contaminaría o destruiría datos y permisos compartidos. Supabase `gi-dev` está explícitamente fuera de alcance (§10).
 
 ### 4.5 Roles (antes de migrar)
 
@@ -364,7 +364,7 @@ INCORPORADO snapshot_version=1 (locale_snapshot_version=1; country_snapshot_vers
 INCORPORADO snapshot_version=1 (locale_snapshot_version=1; ucum_table_version=2.2; 50 unidades nuevas, 0 actualizadas, 14 magnitudes nuevas, 0 actualizadas, 54 asociaciones nuevas, 0 actualizadas, 128 localizaciones)
 ```
 
-- **PASS** si las cinco líneas coinciden y cada exit es 0; **FAIL** si alguna difiere o falla. Si se pega el bloque entero sólo queda visible el exit del último comando: para ver cada uno, ejecutarlos de a uno con `$LASTEXITCODE` después o agregar `; $LASTEXITCODE` al final de cada línea (como en M-05).
+- **PASS** si las cinco líneas coinciden y cada exit es 0; **FAIL** si alguna difiere o falla. Si se pega el bloque entero no se ve ningún exit (`$LASTEXITCODE` sólo conserva el del último comando): para comprobar cada uno, ejecutar los comandos de a uno y escribir `$LASTEXITCODE` después de cada uno. No sirve agregar `; $LASTEXITCODE` al final de estas líneas: quedaría dentro del comentario `# …` y no se ejecutaría.
 - **Limitación:** prueba el camino feliz con datos chicos; los casos límite de cada catálogo están en sus suites propias.
 
 ### M-04 Idempotencia y `diff` sin escritura
@@ -582,7 +582,7 @@ curl.exe -s "$B/v1/currencies/12c3be84-c22e-5d01-adbf-f28c3aeb0807/countries"   
 ## 8. Restaurar el entorno
 
 1. **Detener la API:** `Ctrl+C` en la Terminal A. Se puede cerrar esa ventana.
-2. **(Opcional, verifica la reversibilidad de las migraciones; Terminal B)** `& $py -m alembic downgrade base` → sin error. `downgrade base` deshace todas las migraciones en orden inverso (0005 … 0001) y elimina tablas, triggers y permisos del schema. Después: `docker exec gi-ref-acc psql -U admin -d reference_acc -tAc "SELECT count(*) FROM information_schema.tables WHERE table_schema='reference';"` → `1`. Que quede **una** tabla es lo correcto: sólo `alembic_version`, donde Alembic registra la revisión aplicada (ahora ninguna).
+2. **(Opcional, verifica la reversibilidad de las migraciones; Terminal B)** `& $py -m alembic downgrade base` → sin error. `downgrade base` deshace todas las migraciones en orden inverso (0005 … 0001) y elimina sus tablas (con sus datos, triggers y permisos de tabla) y funciones; el schema `reference` y la tabla `alembic_version` permanecen. Después: `docker exec gi-ref-acc psql -U admin -d reference_acc -tAc "SELECT count(*) FROM information_schema.tables WHERE table_schema='reference';"` → `1`. Que quede **una** tabla es lo correcto: sólo `alembic_version`, donde Alembic registra la revisión aplicada (ahora ninguna).
 3. **Eliminar el contenedor y los datos:** `docker rm -f -v gi-ref-acc` (detiene y borra el contenedor; `-v` borra también el volumen anónimo donde la imagen `postgres` guarda la base, que con el `docker rm -f gi-ref-acc` original quedaba huérfano) y `Remove-Item -Recurse -Force .\acc-data` (borra el dataset sintético).
 4. **Limpiar variables:** `Remove-Item Env:REFERENCE_MIGRATION_DATABASE_URL, Env:REFERENCE_DATABASE_URL, Env:REFERENCE_READER_DATABASE_URL`. Opcionalmente `Remove-Item Env:PYTHONUTF8`. `$py` y `$B` desaparecen al cerrar la ventana (o con `Remove-Variable py, B`).
 
@@ -644,7 +644,7 @@ La **evidencia automatizada** es independiente de este registro: la suite de la 
 
 El repositorio sigue el workflow de AI-NATIVE (`ai-native.lock.json`, v4.0.1): spec aprobada → plan → tasks → implementación → Quality Gates → Independent Review → HITL (merge humano).
 
-**Objetivo del circuito SDD/Acceptance.** La intención arquitectónica es que cada feature produzca, según corresponda: pruebas funcionales, de integración, negativas y de límites, y transversales entre módulos; generadores de datos sintéticos; ejecución autónoma y un manual reproducible de aceptación humana; resultados y evidencias con trazabilidad a los requisitos; y su paso por Quality Gates, Independent Review y HITL.
+**Objetivo del circuito SDD/Acceptance.** Según lo expresado por el responsable humano al encargar esta revisión del manual (no registrado todavía en specs ni en AI-NATIVE), la intención arquitectónica es que cada feature produzca, según corresponda: pruebas funcionales, de integración, negativas y de límites, y transversales entre módulos; generadores de datos sintéticos; ejecución autónoma y un manual reproducible de aceptación humana; resultados y evidencias con trazabilidad a los requisitos; y su paso por Quality Gates, Independent Review y HITL.
 
 **Lo que hoy está demostrado** para 001–005 es lo que registran sus specs y `status.md`: en particular, la spec 006 construyó la aceptación transversal, el generador de datos, la evidencia y este manual **como trabajo de la feature**, porque AI-NATIVE v4.0.1 no ofrece comandos de Native Acceptance ni de Dependency Graph (`specs/006-cross-module-acceptance/status.md`, «Gates»). No debe asumirse que AI-NATIVE v4.0.1 genera o garantiza esas capacidades de forma nativa.
 
