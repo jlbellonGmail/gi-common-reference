@@ -380,7 +380,7 @@ INCORPORADO snapshot_version=1 (locale_snapshot_version=1; ucum_table_version=2.
 
 - **Qué demuestra:** **idempotencia**: misma `snapshot_version` y mismo digest = **NO-OP**, el catálogo queda idéntico. `diff` compara el snapshot con la versión aplicada y no escribe nunca.
 - **Por qué importa:** un proceso de carga que se corta o se reintenta (red, timeout, reejecución de un pipeline) puede reenviarse sin riesgo de duplicar ni alterar datos. Y antes de incorporar una versión nueva, un humano puede revisar su `diff`.
-- **Esperado:** `NO-OP snapshot_version=1 ya incorporado` (×2) y `NO-OP snapshot_version=1 ya incorporado: sin cambios`; exit 0 en cada uno (comprobarlo como en M-03).
+- **Esperado:** `NO-OP snapshot_version=1 ya incorporado` (×2) y `NO-OP snapshot_version=1 ya incorporado: sin cambios`; exit 0 en cada uno (comprobarlo de a uno, como en M-03).
 - **PASS** si coincide.
 - **Limitación:** la salida no demuestra por sí sola que no se escribió nada; la suite lo verifica con un volcado lógico idéntico antes y después (CA-4). Locale y Regions no tienen `diff`.
 
@@ -644,7 +644,7 @@ La **evidencia automatizada** es independiente de este registro: la suite de la 
 
 El repositorio sigue el workflow de AI-NATIVE (`ai-native.lock.json`, v4.0.1): spec aprobada → plan → tasks → implementación → Quality Gates → Independent Review → HITL (merge humano).
 
-**Objetivo del circuito SDD/Acceptance.** Según lo expresado por el responsable humano al encargar esta revisión del manual (no registrado todavía en specs ni en AI-NATIVE), la intención arquitectónica es que cada feature produzca, según corresponda: pruebas funcionales, de integración, negativas y de límites, y transversales entre módulos; generadores de datos sintéticos; ejecución autónoma y un manual reproducible de aceptación humana; resultados y evidencias con trazabilidad a los requisitos; y su paso por Quality Gates, Independent Review y HITL.
+**Objetivo del circuito SDD/Acceptance.** Según lo expresado por el responsable humano al encargar esta revisión del manual (no registrado todavía en specs ni en AI-NATIVE), la intención arquitectónica es que cada feature produzca, según corresponda: pruebas funcionales, de integración, negativas y de límites, y transversales entre módulos; generadores de datos sintéticos; ejecución autónoma y un manual reproducible de aceptación humana; resultados y evidencias con trazabilidad a los requisitos; y su paso por Quality Gates, Independent Review y HITL. En particular, la activación y generación automática de Acceptance por cada feature SDD es una intención identificada, **pendiente de implementación y verificación**; no es una garantía existente de AI-NATIVE v4.0.1.
 
 **Lo que hoy está demostrado** para 001–005 es lo que registran sus specs y `status.md`: en particular, la spec 006 construyó la aceptación transversal, el generador de datos, la evidencia y este manual **como trabajo de la feature**, porque AI-NATIVE v4.0.1 no ofrece comandos de Native Acceptance ni de Dependency Graph (`specs/006-cross-module-acceptance/status.md`, «Gates»). No debe asumirse que AI-NATIVE v4.0.1 genera o garantiza esas capacidades de forma nativa.
 
