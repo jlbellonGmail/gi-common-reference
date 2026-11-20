@@ -181,14 +181,14 @@ $env:REFERENCE_READER_DATABASE_URL    = "postgresql://reference_reader:reader-pw
 
 ```powershell
 docker run -d --name gi-ref-acc -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin-pw `
-  -e POSTGRES_DB=reference_acc -p 55432:5432 postgres:16-alpine
+  -e POSTGRES_DB=reference_acc -p 127.0.0.1:55432:5432 postgres:16-alpine
 docker exec gi-ref-acc pg_isready -U admin -d reference_acc   # repetir hasta "accepting connections"
 ```
 
-- `docker run` crea el contenedor `gi-ref-acc` con una base vacía `reference_acc` y un superusuario `admin`, publicado en el puerto local **55432** (para no chocar con un PostgreSQL local en 5432).
+- `docker run` crea el contenedor `gi-ref-acc` con una base vacía `reference_acc` y un superusuario `admin`, publicado en el puerto **55432** sólo de la interfaz local `127.0.0.1` (no es accesible desde otras máquinas de la red, importante porque las credenciales son triviales) y no en 5432 para no chocar con un PostgreSQL local. La versión original del manual publicaba `-p 55432:5432`, que abre el puerto en todas las interfaces de la máquina.
 - `pg_isready` informa cuándo la base acepta conexiones; los primeros segundos puede responder `no response`.
 
-**Por qué nunca una base productiva ni Supabase:** los casos crean roles, cargan datos sintéticos, retiran Puerto Rico (M-13) y, en la restauración, borran todo el schema (`downgrade base`). En una base real eso contaminaría o destruiría datos y permisos compartidos. Supabase `gi-dev` está explícitamente fuera de alcance (§10).
+**Por qué nunca una base productiva ni Supabase:** los casos crean roles, cargan datos sintéticos, retiran Puerto Rico (M-13) y, en la restauración, deshacen todas las migraciones (`downgrade base`), con lo que eliminan tablas, datos y permisos. En una base real eso contaminaría o destruiría datos y permisos compartidos. Supabase `gi-dev` está explícitamente fuera de alcance (§10).
 
 ### 4.5 Roles (antes de migrar)
 
@@ -364,7 +364,7 @@ INCORPORADO snapshot_version=1 (locale_snapshot_version=1; country_snapshot_vers
 INCORPORADO snapshot_version=1 (locale_snapshot_version=1; ucum_table_version=2.2; 50 unidades nuevas, 0 actualizadas, 14 magnitudes nuevas, 0 actualizadas, 54 asociaciones nuevas, 0 actualizadas, 128 localizaciones)
 ```
 
-- **PASS** si las cinco líneas coinciden y cada exit es 0 (`$LASTEXITCODE` tras cada comando); **FAIL** si alguna difiere o falla.
+- **PASS** si las cinco líneas coinciden y cada exit es 0; **FAIL** si alguna difiere o falla. Si se pega el bloque entero sólo queda visible el exit del último comando: para ver cada uno, ejecutarlos de a uno con `$LASTEXITCODE` después o agregar `; $LASTEXITCODE` al final de cada línea (como en M-05).
 - **Limitación:** prueba el camino feliz con datos chicos; los casos límite de cada catálogo están en sus suites propias.
 
 ### M-04 Idempotencia y `diff` sin escritura
@@ -380,7 +380,7 @@ INCORPORADO snapshot_version=1 (locale_snapshot_version=1; ucum_table_version=2.
 
 - **Qué demuestra:** **idempotencia**: misma `snapshot_version` y mismo digest = **NO-OP**, el catálogo queda idéntico. `diff` compara el snapshot con la versión aplicada y no escribe nunca.
 - **Por qué importa:** un proceso de carga que se corta o se reintenta (red, timeout, reejecución de un pipeline) puede reenviarse sin riesgo de duplicar ni alterar datos. Y antes de incorporar una versión nueva, un humano puede revisar su `diff`.
-- **Esperado:** `NO-OP snapshot_version=1 ya incorporado` (×2) y `NO-OP snapshot_version=1 ya incorporado: sin cambios`; exit 0.
+- **Esperado:** `NO-OP snapshot_version=1 ya incorporado` (×2) y `NO-OP snapshot_version=1 ya incorporado: sin cambios`; exit 0 en cada uno (comprobarlo como en M-03).
 - **PASS** si coincide.
 - **Limitación:** la salida no demuestra por sí sola que no se escribió nada; la suite lo verifica con un volcado lógico idéntico antes y después (CA-4). Locale y Regions no tienen `diff`.
 
@@ -626,7 +626,7 @@ Resultados **comunicados por el responsable humano**; no son evidencia automatiz
 - M-01 a M-13: **13/13 PASS**. Restauración (§8): **PASS**.
 - Incidentes, ya incorporados a este manual: (1) la instalación con pip falló por una instalación `--user` forzada dentro del virtualenv; se resolvió con `--no-user` (§4.2); (2) M-13 falló al ejecutarse en una segunda ventana sin `$py` definido; se resolvió definiendo las variables de sesión (§4.3, §5).
 - Ejecutado desde el worktree `D:\Proyectos\worktrees\gi-common-references\006-cross-module-acceptance`. **Fecha exacta y SHA de la revisión ejecutada: no registrados.** El worktree estaba en `5dff6bf` el 2026-11-20, lo que por sí solo no prueba que esa fuera la revisión ejecutada.
-- Los comandos que esta versión del manual cambió se verificaron después en un **ensayo dirigido** (2026-11-20, agente, sobre la rama de esta documentación; no es una ejecución humana): `--no-user` (§4.2); el bloque de sesión §4.3, extraído literalmente del manual y aplicado en tres procesos `pwsh` independientes (preparación, API y una ventana nueva sin variables previas); §4.4–§4.6 (hashes idénticos); M-01; M-03; M-06; M-07 (1); M-13 (los seis puntos esperados); y §8 con `docker rm -f -v` (el volumen anónimo quedó eliminado). No se repitieron M-02, M-04, M-05 ni M-08–M-12, cuyos comandos no cambiaron. Los procesos fueron scripts no interactivos, no ventanas operadas a mano.
+- Los comandos que esta versión del manual cambió se verificaron después en un **ensayo dirigido** (2026-11-20, agente, sobre la rama de esta documentación; no es una ejecución humana): `--no-user` (§4.2); el bloque de sesión §4.3, extraído literalmente del manual y aplicado en tres procesos `pwsh` independientes (preparación, API y una ventana nueva sin variables previas); §4.4–§4.6 (hashes idénticos); M-01; M-03; M-06; M-07 (1); M-13 (los seis puntos esperados); y §8 con `docker rm -f -v` (el volumen anónimo quedó eliminado). Luego, en una verificación separada, `-p 127.0.0.1:55432:5432` (§4.4) publicó sólo en loopback y M-01 llegó a `0005 (head)` desde el host. No se repitieron M-02, M-04, M-05 ni M-08–M-12, cuyos comandos no cambiaron. Los procesos fueron scripts no interactivos, no ventanas operadas a mano.
 
 La **evidencia automatizada** es independiente de este registro: la suite de la spec 006 (`28 passed` sobre `22111e7`, en [`acceptance/cross-module/evidence/`](../acceptance/cross-module/evidence/)) y su revisión independiente están documentadas en [`specs/006-cross-module-acceptance/status.md`](../specs/006-cross-module-acceptance/status.md).
 
